@@ -10,6 +10,7 @@ import '../components/common/page_header.dart';
 import '../components/common/prev_next.dart';
 import '../components/layout/toc.dart';
 import '../components/layout/trailing_content.dart';
+import '../components/layout/untranslated_notice.dart';
 import '../models/on_this_page_model.dart';
 import 'dash_layout.dart';
 
@@ -66,6 +67,8 @@ class DocLayout extends DashLayout {
                   splitTitleByUnderscores:
                       pageData['underscore_breaker_titles'] as bool? ?? false,
                 ),
+                if (UntranslatedNotice.appliesTo(page))
+                  const UntranslatedNotice(),
                 child,
                 PrevNext(
                   previousPage: _pageInfoFromObject(pageData['prevpage']),
