@@ -34,7 +34,11 @@ def titulos(texto):
 def slug(texto):
     """Mesmo algoritmo de slugify() em site/lib/src/util.dart, aplicado ao
     texto visível do título (o site usa o textContent, sem markdown/HTML)."""
-    t = re.sub(r'<[^>]+>', '', texto)
+    # Código inline é texto literal (`Future<T>` mantém o `<T>`, que o
+    # slugify depois descarta deixando o `t`); tags HTML fora dele somem.
+    partes = re.split(r'(`[^`]*`)', texto)
+    t = ''.join(p[1:-1] if p.startswith('`') and p.endswith('`') and len(p) > 1
+                else re.sub(r'<[^>]+>', '', p) for p in partes)
     t = re.sub(r'\[([^\]]*)\]\[[^\]]*\]|\[([^\]]*)\]\([^)]*\)',
                lambda m: m.group(1) or m.group(2) or '', t)
     t = re.sub(r'[*`]', '', t)
