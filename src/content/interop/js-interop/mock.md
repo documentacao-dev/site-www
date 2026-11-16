@@ -8,7 +8,7 @@ ia-translate: true
 Neste tutorial, você aprenderá como fazer mock de objetos JS para que possa testar
 membros de instância interop sem precisar usar uma implementação real.
 
-## Contexto e motivação
+## Contexto e motivação {:#background-and-motivation}
 
 Fazer mock de classes em Dart geralmente é feito através de sobrescrita de membros de instância.
 No entanto, como [extension types] são usados para declarar tipos interop, todos os
@@ -45,7 +45,7 @@ Em vez disso, você deve usar uma combinação de [`createJSInteropWrapper`] e
 [`@JSExport`] para declarar um tipo que fornece uma implementação para todos os
 membros de instância `external`.
 
-## Exemplo de mocking
+## Exemplo de mocking {:#mocking-example}
 
 ```dart
 import 'dart:js_interop';
@@ -96,7 +96,7 @@ void main() {
 }
 ```
 
-## [`@JSExport`] e [`createJSInteropWrapper`]
+## [`@JSExport`] e [`createJSInteropWrapper`] {:#jsexport-and-createjsinteropwrapper}
 
 `@JSExport` permite que você declare uma classe que pode ser usada em
 `createJSInteropWrapper`. `createJSInteropWrapper` criará um object literal

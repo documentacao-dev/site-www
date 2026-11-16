@@ -32,16 +32,16 @@ gere bindings para Kotlin também.
 [jnigen-pkg]: {{site.pub-pkg}}/jnigen
 [jnidoc]: https://docs.oracle.com/en/java/javase/17/docs/specs/jni/index.html
 
-## Exemplo simples de Java
+## Exemplo simples de Java {:#simple-java-example}
 
 Este guia o orienta através de [um exemplo]({{page.example}})
 que usa `package:jnigen` para gerar bindings para uma classe simples.
 
-### Pré-requisitos
+### Pré-requisitos {:#prerequisites}
 
 - JDK
 
-### Configurar `jnigen`
+### Configurar `jnigen` {:#configure-jnigen}
 
 Primeiro, adicione `package:jni` como uma dependência e
 `package:jnigen` como uma [dev dependency][].
@@ -84,7 +84,7 @@ public class Example {
 }
 ```
 
-### Gerar os bindings Dart
+### Gerar os bindings Dart {:#generate-the-dart-bindings}
 
 Para gerar os bindings Dart, execute `jnigen` e
 especifique o arquivo de configuração usando a opção `--config`:
@@ -101,7 +101,7 @@ Este arquivo contém uma classe chamada `Example`,
 que tem um método static chamado `sum`,
 assim como o arquivo Java.
 
-### Usar os bindings
+### Usar os bindings {:#use-the-bindings}
 
 Agora você está pronto para carregar e interagir com a biblioteca gerada.
 A aplicação de exemplo, [`bin/sum.dart`]({{page.example}}/bin/sum.dart), recebe
@@ -113,7 +113,7 @@ Usar o método `Example.sum` é idêntico a Java.
 print(Example.sum(a, b));
 ```
 
-### Executar o exemplo
+### Executar o exemplo {:#run-the-example}
 
 Antes de executar o exemplo,
 você deve compilar a biblioteca dinâmica para `jni`.
@@ -132,7 +132,7 @@ $ dart run jnigen_example:sum 17 25
 
 Que produz `42`!
 
-## Mais exemplos
+## Mais exemplos {:#more-examples}
 
 A seguir estão alguns exemplos mais abrangentes de uso de `package:jnigen`:
 

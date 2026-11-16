@@ -53,7 +53,7 @@ como especificá-las na linha de comando e em IDEs e editores.
 [`dart compile`]: /tools/dart-compile
 [specifying environment declarations]: #specifying-environment-declarations
 
-## Acessando declarações de ambiente
+## Acessando declarações de ambiente {:#accessing-environment-declarations}
 
 Para acessar valores de declaração de ambiente especificados,
 use um dos construtores `fromEnvironment`

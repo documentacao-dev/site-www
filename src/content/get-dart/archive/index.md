@@ -18,13 +18,13 @@ Quer instalar o Dart com o gerenciador de pacotes do seu sistema operacional?
 {% render 'install/sdk-terms.md' %}
 :::
 
-## Canal stable
+## Canal stable {:#stable-channel}
 
 As builds do canal stable são testadas e aprovadas para uso em produção.
 
 <ArchiveTable channel="stable" />
 
-## Canal beta
+## Canal beta {:#beta-channel}
 
 As builds do canal beta são builds de pré-visualização para o canal stable.
 Recomendamos testar, mas não lançar, seus aplicativos no beta
@@ -33,7 +33,7 @@ As builds do canal beta não são adequadas para uso em produção.
 
 <ArchiveTable channel="beta" />
 
-## Canal dev
+## Canal dev {:#dev-channel}
 
 As builds do canal dev podem fornecer acesso antecipado
 a novos recursos, mas podem conter bugs.
@@ -41,7 +41,7 @@ As builds do canal dev não são adequadas para uso em produção.
 
 <ArchiveTable channel="dev" />
 
-## Canal main
+## Canal main {:#main-channel}
 
 As builds do canal main são as builds mais recentes e brutas do
 branch `main` do repositório do Dart SDK.
@@ -57,11 +57,11 @@ As builds do canal main não são assinadas.
 Para baixar uma build do canal main, use uma
 [URL do canal main](#main-channel-url-scheme).
 
-## URLs de download
+## URLs de download {:#download-urls}
 
 Você pode baixar arquivos zip para qualquer canal.
 
-### Esquema de URL dos canais stable, beta e dev
+### Esquema de URL dos canais stable, beta e dev {:#stable-beta-and-dev-channel-url-scheme}
 
 As versões dos canais stable, beta e dev
 estão disponíveis em URLs como as seguintes:

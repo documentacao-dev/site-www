@@ -22,7 +22,7 @@ estas diretrizes é proibido sem permissão por escrito do Google.
 Os logotipos oficiais do Dart podem ser encontrados no arquivo
 [Dart logo assets](https://services.google.com/fh/files/misc/dart_brand_guidelines_assets.zip).
 
-## Regras gerais que regem o uso das marcas registradas Dart
+## Regras gerais que regem o uso das marcas registradas Dart {:#general-rules-that-govern-the-use-of-the-dart-trademarks}
 
 Você é livre para usar as marcas registradas Dart: (i) em conexão com seu
 download e uso do Dart SDK para construir e desenvolver aplicações, (ii) em
@@ -48,7 +48,7 @@ no título do blog). No caso de contas de mídia social, isso significa que
 você não deve usar as marcas registradas Dart no plano de fundo, em sua
 imagem de perfil ou em seu nome de usuário de mídia social.
 
-## Regras específicas para o uso adequado das marcas registradas Dart
+## Regras específicas para o uso adequado das marcas registradas Dart {:#specific-rules-for-proper-usage-of-the-dart-trademarks}
 
 Além das regras gerais discutidas acima, abaixo estão regras específicas
 que regem o uso adequado das marcas registradas Dart.
@@ -92,7 +92,7 @@ que regem o uso adequado das marcas registradas Dart.
   quaisquer bens ou serviços não relacionados a software (por exemplo, mercadorias como roupas,
   canetas e adesivos).
 
-## Exceções de uso da comunidade
+## Exceções de uso da comunidade {:#community-use-exceptions}
 
 Para permitir o uso das marcas registradas Dart pela comunidade Dart,
 abaixo estão exceções específicas às regras descritas acima:

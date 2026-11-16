@@ -15,11 +15,11 @@ O subcomando `dart pub token` tem três subcomandos:
 O comando `dart pub` considera os termos _credencial_, _token_, _segredo_,
 e _token secreto_ como intercambiáveis.
 
-[`add`]: #adicionar-uma-nova-credencial
-[`list`]: #retornar-uma-lista-de-credenciais
-[`remove`]: #remover-uma-ou-mais-credenciais
+[`add`]: #add-a-new-credential
+[`list`]: #return-a-list-of-credentials
+[`remove`]: #remove-one-or-more-credentials
 
-## Caso de uso para credenciais
+## Caso de uso para credenciais {:#use-case-for-credentials}
 
 Considere um cenário quando você tem uma [dependência](/tools/pub/dependencies)
 hospedada em um repositório privado.
@@ -37,12 +37,12 @@ You can provide credentials using:
 Alguns, mas não todos os servidores, também retornam uma mensagem com instruções sobre
 como você pode obter um token.
 
-## Adicionar uma nova credencial
+## Adicionar uma nova credencial {:#add-a-new-credential}
 
 Para criar uma nova credencial,
 use o comando `dart pub token add`.
 
-### Adicionar uma credencial para a sessão atual
+### Adicionar uma credencial para a sessão atual {:#add-a-credential-for-the-current-session}
 
 No aviso, digite a credencial na linha de comando (`stdin`).
 
@@ -59,7 +59,7 @@ o comando `dart pub token` recebe entrada em `stdin` em vez de
 como uma opção de linha de comando.
 :::
 
-### Adicionar uma credencial para todas as sessões
+### Adicionar uma credencial para todas as sessões {:#add-a-credential-for-all-sessions}
 
 Para usar o mesmo token em qualquer e todas as sessões de terminal e em scripts,
 armazene o token em uma variável de ambiente.
@@ -97,7 +97,7 @@ Para saber como, consulte a documentação de [GitHub Actions][] ou
 [GitLab]: https://docs.gitlab.com/ee/ci/secrets/
 [zsh-post]: https://medium.com/@prasincs/hiding-secret-keys-from-shell-history-part-1-5875eb5556cc
 
-## Retornar uma lista de credenciais
+## Retornar uma lista de credenciais {:#return-a-list-of-credentials}
 
 Para ver uma lista de todas as credenciais ativas, use o comando `dart pub token list`:
 
@@ -108,7 +108,7 @@ https://some-package-repo.com/my-org/my-repo
 https://other-package-repo.com/
 ```
 
-## Remover uma ou mais credenciais
+## Remover uma ou mais credenciais {:#remove-one-or-more-credentials}
 
 Para remover um único token, use o comando `dart pub token remove`:
 

@@ -136,7 +136,7 @@ No Windows PowerShell:
 $ $Env:https_proxy="username:password@hostname:port"
 ```
 
-## Localhost inacessível após o login {:#localhost-unreachable}
+## Localhost inacessível após o login {:#localhost-unreachable-after-sign-in}
 
 Quando você executa `dart pub publish` em um contêiner ou em uma sessão SSH,
 o `localhost` no qual `dart pub` está escutando pode ser diferente do

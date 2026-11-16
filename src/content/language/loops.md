@@ -174,7 +174,7 @@ loops e cases switch e permitem que você especifique qual instrução
 sair ou continuar, em vez de afetar o loop mais interno
 por padrão.
 
-### Labels em loop for usando `break` {:.no_toc}
+### Labels em loop for usando `break` {:.no_toc #labels-in-for-loop-using-break}
 
 O código a seguir demonstra o uso de um label chamado `outerLoop`
 em um loop `for` com uma instrução `break`:
@@ -205,7 +205,7 @@ i = 2, j = 2
 outerLoop exited
 ```
 
-### Labels em loop for usando `continue` {:.no_toc}
+### Labels em loop for usando `continue` {:.no_toc #labels-in-for-loop-using-continue}
 
 O código a seguir demonstra o uso de um label chamado `outerLoop`
 em um loop `for` com uma instrução `continue`:
@@ -236,7 +236,7 @@ i = 3, j = 2
 i = 3, j = 3
 ```
 
-### Labels em loop while usando `break` {:.no_toc}
+### Labels em loop while usando `break` {:.no_toc #labels-in-while-loop-using-break}
 
 O código a seguir demonstra o uso de um label chamado `outerLoop` em
 um loop `while` com uma instrução `break`:
@@ -272,7 +272,7 @@ i = 2, j = 2
 outerLoop exited
 ```
 
-### Labels em loop while usando `continue` {:.no_toc}
+### Labels em loop while usando `continue` {:.no_toc #labels-in-while-loop-using-continue}
 
 O código a seguir demonstra o uso de um label chamado `outerLoop` em
 um loop `while` com uma instrução `continue`:
@@ -309,7 +309,7 @@ i = 3, j = 2
 i = 3, j = 3
 ```
 
-### Labels em loop do-while usando `break` {:.no_toc}
+### Labels em loop do-while usando `break` {:.no_toc #labels-in-do-while-loop-using-break}
 
 O código a seguir demonstra o uso de um label chamado `outerLoop` em
 um loop `do while` com uma instrução `break`:
@@ -346,7 +346,7 @@ i = 2, j = 2
 outerLoop exited
 ```
 
-### Labels em loop do-while usando `continue` {:.no_toc}
+### Labels em loop do-while usando `continue` {:.no_toc #labels-in-do-while-loop-using-continue}
 
 O código a seguir demonstra o uso de um label chamado `outerLoop` em
 um loop `do while` com uma instrução `continue`:

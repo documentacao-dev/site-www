@@ -15,7 +15,7 @@ $ dart pub cache clean
 O comando `dart pub cache` trabalha com o
 [cache do sistema](/resources/glossary#pub-system-cache).
 
-## Adicionando um pacote ao cache do sistema
+## Adicionando um pacote ao cache do sistema {:#adding-a-package-to-the-system-cache}
 
 Você pode adicionar manualmente um pacote ao seu cache do sistema:
 
@@ -23,7 +23,7 @@ Você pode adicionar manualmente um pacote ao seu cache do sistema:
 $ dart pub cache add <package>
 ```
 
-## Reinstalando todos os pacotes no cache do sistema
+## Reinstalando todos os pacotes no cache do sistema {:#reinstalling-all-packages-in-the-system-cache}
 
 Você pode realizar uma reinstalação limpa de todos os pacotes no seu cache do sistema:
 
@@ -38,7 +38,7 @@ Por exemplo, alguns editores facilitam a localização de arquivos de implementa
 para pacotes no cache do sistema,
 e você pode acidentalmente editar um desses arquivos.
 
-## Limpando o cache global do sistema
+## Limpando o cache global do sistema {:#clearing-the-global-system-cache}
 
 Você pode esvaziar todo o cache do sistema
 para recuperar espaço em disco extra ou remover pacotes problemáticos:
@@ -55,7 +55,7 @@ você pode excluir manualmente a pasta [`PUB_CACHE`][].
 
 [`PUB_CACHE`]: /tools/pub/environment-variables
 
-## Opções
+## Opções {:#options}
 
 Para opções que se aplicam a todos os comandos pub, veja
 [Opções globais](/tools/pub/cmd#global-options).

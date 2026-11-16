@@ -29,7 +29,7 @@ Um stream é uma sequência de eventos assíncronos.
 o próximo evento quando você pede por ele, o stream te avisa que
 há um evento quando ele está pronto.
 
-## Recebendo eventos de stream
+## Recebendo eventos de stream {:#receiving-stream-events}
 
 Streams podem ser criados de muitas maneiras, o que é um tópico para outro
 artigo, mas todos podem ser usados da mesma maneira: o _loop for assíncrono_
@@ -91,7 +91,7 @@ void main() async {
 Clique em **Run** para ver o resultado no **Console**.
 :::
 
-## Eventos de erro
+## Eventos de erro {:#error-events}
 
 Streams terminam quando não há mais eventos neles,
 e o código que recebe os eventos é notificado disso assim como
@@ -151,7 +151,7 @@ Clique em **Run** para ver o resultado no **Console**.
 :::
 
 
-## Trabalhando com streams
+## Trabalhando com streams {:#working-with-streams}
 
 A classe Stream contém vários métodos auxiliares que podem fazer
 operações comuns em um stream para você,
@@ -429,7 +429,7 @@ e cancele completamente.
 Você pode definir callbacks para serem chamados para cada evento de dados ou
 evento de erro, e quando o stream for fechado.
 
-## Outros recursos
+## Outros recursos {:#other-resources}
 
 Leia a seguinte documentação para mais detalhes sobre uso de streams
 e programação assíncrona no Dart.

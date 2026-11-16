@@ -1,0 +1,161 @@
+name: Tradução automática
+
+# Duas fases:
+#
+# 1. preparar (sem Claude, custo zero): detecta se o upstream andou ou se há
+#    páginas pendentes. Se não houver nada, o workflow para aqui. Se houver,
+#    roda o sync e os scripts determinísticos, confere com o verificar.py e
+#    publica a branch traducao/AAAA-MM-DD.
+# 2. claude: só roda quando há trabalho. Continua da branch já sincronizada
+#    com a skill `traduzir` (tradução em Haiku, PR, review em Sonnet, correção
+#    e auto-merge). Sem páginas para traduzir, só abre o PR e liga o merge.
+#
+# Precisa do secret CLAUDE_CODE_OAUTH_TOKEN (gerado com `claude setup-token`)
+# e do app do Claude instalado na org documentacao-dev.
+
+on:
+  schedule:
+    # Toda segunda às 10h UTC (7h em Brasília), uma hora depois do Flutter Brasil.
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+    inputs:
+      paginas:
+        description: 'Caminhos de páginas para traduzir só elas (vazio = ciclo completo)'
+        required: false
+        default: ''
+      sem_merge:
+        description: 'Parar no PR revisado, sem auto-merge'
+        type: boolean
+        default: false
+
+concurrency:
+  group: traducao-automatica
+  cancel-in-progress: false
+
+jobs:
+  preparar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    outputs:
+      trabalho: ${{ steps.detectar.outputs.trabalho }}
+      branch: ${{ steps.sync.outputs.branch }}
+      resumo: ${{ steps.sync.outputs.resumo }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detectar o que fazer
+        id: detectar
+        env:
+          PAGINAS: ${{ inputs.paginas }}
+        run: |
+          git remote add upstream https://github.com/dart-lang/site-www.git
+          git fetch -q --depth=3000 upstream main
+          base=$(cat tool/traducao/ultimo-sync-upstream.txt)
+          novos=$(git rev-list --count "$base"..upstream/main)
+          # "Páginas traduzidas: **320 / 320**" no TODO-TRADUCAO.md
+          nums=($(grep -oE 'Páginas traduzidas: \*\*[0-9]+ / [0-9]+' TODO-TRADUCAO.md | grep -oE '[0-9]+'))
+          pendentes=$(( ${nums[1]:-0} - ${nums[0]:-0} ))
+          # "Diagnósticos e lints em inglês (src/data/*.json): **0**"
+          diag=$(grep -oE 'lints em inglês[^*]*\*\*[0-9]+' TODO-TRADUCAO.md | grep -oE '[0-9]+$' || true)
+          diag=${diag:-0}
+          echo "upstream: $novos commit(s) desde ${base:0:9}; páginas pendentes: $pendentes; diagnósticos/lints em inglês: $diag"
+          if [ "$novos" -gt 0 ] || [ "$pendentes" -gt 0 ] || [ "$diag" -gt 0 ] || [ -n "$PAGINAS" ]; then
+            echo "trabalho=sim" >> "$GITHUB_OUTPUT"
+          else
+            echo "trabalho=nao" >> "$GITHUB_OUTPUT"
+            echo "### Nada a traduzir" >> "$GITHUB_STEP_SUMMARY"
+            echo "Upstream sem commits novos desde \`${base:0:9}\`, nenhuma página nem diagnóstico pendente." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "novos=$novos" >> "$GITHUB_OUTPUT"
+
+      - name: Ambiente (Dart, dependências)
+        if: steps.detectar.outputs.trabalho == 'sim'
+        run: |
+          bash tool/traducao/setup.sh
+          echo "$HOME/.dart-sdk/bin" >> "$GITHUB_PATH"
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+
+      - name: Sync com o upstream e scripts determinísticos
+        id: sync
+        if: steps.detectar.outputs.trabalho == 'sim'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          branch="traducao/$(date -u +%F)"
+          git switch -c "$branch"
+
+          if [ "${{ steps.detectar.outputs.novos }}" -gt 0 ]; then
+            base=$(cat tool/traducao/ultimo-sync-upstream.txt)
+            alvo=$(git rev-parse upstream/main)
+            python3 tool/traducao/sincronizar_upstream.py
+            git add -A
+            git commit -q -m "Merge upstream dart-lang/site-www main" \
+              -m "Sync de ${base:0:9} para ${alvo:0:9}, feito pelo workflow Tradução automática (sem Claude). Inclui .traducao-pendente/ para a fase de tradução."
+          fi
+
+          # Etapas que não precisam de modelo.
+          if [ -z "$(ls -A .traducao-pendente 2>/dev/null | grep -v RELATORIO.md)" ]; then
+            rm -rf .traducao-pendente
+          fi
+          python3 tool/traducao/gerar_todo.py
+          git add -A
+          git diff --cached --quiet || git commit -q -m "chore: TODO-TRADUCAO.md regenerado"
+
+          pend=$(find .traducao-pendente -type f ! -name RELATORIO.md 2>/dev/null | wc -l | tr -d ' ')
+          diag=$(python3 tool/i18n/diagnostics_i18n.py status 2>/dev/null | grep -c . || true)
+          if python3 tool/traducao/verificar.py > verificar.log 2>&1; then v=ok; else v=erro; fi
+          tail -1 verificar.log
+          rm -f verificar.log
+          resumo="arquivos em .traducao-pendente: $pend; diagnósticos/lints em inglês: $diag; verificar.py: $v"
+          echo "$resumo"
+          git push -q -u origin "$branch"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo "resumo=$resumo" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Branch \`$branch\` preparada sem Claude"
+            echo "$resumo"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  claude:
+    needs: preparar
+    if: needs.preparar.outputs.trabalho == 'sim'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.preparar.outputs.branch }}
+          fetch-depth: 0
+
+      - name: Ambiente (Dart, upstream, dependências)
+        run: |
+          bash tool/traducao/setup.sh
+          echo "$HOME/.dart-sdk/bin" >> "$GITHUB_PATH"
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+
+      - name: Tradução, PR, review e merge (skill traduzir)
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Use a skill `traduzir` (.claude/skills/traduzir/SKILL.md).
+            O sync e os scripts determinísticos já rodaram sem você: você está
+            na branch `${{ needs.preparar.outputs.branch }}`, já publicada.
+            Situação: ${{ needs.preparar.outputs.resumo }}.
+            Comece na etapa 3 (Traduzir) e siga até a 9. Não rode o
+            sincronizar_upstream.py de novo e não crie outra branch.
+            Se não houver nada para traduzir e o verificar.py estiver ok,
+            pule tradução e review: abra o PR e vá direto para a etapa 8.
+            Argumentos: ${{ inputs.paginas }} ${{ inputs.sem_merge && 'sem-merge' || '' }}
+          claude_args: >-
+            --model sonnet
+            --allowedTools "Agent,Skill,Read,Edit,Write,Glob,Grep,Bash(git:*),Bash(gh:*),Bash(python3 tool/traducao/:*),Bash(python3 tool/i18n/:*),Bash(bash tool/traducao/:*),Bash(dart:*),Bash(rm -rf .traducao-pendente),Bash(ls:*),Bash(cat:*),Bash(wc:*)"

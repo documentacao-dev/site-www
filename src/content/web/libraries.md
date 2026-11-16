@@ -9,7 +9,7 @@ Dart fornece vários pacotes e bibliotecas para suportar
 o desenvolvimento de aplicações web, sendo a opção recomendada o [`package:web`][web].
 O [Dart SDK][] também contém outras bibliotecas que fornecem APIs web de baixo nível.
 
-## Soluções web
+## Soluções web {:#web-solutions}
 
 [Migrar para `package:web`][migrate]
 : Aprenda como migrar para `package:web`

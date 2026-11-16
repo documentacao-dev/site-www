@@ -16,7 +16,7 @@ e obter conselhos sobre como atualizá-las.
 incluem o uso das versões mais recentes de pacotes estáveis,
 para que você possa obter as correções de bugs mais recentes e melhorias.
 
-## Visão geral
+## Visão geral {:#overview}
 
 Aqui está como você pode usar `dart pub outdated` para ajudá-lo a
 atualizar as dependências de um pacote que você possui
@@ -46,7 +46,7 @@ tente executar [`dart pub deps`][] e procure na saída
 o nome de cada pacote desatualizado.
 
 
-## Exemplo
+## Exemplo {:#example}
 
 Aqui está um exemplo de execução de `dart pub outdated` em
 um exemplo que tem várias dependências desatualizadas.
@@ -154,11 +154,11 @@ depois de atualizar os pacotes.
 :::
 
 
-## Colunas de saída
+## Colunas de saída {:#output-columns}
 
 A saída de `dart pub outdated` tem quatro colunas de informações de versão
 para cada dependência desatualizada.
-Aqui está a parte da saída do [exemplo](#exemplo)
+Aqui está a parte da saída do [exemplo](#example)
 que mostra as quatro colunas de versão:
 Atual, Atualizável, Resolvível e Mais recente.
 
@@ -194,7 +194,7 @@ Ao editar o arquivo `pubspec.yaml`,
 você geralmente atualiza as seções **dependencies** e **dev_dependencies**
 para que cada pacote use as versões na coluna **Resolvível**.
 
-## Opções
+## Opções {:#options}
 
 Para opções que se aplicam a todos os comandos pub, consulte
 [Opções globais](/tools/pub/cmd#global-options).
@@ -234,7 +234,7 @@ estão na versão mais recente (`--no-up-to-date`).
 Para incluir dependências atualizadas, use `--up-to-date`.
 
 
-## Em um workspace
+## Em um workspace {:#in-a-workspace}
 
 Em um [Pub workspace](/tools/pub/workspaces), `dart pub outdated` lista
 todas as dependências 

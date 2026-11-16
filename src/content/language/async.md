@@ -26,7 +26,7 @@ permitindo que você escreva código assíncrono que
 se parece com código síncrono.
 
 
-## Lidando com Futures
+## Lidando com Futures {:#handling-futures}
 
 Quando você precisa do resultado de um Future concluído,
 você tem duas opções:
@@ -121,7 +121,7 @@ Para uma introdução interativa ao uso de futures, `async` e `await`,
 veja o [tutorial de programação assíncrona](/libraries/async/async-await).
 
 
-## Declarando funções async
+## Declarando funções async {:#declaring-async-functions}
 
 Uma função `async` é uma função cujo corpo é marcado com
 o modificador `async`.
@@ -157,7 +157,7 @@ TODO #1117: Where else should we cover generalized void?
 {% endcomment %}
 
 
-## Lidando com Streams
+## Lidando com Streams {:#handling-streams}
 
 Quando você precisa obter valores de um Stream,
 você tem duas opções:

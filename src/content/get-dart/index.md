@@ -23,7 +23,7 @@ Se você já instalou ou planeja [instalar o Flutter SDK][install-flutter], ele
 inclui o Dart SDK completo. Você não precisa instalar o Dart separadamente e pode pular este guia.
 :::
 
-## Requisitos do sistema
+## Requisitos do sistema {:#system-requirements}
 
 O Dart suporta as seguintes arquiteturas de hardware e versões de plataforma
 para desenvolver e executar código Dart.
@@ -53,7 +53,7 @@ para desenvolver e executar código Dart.
 [Debian stable]: https://www.debian.org/releases
 [Ubuntu LTS]: https://wiki.ubuntu.com/Releases
 
-## Escolha uma opção de instalação
+## Escolha uma opção de instalação {:#choose-an-installation-option}
 
 Para instalar e atualizar o Dart SDK do canal stable,
 escolha uma das seguintes opções:
@@ -131,7 +131,7 @@ execute o mesmo comando para instalar o Dart SDK do seu gerenciador de pacotes.
 {% assign version-use = "testing recent fixes and experimental features" %}
 {% endcase %}
 
-### Canal {{channel}}
+### Canal {{channel}} {:#channel-channel}
 
 O Dart publica uma nova versão no canal *{{chnl}}* aproximadamente {{schedule}}.
 A versão {{chnl}} atual é {{current}}.

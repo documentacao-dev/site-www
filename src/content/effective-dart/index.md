@@ -35,7 +35,7 @@ escrever código consistente, robusto e rápido também. Existem dois temas abra
 
 [code golf]: https://en.wikipedia.org/wiki/Code_golf
 
-## Os guias
+## Os guias {:#the-guides}
 
 Dividimos as diretrizes em algumas páginas separadas para facilitar a digestão:
 
@@ -67,7 +67,7 @@ Para links para todas as diretrizes, consulte o
 [usage guide]: /effective-dart/usage
 [design guide]: /effective-dart/design
 
-## Como ler os guias
+## Como ler os guias {:#how-to-read-the-guides}
 
 Cada guia é dividido em algumas seções. As seções contêm uma lista de diretrizes.
 Cada diretriz começa com uma destas palavras:
@@ -115,7 +115,7 @@ e a lista de [regras do linter][lints].
 [Enabling linter rules]: /tools/analysis#enabling-linter-rules
 [lints]: /tools/linter-rules
 
-## Glossário
+## Glossário {:#glossary}
 
 Para manter as diretrizes breves, usamos alguns termos abreviados para nos referir a diferentes
 construções Dart.

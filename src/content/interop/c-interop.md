@@ -41,7 +41,7 @@ Ele inclui os seguintes exemplos que mostram como usar a biblioteca `dart:ffi`:
 [structs]: {{site.repo.dart.samples}}/tree/main/ffi/structs
 [test_utils]: {{site.repo.dart.samples}}/tree/main/ffi/test_utils
 
-### Revisar o exemplo hello_world
+### Revisar o exemplo hello_world {:#review-the-hello_world-example}
 
 O [exemplo hello_world][hello_world] tem o código mínimo necessário
 para chamar uma biblioteca C.
@@ -50,7 +50,7 @@ seção anterior.
 
 [hello_world]: {{site.repo.dart.samples}}/tree/main/ffi/hello_world
 
-#### Arquivos
+#### Arquivos {:#files}
 
 O exemplo `hello_world` tem os seguintes arquivos:
 
@@ -78,7 +78,7 @@ incluindo um arquivo de biblioteca dinâmica chamado
 `libhello.dll` (Windows), ou
 `libhello.so` (Linux).
 
-#### Compilar e executar
+#### Compilar e executar {:#build-and-execute}
 
 Os comandos para compilar a biblioteca dinâmica e executar a aplicação Dart
 se assemelham à seguinte série.
@@ -104,7 +104,7 @@ consulte o [Guia de Assinatura de Código da Apple][codesign].
 
 [codesign]: {{site.apple-dev}}/library/content/documentation/Security/Conceptual/CodeSigningGuide/Introduction/Introduction.html
 
-#### Aproveitar dart:ffi
+#### Aproveitar dart:ffi {:#leverage-dart-ffi}
 
 Para aprender como chamar uma função C usando a biblioteca `dart:ffi`,
 revise o [arquivo `hello.dart`][`hello.dart`].
@@ -190,7 +190,7 @@ Esta seção explica o conteúdo deste arquivo.
 Depois de entender o exemplo `hello_world`,
 consulte os [outros exemplos `dart:ffi`](#download-example-files).
 
-## Empacotar e carregar bibliotecas C
+## Empacotar e carregar bibliotecas C {:#bundle-and-load-c-libraries}
 
 O método para empacotar / distribuir e então
 carregar uma biblioteca C nativa depende da plataforma e tipo de biblioteca.
@@ -215,7 +215,7 @@ Alguns outros tipos nativos podem ser usados apenas como marcadores em assinatur
 
 [`NativeType`]: {{site.dart-api}}/dart-ffi/NativeType-class.html
 
-### Podem instanciar estes marcadores de assinatura de tipo
+### Podem instanciar estes marcadores de assinatura de tipo {:#can-instantiate-these-type-signature-markers}
 
 Os seguintes tipos nativos podem ser usados como marcadores em assinaturas de tipo.
 Eles ou seus subtipos _podem_ ser instanciados em código Dart.
@@ -234,7 +234,7 @@ Eles ou seus subtipos _podem_ ser instanciados em código Dart.
 [Struct]: {{site.dart-api}}/dart-ffi/Struct-class.html
 [Union]: {{site.dart-api}}/dart-ffi/Union-class.html
 
-### Servem apenas como marcadores de assinatura de tipo
+### Servem apenas como marcadores de assinatura de tipo {:#serve-as-type-signature-markers-only}
 
 A seguinte lista mostra quais tipos nativos agnósticos de plataforma
 servem como marcadores em assinaturas de tipo.
@@ -316,7 +316,7 @@ consulte a documentação da API vinculada na seguinte tabela.
 [UnsignedShort]: {{site.dart-api}}/dart-ffi/UnsignedShort-class.html
 [WChar]: {{site.dart-api}}/dart-ffi/WChar-class.html
 
-## Gerar bindings FFI com `package:ffigen`
+## Gerar bindings FFI com `package:ffigen` {:#generate-ffi-bindings-with-package-ffigen}
 
 Para superfícies de API grandes, pode ser demorado
 escrever os bindings Dart que integram com o código C.

@@ -20,7 +20,7 @@ Neste documento, mostramos como os
 converters do Dart funcionam e como você pode criar seus próprios converters eficientes
 que se encaixam no mundo Dart.
 
-## Visão geral
+## Visão geral {:#big-picture}
 
 A arquitetura de conversão do Dart é
 baseada em _converters_, que traduzem de uma representação para outra.
@@ -121,7 +121,7 @@ Provavelmente o caso de uso mais comum é a decodificação de UTF-8 com
 File.openRead().transform(utf8.decoder).
 ```
 
-## Conversão em chunks
+## Conversão em chunks {:#chunked-conversion}
 
 O conceito de conversões em chunks pode ser confuso, mas em sua essência, é
 relativamente simples. Quando uma conversão em chunks (incluindo uma
@@ -272,7 +272,7 @@ se deve aproveitar os métodos adicionais.
 Isso assegura que adicionar funcionalidade às interfaces de sink existentes não
 quebra os sinks estendidos._
 
-## Exemplo
+## Exemplo {:#example}
 
 Esta seção mostra todos os passos necessários para criar um converter de encriptação
 simples e como um ChunkedConversionSink personalizado pode melhorar o desempenho.
@@ -384,7 +384,7 @@ void main(List<String> args) {
 }
 ```
 
-### ChunkedConversionSinks Especializados
+### ChunkedConversionSinks Especializados {:#specialized-chunkedconversionsinks}
 
 Para muitos propósitos, a versão atual de Rot é suficiente. Ou seja, o
 benefício das melhorias seria superado pelo custo de código mais complexo
