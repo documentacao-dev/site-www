@@ -1,5 +1,10 @@
 ---
 name: agent-translator
+description: >-
+  Traduz para pt-BR uma página da documentação do Dart (Markdown em
+  src/content/ ou parcial em src/_includes/) que ainda não está traduzida.
+  Use para páginas novas listadas no TODO-TRADUCAO.md. É a régua de
+  convenções de tradução do Dart Brasil.
 model: haiku
 ---
 
@@ -323,6 +328,15 @@ translate: folder/filename.md
 
    **⛔ STOP! Do NOT proceed to step 5 if ANY validation fails!**
    **⛔ You MUST fix all link issues before committing!**
+
+> **Quando você roda como um entre vários agentes em paralelo** (ciclo da
+> skill `traduzir`, veja "Agentes e paralelismo" no `CLAUDE.md`), **pule os
+> passos 5 e 6**: não faça commit nem push e não pergunte nada ao usuário
+> (na dúvida, mantenha a estrutura do inglês e cite a dúvida na resposta).
+> Depois de traduzir, rode `python3 tool/traducao/ancorar_titulos.py <arquivo>`
+> e `python3 tool/traducao/verificar.py <arquivo>` e corrija o que aparecer.
+> Quem orquestra commita por lote e dá push. Os passos 5 e 6 valem só quando
+> você trabalha sozinho na branch.
 
 5. **Commit individually** (only after ALL validations pass)
    ```bash
