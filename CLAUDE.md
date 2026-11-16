@@ -88,9 +88,12 @@ importantes:
 
 O ciclo inteiro (sync, tradução, verificação, commit, PR, review, correção e
 auto-merge) está na skill `.claude/skills/traduzir/SKILL.md`. Rode `/traduzir`
-numa sessão local ou na web; o workflow `traducao-automatica.yml` roda a mesma
-skill toda segunda às 10h UTC e por disparo manual (Actions → Tradução
-automática, com os campos `paginas` e `sem_merge`).
+numa sessão local ou na web.
+
+O ciclo semanal roda por rotina agendada do Claude na nuvem, que executa a
+skill `traduzir`; o workflow traducao-automatica.yml fica para disparo manual.
+No disparo manual (Actions → Tradução automática, com os campos `paginas` e
+`sem_merge`), o workflow roda a mesma skill.
 
 No workflow, as etapas determinísticas rodam **sem Claude**, na fase
 `preparar`: detectar commits novos do upstream, páginas pendentes e
@@ -102,8 +105,8 @@ sincronizada, para traduzir, abrir o PR, revisar e ligar o merge.
   `revisar-traducao` em **Sonnet**, de contexto limpo, que só aponta.
 - Auto-merge só com `verificar.py` zerado e review sem problema grave; senão o
   PR fica com o label `precisa-humano`.
-- Precisa do secret `CLAUDE_CODE_OAUTH_TOKEN` (gerado com
-  `claude setup-token`) neste repositório.
+- O disparo manual do workflow precisa do secret `CLAUDE_CODE_OAUTH_TOKEN`
+  (gerado com `claude setup-token`) neste repositório; a rotina na nuvem não.
 - Os passos abaixo continuam valendo: a skill é a forma de executá-los.
 
 ## Regra principal: manter as traduções em dia com o upstream

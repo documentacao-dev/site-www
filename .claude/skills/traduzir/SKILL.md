@@ -7,8 +7,9 @@ description: >-
   review independente em Sonnet, correção em Haiku e auto-merge quando tudo fica
   verde. Use quando pedirem "traduzir", "sincronizar com o upstream", "rodar o
   sync", "atualizar a tradução", "o inglês mudou", "tem página defasada", ou
-  quando o workflow semanal traducao-automatica.yml chamar. Também serve para
-  traduzir só um conjunto de páginas: passe os caminhos como argumento.
+  quando a rotina semanal na nuvem ou o workflow traducao-automatica.yml
+  chamar. Também serve para traduzir só um conjunto de páginas: passe os
+  caminhos como argumento.
 ---
 
 # Ciclo de tradução do Dart Brasil
