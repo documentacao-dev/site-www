@@ -38,6 +38,11 @@ ERROS
 - dominio:      uso de domínios que não existem (ex.: api.dartbrasil.dev; a
                 documentação de API não é traduzida e fica em api.dart.dev).
                 Conferido em todo o site, não só nas páginas marcadas.
+- analytics:    rastreamento herdado do upstream no código do site (site/,
+                sites/, packages/, web/): Google Tag Manager, Google
+                Analytics, gtag, banner de cookies do Google ou verificação
+                do Search Console de dart.dev/flutter.dev. Foi removido do
+                fork e não pode voltar num sync.
 - workflow:     os jobs de build/links (.github/workflows/build.yml) e de
                 checagem (.github/workflows/test.yml) precisam rodar neste
                 repo. Se um sync trouxer um `if: github.repository ==
@@ -91,6 +96,25 @@ DEFS_LINK = re.compile(r'^\s*\[[^\]]+\]:\s', re.M)
 DOMINIOS_INEXISTENTES = re.compile(
     r'(?<![\w.-])(?:main-)?api\.flutterbrasil\.dev|(?<![\w.-])api\.dartbrasil\.dev')
 PASTAS_DOMINIO = ['src', 'site/lib', 'tool/config', '.github', 'README.md']
+
+# Analytics e consentimento herdados do upstream (dart.dev/flutter.dev): os
+# visitantes do fork virariam dados nas contas do Google do projeto original.
+ANALYTICS_UPSTREAM = ('googletagmanager', 'GTM-', 'google-analytics.com',
+                      'gtag(', 'UA-26406144', 'cookienotificationbar',
+                      'google-site-verification')
+PASTAS_ANALYTICS = ('site', 'sites', 'packages', 'web')
+
+
+def analytics_no_codigo():
+    """Linhas `arquivo:linha:texto` do código do site com analytics do upstream."""
+    pastas = [d for d in PASTAS_ANALYTICS if (ROOT / d).is_dir()]
+    if not pastas:
+        return []
+    args = ['grep', '-nIF']
+    for termo in ANALYTICS_UPSTREAM:
+        args += ['-e', termo]
+    return (git(*args, '--', *pastas) or '').splitlines()
+
 
 # Palavras-função para estimar o idioma da prosa.
 EN = set('the and of to is are you your this that with for in it be can when '
@@ -374,6 +398,16 @@ def main():
             print('✗ domínios inexistentes')
             for l in achados[:20]:
                 print(f'    erro  [dominio] {l[:140]}')
+            total_erros += 1
+
+    if not a.arquivos:
+        achados = analytics_no_codigo()
+        if achados:
+            print('✗ analytics do upstream no código do site')
+            for l in achados[:20]:
+                print(f'    erro  [analytics] {l[:140]}')
+            print('    É rastreamento do site original (dart.dev/flutter.dev) que '
+                  'voltou com o sync: remova no PR de sync (veja CLAUDE.md).')
             total_erros += 1
 
     if not a.arquivos:

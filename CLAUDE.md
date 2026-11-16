@@ -159,6 +159,15 @@ Em toda sincronização com o upstream:
 Nunca resolva um conflito trocando a página pela versão em inglês e mantendo
 `ia-translate: true`, nem descartando o texto novo do upstream.
 
+**Analytics do upstream não volta.** O fork removeu o rastreamento do site
+original (Google Tag Manager, Google Analytics/gtag, banner de cookies do
+Google em `gstatic.com/glue/cookienotificationbar` e a meta
+`google-site-verification`), que mandaria os dados dos visitantes para as
+contas do Google do projeto original. Se um sync trouxer algum desses de volta
+(em `site/`, `sites/`, `packages/` ou `web/`), o `verificar.py` dá o erro
+`analytics`: remova o trecho no próprio PR de sync, mantendo atribuição e
+licença.
+
 ## Scripts de `tool/traducao/`
 
 | Script | Para quê |
@@ -206,6 +215,12 @@ O `verificar.py` acusa como **erro**:
   documentação de API não é traduzida: use `api.dart.dev`;
 - `workflow`: job de `build.yml` ou `test.yml` preso por `if:` a outro
   repositório (o build e os links precisam rodar aqui).
+
+- `analytics`: rastreamento herdado do upstream no código do site
+  (`googletagmanager`, `GTM-`, `google-analytics.com`, `gtag(`,
+  `UA-26406144`, `cookienotificationbar`, `google-site-verification` em
+  `site/`, `sites/`, `packages/` ou `web/`). Remova no PR de sync (veja a regra
+  principal).
 
 E como **aviso** (não falha, a menos que use `--estrito`): `parcial` (30% a
 70% da prosa em inglês) e `defs-link` (número de definições de link diferente
