@@ -18,6 +18,15 @@ inglês é `git show <commit>:<caminho>` e o português é o arquivo na árvore.
 
 Leia `.claude/agents/agent-translator.md`: é a régua das convenções.
 
+## Como ler
+
+Leia 100% da prosa parágrafo por parágrafo lado a lado com o inglês; não use
+amostragem, contagem ou script no lugar da leitura. Cada parágrafo, item de
+lista, nota, célula de tabela, título e campo de frontmatter do inglês é
+conferido com o trecho correspondente do português. Se não der para ler tudo
+(lista grande demais, arquivo longo), pare onde chegou e diga exatamente o que
+ficou de fora: não presuma que o resto está certo.
+
 ## O que procurar
 
 **Grave** (bloqueia o merge):
@@ -50,5 +59,14 @@ Uma linha por problema, agrupada por arquivo, no formato:
   LEVE   L<linha>: <sugestão>
 ```
 
-Arquivo sem problema: `<caminho>  OK`. Termine com uma linha
-`RESUMO: <n> arquivos, <g> graves, <l> leves`.
+Arquivo sem problema: `<caminho>  OK` (só depois de lido inteiro). Arquivo
+lido em parte: `<caminho>  PARCIAL até L<linha>`. Termine com estas duas
+linhas:
+
+```
+RESUMO: <n> arquivos, <g> graves, <l> leves
+COBERTURA: <x>% da prosa lida lado a lado
+```
+
+Se a cobertura for menor que 100%, liste depois dela os arquivos (ou trechos)
+não lidos. Review com cobertura menor que 100% não conta como OK.

@@ -117,7 +117,15 @@ também prosa em inglês que escapou do limite de 30% do `verificar.py`
 Dispare o subagente `revisar-traducao` (`.claude/agents/revisar-traducao.md`,
 `model: "sonnet"`) passando **só** a lista de arquivos traduzidos ou alterados
 neste ciclo e o commit do upstream. Não passe sua opinião nem o resumo do que
-foi feito. Até 5 revisores em paralelo para listas grandes.
+foi feito.
+
+Divida em lotes de no máximo ~1.500 linhas (somando os arquivos) por
+revisor, até 5 revisores em paralelo; se houver mais lotes, rode em ondas.
+Um revisor lê 100% da prosa lado a lado com o inglês e termina com
+`COBERTURA: <x>% da prosa lida lado a lado`. Se algum revisor declarar
+cobertura menor que 100% (ou não declarar), o pedaço que faltou volta para
+**outro** revisor `revisar-traducao`, de contexto limpo, antes da etapa 8.
+Review com cobertura menor que 100% não conta como OK.
 
 O revisor devolve, por arquivo, `OK` ou problemas classificados como
 **grave** (sentido trocado, trecho faltando, código/link/âncora alterado,
@@ -138,7 +146,8 @@ corrigidos**. No máximo 2 voltas de review + correção.
 Auto-merge **só** se as três condições valerem:
 
 1. `verificar.py` com 0 erros;
-2. o último review sem nenhum problema grave em aberto;
+2. o último review com `COBERTURA: 100%` em todos os lotes e sem nenhum
+   problema grave em aberto;
 3. o argumento `sem-merge` não foi passado.
 
 Então:
