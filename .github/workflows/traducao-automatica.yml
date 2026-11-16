@@ -1,5 +1,9 @@
 name: Tradução automática
 
+# Só disparo manual (Actions → Tradução automática). O ciclo semanal roda por
+# rotina agendada do Claude na nuvem (claude.ai/code/routines), que executa a
+# skill `traduzir` direto e não usa este workflow nem o secret abaixo.
+#
 # Duas fases:
 #
 # 1. preparar (sem Claude, custo zero): detecta se o upstream andou ou se há
@@ -10,13 +14,10 @@ name: Tradução automática
 #    com a skill `traduzir` (tradução em Haiku, PR, review em Sonnet, correção
 #    e auto-merge). Sem páginas para traduzir, só abre o PR e liga o merge.
 #
-# Precisa do secret CLAUDE_CODE_OAUTH_TOKEN (gerado com `claude setup-token`)
-# e do app do Claude instalado na org documentacao-dev.
+# O disparo manual precisa do secret CLAUDE_CODE_OAUTH_TOKEN (gerado com
+# `claude setup-token`) e do app do Claude instalado na org documentacao-dev.
 
 on:
-  schedule:
-    # Toda segunda às 10h UTC (7h em Brasília), uma hora depois do Flutter Brasil.
-    - cron: '0 10 * * 1'
   workflow_dispatch:
     inputs:
       paginas:
