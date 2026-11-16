@@ -161,30 +161,10 @@ abstract class DashLayout extends PageLayoutBase {
             '24,400,0..1,0',
       ),
 
-      // Load the managed cookie banner styles before our theme overrides.
-      const link(
-        rel: 'stylesheet',
-        href:
-            'https://www.gstatic.com/glue/cookienotificationbar/'
-            'cookienotificationbar.min.css',
-      ),
       link(
         rel: 'stylesheet',
         href: cacheBustedBuildAssetUrl('/assets/css/main.css'),
       ),
-      // The upstream cookie script manages
-      // regional visibility and dismissal persistence.
-      const script(
-        src:
-            'https://www.gstatic.com/glue/cookienotificationbar/'
-            'cookienotificationbar.min.js',
-        attributes: {
-          'defer': '',
-          'data-glue-cookie-notification-bar-category': '2B',
-          'data-glue-cookie-notification-bar-site-id': 'dart.dev',
-        },
-      ),
-
       if (pageData['js'] case final List<Object?> jsList)
         for (final js in jsList)
           if (js case {'url': final String jsUrl, 'defer': final Object? defer})
