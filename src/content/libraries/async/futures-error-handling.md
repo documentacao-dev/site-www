@@ -25,7 +25,7 @@ Para mais informações, veja o
 :::
 
 
-## A API Future e callbacks
+## A API Future e callbacks {:#the-future-api-and-callbacks}
 
 Funções que usam a API Future registram callbacks que lidam
 com o valor (ou o erro) que completa um Future. Por exemplo:
@@ -46,7 +46,7 @@ o callback de `catchError()` não dispara. Por outro lado, se `myFunc()`
 completa com um erro, o callback de `then()` não dispara, e
 o callback de `catchError()` dispara.
 
-## Exemplos de uso de then() com catchError()
+## Exemplos de uso de then() com catchError() {:#examples-of-using-then-with-catcherror}
 
 Invocações encadeadas de `then()` e `catchError()` são um padrão comum ao
 lidar com Futures, e podem ser pensadas como o equivalente aproximado de
@@ -54,7 +54,7 @@ blocos try-catch.
 
 As próximas seções dão exemplos deste padrão.
 
-### catchError() como um handler de erros abrangente
+### catchError() como um handler de erros abrangente {:#catcherror-as-a-comprehensive-error-handler}
 
 O exemplo a seguir lida com o lançamento de uma exceção de dentro do
 callback de `then()` e demonstra a versatilidade de `catchError()` como um handler de erros:
@@ -81,7 +81,7 @@ com esse erro. O erro também é tratado por `catchError()`.
 Independentemente de o erro ter se originado dentro de `myFunc()` ou dentro de
 `then()`, `catchError()` o trata com sucesso.
 
-### Tratamento de erros dentro de then()
+### Tratamento de erros dentro de then() {:#error-handling-within-then}
 
 Para tratamento de erros mais granular, você pode registrar um segundo callback (`onError`)
 dentro de `then()` para lidar com Futures completados com erros. Aqui está
@@ -117,7 +117,7 @@ Em geral, implementar duas estratégias diferentes de tratamento de erros não �
 recomendado: registre um segundo callback apenas se houver uma razão convincente
 para capturar o erro dentro de `then()`.
 
-### Erros no meio de uma cadeia longa
+### Erros no meio de uma cadeia longa {:#errors-in-the-middle-of-a-long-chain}
 
 É comum ter uma sucessão de chamadas `then()`, e capturar erros
 gerados de qualquer parte da cadeia usando `catchError()`:
@@ -157,7 +157,7 @@ isso significa que após `two()` ser chamado, o Future retornado por cada
 `then()` subsequente completa com o erro de `two()`. Esse erro é finalmente
 tratado dentro de `catchError()`.
 
-### Lidando com erros específicos
+### Lidando com erros específicos {:#handling-specific-errors}
 
 E se quisermos capturar um erro específico? Ou capturar mais de um erro?
 
@@ -188,7 +188,7 @@ void main() {
 }
 ```
 
-## Try-catch-finally assíncrono usando whenComplete()
+## Try-catch-finally assíncrono usando whenComplete() {:#async-try-catch-finally-using-whencomplete}
 
 Se `then().catchError()` espelha um try-catch, `whenComplete()` é o
 equivalente de 'finally'. O callback registrado dentro de `whenComplete()` é
@@ -209,7 +209,7 @@ Queremos chamar `server.close` independentemente de `server.post()` produzir
 uma resposta válida, ou um erro. Garantimos que isso aconteça colocando-o dentro
 de `whenComplete()`.
 
-### Completando o Future retornado por whenComplete()
+### Completando o Future retornado por whenComplete() {:#completing-the-future-returned-by-whencomplete}
 
 Se nenhum erro é emitido de dentro de `whenComplete()`, seu Future completa
 da mesma maneira que o Future em que `whenComplete()` é invocado. Isso é
@@ -252,7 +252,7 @@ void main() {
 }
 ```
 
-### Erros originados dentro de whenComplete()
+### Erros originados dentro de whenComplete() {:#errors-originating-within-whencomplete}
 
 Se o callback de `whenComplete()` lança um erro, então o Future de
 `whenComplete()` completa com esse erro:
@@ -271,7 +271,7 @@ void main() {
 ```
 
 
-## Problema potencial: falha ao registrar handlers de erro cedo
+## Problema potencial: falha ao registrar handlers de erro cedo {:#potential-problem-failing-to-register-error-handlers-early}
 
 É crucial que handlers de erro sejam instalados antes de um Future completar:
 isso evita cenários onde um Future completa com um erro, o
@@ -307,7 +307,7 @@ void main() {
 }
 ```
 
-## Problema potencial: misturando acidentalmente erros síncronos e assíncronos
+## Problema potencial: misturando acidentalmente erros síncronos e assíncronos {:#potential-problem-accidentally-mixing-synchronous-and-asynchronous-errors}
 
 Funções que retornam Futures devem quase sempre emitir seus erros no
 futuro. Como não queremos que o chamador de tais funções tenha que
@@ -355,7 +355,7 @@ Como usar `catchError()` não captura o erro, um cliente de
 `parseAndRead()` implementaria uma estratégia separada de tratamento de erros para este
 erro.
 
-### Solução: Usando Future.sync() para envolver seu código
+### Solução: Usando Future.sync() para envolver seu código {:#solution-using-future-sync-to-wrap-your-code}
 
 Um padrão comum para garantir que nenhum erro síncrono seja acidentalmente
 lançado de uma função é envolver o corpo da função dentro de um novo callback `Future.sync()`:
@@ -414,7 +414,7 @@ Future fragileFunc() {
 também previne que erros *acidentalmente* vazem para fora de sua função.
 
 
-## Mais informações
+## Mais informações {:#more-information}
 
 Veja a [referência da API Future][Future class]
 para mais informações sobre Futures.

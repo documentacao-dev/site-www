@@ -27,7 +27,7 @@ import 'dart:convert';
 ```
 
 
-## Decodificando e codificando JSON
+## Decodificando e codificando JSON {:#decoding-and-encoding-json}
 
 Decodifique uma string codificada em JSON para um objeto Dart com `jsonDecode()`:
 
@@ -85,7 +85,7 @@ Para mais exemplos e links para pacotes relacionados a JSON, veja
 [Usando JSON](/libraries/serialization/json).
 
 
-## Decodificando e codificando caracteres UTF-8
+## Decodificando e codificando caracteres UTF-8 {:#decoding-and-encoding-utf-8-characters}
 
 Use `utf8.decode()` para decodificar bytes codificados em UTF8 para uma string Dart:
 
@@ -133,7 +133,7 @@ for (int i = 0; i < encoded.length; i++) {
 ```
 
 
-## Outras funcionalidades
+## Outras funcionalidades {:#other-functionality}
 
 A biblioteca dart:convert também possui conversores para ASCII e ISO-8859-1
 (Latin1). Para mais detalhes, veja a [referência da API para a biblioteca dart:convert.][dart:convert]

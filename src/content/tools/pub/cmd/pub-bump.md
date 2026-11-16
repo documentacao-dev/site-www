@@ -28,7 +28,7 @@ $ dart pub bump minor
   Remember to update `CHANGELOG.md` before publishing.
 ```
 
-## Opções
+## Opções {:#options}
 
 Para opções que se aplicam a todos os comandos pub, veja
 [Opções globais](/tools/pub/cmd#global-options).

@@ -14,7 +14,7 @@ nextpage:
 Esta página contém informações de referência para
 [modificadores de classe](/language/class-modifiers).
 
-## Combinações válidas
+## Combinações válidas {:#valid-combinations}
 
 As combinações válidas de modificadores de classe e suas capacidades resultantes são:
 
@@ -44,7 +44,7 @@ As combinações válidas de modificadores de classe e suas capacidades resultan
 [Mix in]: /language/mixins
 [Exhaustive]: /language/branches#exhaustiveness-checking
 
-## Combinações inválidas
+## Combinações inválidas {:#invalid-combinations}
 
 Certas [combinações][combinations] de modificadores não são permitidas:
 

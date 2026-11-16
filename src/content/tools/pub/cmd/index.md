@@ -39,13 +39,13 @@ Se você encontrar problemas ao usar a ferramenta pub,
 veja [Troubleshooting Pub](/tools/pub/troubleshoot).
 
 
-## Lista de subcomandos
+## Lista de subcomandos {:#list-of-subcommands}
 
 Documentação detalhada existe para cada um dos seguintes subcomandos do pub:
 
 {% render 'pub-subcommands.md' %}
 
-## Visão geral dos subcomandos
+## Visão geral dos subcomandos {:#overview-of-subcommands}
 
 Os subcomandos do Pub se enquadram nas seguintes categorias:
 
@@ -116,7 +116,7 @@ Para executar scripts globalmente disponíveis, você deve
 
 Com o pub você pode publicar pacotes e apps de linha de comando.
 
-#### Pacotes
+#### Pacotes {:#packages}
 
 Para compartilhar seus pacotes Dart com o mundo, você pode
 usar o subcomando [`publish`](/tools/pub/cmd/pub-lish) para fazer upload do
@@ -126,7 +126,7 @@ modifiquem e façam upload de novas versões do seu pacote,
 veja [Uploaders](/tools/pub/publishing#uploaders).
 
 
-#### Apps de linha de comando
+#### Apps de linha de comando {:#command-line-apps}
 
 Para qualquer pacote que contenha scripts (qualquer coisa sob o diretório `bin/`),
 considere adicionar a tag `executables` ao arquivo pubspec.
@@ -140,7 +140,7 @@ para torná-lo diretamente disponível na linha de comando.
 Várias opções de linha de comando funcionam com todos os subcomandos do pub.
 Estas incluem:
 
-### `--help` ou `-h`
+### `--help` ou `-h` {:#help-or-h}
 
 Imprime informações de uso.
 
@@ -148,11 +148,11 @@ Imprime informações de uso.
 
 Imprime informações de depuração quando ocorre um erro.
 
-### `--verbose` ou `-v`
+### `--verbose` ou `-v` {:#verbose-or-v}
 
 Equivalente a `--verbosity=all`.
 
-### `--directory=<dir>` ou `-C <dir>`
+### `--directory=<dir>` ou `-C <dir>` {:#directorydir-or-c-dir}
 
 Executa o comando no diretório especificado.
 

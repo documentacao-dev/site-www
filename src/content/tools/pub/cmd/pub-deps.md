@@ -45,12 +45,12 @@ markdown_converter 0.0.0
 '-- markdown 0.7.2
 ```
 
-## Opções
+## Opções {:#options}
 
 Para opções que se aplicam a todos os comandos pub, veja
 [Opções globais](/tools/pub/cmd#global-options).
 
-### `--style=<style>` ou `-s <style>`
+### `--style=<style>` ou `-s <style>` {:#stylestyle-or-s-style}
 
 O estilo especificado determina o formato de saída:
 
@@ -81,7 +81,7 @@ Gera saída no formato JSON.
 
 {% render 'pub-problems.md' %}
 
-## Em um workspace
+## Em um workspace {:#in-a-workspace}
 
 Em um [Pub workspace](/tools/pub/workspaces) `dart pub deps` listará
 dependências para todos os pacotes no workspace, um pacote de workspace por vez.

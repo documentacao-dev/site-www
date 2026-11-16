@@ -11,12 +11,12 @@ O suporte para `dart install` foi introduzido no Dart 3.10.
 O comando `dart install` instala ferramentas CLI Dart para uso global.
 É uma alternativa mais recente ao `dart pub global activate`.
 
-## Instalar um pacote
+## Instalar um pacote {:#install-a-package}
 
 Existem algumas maneiras de instalar um pacote. Para saber mais,
 consulte as seções a seguir.
 
-### Instalar um pacote geral
+### Instalar um pacote geral {:#install-a-general-package}
 
 O seguinte comando instala todos os executáveis especificados na
 seção [executables][] do `pubspec.yaml` de um pacote no
@@ -32,7 +32,7 @@ Por exemplo:
 $ dart install markdown
 ```
 
-### Instalar um pacote do pub.dev
+### Instalar um pacote do pub.dev {:#install-a-pub-dev-package}
 
 O seguinte comando especifica um pacote no site pub.dev
 para instalar.
@@ -47,7 +47,7 @@ Por exemplo:
 $ dart install markdown
 ```
 
-### Instalar um pacote Git
+### Instalar um pacote Git {:#install-a-git-package}
 
 Os seguintes comandos podem ser usados para instalar um pacote
 em um repositório Git.
@@ -82,7 +82,7 @@ $ dart install \
   --git-ref 36f98e900347335af2338a0e087538009b7de2f9
 ```
 
-## Referência de comandos
+## Referência de comandos {:#command-reference}
 
 Os seguintes comandos são úteis para instalar,
 desinstalar e verificar o estado de instalação de uma
@@ -132,7 +132,7 @@ Verificar quais pacotes estão instalados
 $ dart installed
 ```
 
-## Opções para o comando dart install
+## Opções para o comando dart install {:#options-for-the-dart-install-command}
 
 Essas opções podem ser usadas para o comando `dart install`.
 Para opções que se aplicam a todos os comandos pub, consulte

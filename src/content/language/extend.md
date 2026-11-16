@@ -37,7 +37,7 @@ class SmartTelevision [!extends!] Television {
 Para outro uso de `extends`, veja a discussão sobre
 [tipos parametrizados][parameterized types] na página de Generics.
 
-## Sobrescrevendo membros
+## Sobrescrevendo membros {:#overriding-members}
 
 Subclasses podem sobrescrever métodos de instância (incluindo [operadores][operators]),
 getters e setters.

@@ -386,7 +386,7 @@ compilador de Dart para JavaScript.
 
 {% render 'tools/dart-compile-js-options.md', site: site %}
 
-#### Exemplo de compilação de aplicação web {:#compiling-web-app-example}
+#### Exemplo de compilação de aplicação web {:#compile-a-web-app}
 
 Por exemplo, para compilar uma aplicação Dart para JavaScript otimizado, execute
 o seguinte comando:

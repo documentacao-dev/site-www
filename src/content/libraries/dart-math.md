@@ -26,7 +26,7 @@ import 'dart:math';
 ```
 
 
-## Trigonometria
+## Trigonometria {:#trigonometry}
 
 A biblioteca Math fornece funções trigonométricas básicas:
 
@@ -49,7 +49,7 @@ Essas funções usam radianos, não graus!
 :::
 
 
-## Máximo e mínimo
+## Máximo e mínimo {:#maximum-and-minimum}
 
 A biblioteca Math fornece os métodos `max()` e `min()`:
 
@@ -60,7 +60,7 @@ assert(min(1, -1000) == -1000);
 ```
 
 
-## Constantes matemáticas
+## Constantes matemáticas {:#math-constants}
 
 Encontre suas constantes favoritas—*pi*, *e*, e mais—na biblioteca Math:
 
@@ -73,7 +73,7 @@ print(sqrt2); // 1.4142135623730951
 ```
 
 
-## Números aleatórios
+## Números aleatórios {:#random-numbers}
 
 Gere números aleatórios com a classe [Random][]. Você pode
 opcionalmente fornecer uma seed para o construtor Random.
@@ -100,7 +100,7 @@ Para criar um gerador de números aleatórios criptograficamente seguro,
 use o construtor [`Random.secure()`][].
 :::
 
-## Mais informações
+## Mais informações {:#more-information}
 
 Consulte a [referência da API Math][dart:math] para uma lista completa de métodos.
 Veja também a referência da API para [num,][num] [int,][int] e [double.][double]

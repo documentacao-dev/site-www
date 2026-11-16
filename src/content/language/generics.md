@@ -18,7 +18,7 @@ tipo é na verdade `List<E>`. A notação \<...\> marca List como um
 tipo *genérico* (ou *parametrizado*)—um tipo que possui parâmetros de tipo formais. [Por convenção][], a maioria das variáveis de tipo têm nomes de uma única letra,
 como E, T, S, K e V.
 
-## Por que usar generics?
+## Por que usar generics? {:#why-use-generics}
 
 Generics são frequentemente necessários para segurança de tipo, mas eles têm mais benefícios
 do que apenas permitir que seu código execute:
@@ -79,7 +79,7 @@ Neste código, T é o tipo substituto. É um placeholder que você pode
 pensar como um tipo que um desenvolvedor definirá mais tarde.
 
 
-## Usando literais de coleção
+## Usando literais de coleção {:#using-collection-literals}
 
 Literais de list, set e map podem ser parametrizados. Literais parametrizados são
 exatamente como os literais que você já viu, exceto que você adiciona
@@ -99,7 +99,7 @@ var pages = <String, String>{
 ```
 
 
-## Usando tipos parametrizados com construtores
+## Usando tipos parametrizados com construtores {:#using-parameterized-types-with-constructors}
 
 Para especificar um ou mais tipos ao usar um construtor, coloque os tipos em
 colchetes angulares (`<...>`) logo após o nome da classe. Por exemplo:
@@ -118,7 +118,7 @@ var views = SplayTreeMap<int, View>();
 ```
 
 
-## Coleções genéricas e os tipos que elas contêm
+## Coleções genéricas e os tipos que elas contêm {:#generic-collections-and-the-types-they-contain}
 
 Tipos genéricos Dart são *reificados*, o que significa que eles carregam suas informações de tipo
 em tempo de execução. Por exemplo, você pode testar o tipo de uma

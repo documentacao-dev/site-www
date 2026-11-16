@@ -170,7 +170,7 @@ anexe-os a uma declaração `library` no início do arquivo.
 library;
 ```
 
-## Implementando bibliotecas
+## Implementando bibliotecas {:#implementing-libraries}
 
 Veja
 [Criar Pacotes](/tools/pub/create-packages)
