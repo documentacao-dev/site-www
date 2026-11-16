@@ -5,7 +5,6 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
-import '../../../analytics/analytics.dart';
 import '../button.dart';
 
 /// Provides the user options to provide feedback on the specified page.
@@ -30,7 +29,6 @@ final class _FeedbackComponentState extends State<FeedbackComponent> {
           ? _FeedbackState.helpful
           : _FeedbackState.unhelpful,
     );
-    analytics.sendFeedback(helpful);
   }
 
   @override
