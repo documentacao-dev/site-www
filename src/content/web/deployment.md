@@ -120,11 +120,6 @@ Dependendo da sua estratégia de deploy, trate os source maps de uma das duas fo
   $ find build -type f \( -name "*.js.map" -o -name "*.wasm.map" \) -exec rm {} +
   ```
 
-## Sirva sua aplicação {:#serving-your-app}
-
-Você pode hospedar sua aplicação web Dart compilada em qualquer host web estático ou
-CDN, como GitHub Pages ou Firebase Hosting.
-
 ## Sirva WebAssembly em produção {:#serving-wasm-in-production}
 
 Ao fazer deploy de uma aplicação Dart compilada com `dart compile wasm`, configure seu
@@ -238,6 +233,11 @@ ou Phase 4 Exception Handling, forneça um fallback em JavaScript:
    bootApp();
    ```
 
+## Sirva sua aplicação {:#serving-your-app}
+
+Você pode hospedar sua aplicação web Dart compilada em qualquer host web estático ou
+CDN, como GitHub Pages ou Firebase Hosting.
+
 ### GitHub Pages {:#github-pages}
 
 Se sua aplicação não usa roteamento do lado do servidor, você pode servi-la usando o
@@ -251,6 +251,7 @@ Seus arquivos estão na branch `gh-pages` do
 e foram gerados com o [peanut][].
 
 ### Firebase {:#firebase}
+
 {% comment %}
 TODO: Give an example of how to deploy with Firebase, which originally was shown on https://dart.academy/build-a-real-time-chat-web-app-with-dart-angular-2-and-firebase-3/
 {% endcomment %}
@@ -262,7 +263,7 @@ Para saber mais sobre deploy com Firebase, consulte os seguintes recursos:
 * Na documentação do Firebase Hosting,
   [Configure Hosting Behavior][firebase-config]
   aborda cabeçalhos personalizados (como `Content-Type` e `Cache-Control`),
-  redirecionamentos, reescritas e mais.
+  redirecionamentos e reescritas.
 
 [wasm]: /web/wasm
 [profile-wasm]: /web/wasm#profile-wasm

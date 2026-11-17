@@ -297,7 +297,7 @@ e [`package:web`](/interop/js-interop/package-web).
 **Saiba mais:** [documentação de JS interop](/interop/js-interop) e
 [Migrando para o package:web](/interop/js-interop/package-web)
 
-## Atualizações do core e do runtime {:#core-engine-and-runtime-updates}
+## Atualizações do engine e do runtime {:#core-engine-and-runtime-updates}
 
 ### Comparações rápidas de intervalos em `dart:typed_data` {:#fast-range-comparisons-in-dart-typed_data}
 
@@ -326,7 +326,7 @@ void main() {
 
 Por baixo dos panos, o `rangeEquals` é traduzido para `memcmp` na Dart VM,
 para acessos diretos a arrays Wasm no `dart2wasm` (com chunks de 32 bits para `ByteData`)
-e para loops de typed arrays otimizados no JS,
+e para loops enxutos sobre typed arrays no JS,
 oferecendo comparações rápidas e sem alocação em todos os targets.
 
 **Saiba mais:** [documentação da biblioteca `dart:typed_data`](https://api.dart.dev/dart-typed_data/)
@@ -362,7 +362,7 @@ Fique de olho para saber mais sobre elas em uma versão futura!
 ### Um processo estruturado de RFC para o Dart {:#a-structured-rfc-process-for-dart}
 
 Contribuidores da comunidade têm um papel importante em todo release do Dart,
-incluindo as melhorias independentes de WebAssembly e de SIMD em hardware
+incluindo as melhorias do WebAssembly standalone e do SIMD em hardware
 presentes no Dart 3.14.
 À medida que o ecossistema Dart continua crescendo,
 queremos facilitar ainda mais o acompanhamento e a contribuição

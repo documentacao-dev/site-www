@@ -22,8 +22,8 @@ e [interoperabilidade para chamar JavaScript][interop] a partir do Dart.
 Você também pode combinar a web do Dart com um framework de nível mais alto.
 Dá para criar apps multiplataforma para web, mobile e desktop usando o
 [Flutter][] e o [Flutter web][], ou usar o [Jaspr][] para criar sites baseados
-em HTML. A plataforma web do Dart dá suporte ao Flutter web, ao Jaspr
-e a outros frameworks web do Dart.
+em HTML. A plataforma web do Dart é a base do Flutter web, do Jaspr
+e de outros frameworks web do Dart.
 
 <div class="side-by-side">
 <div class="centered-rows">

@@ -356,14 +356,14 @@ Para obter todos os benefícios de inicialização e de runtime do WebAssembly e
 produção, configure seu servidor web e seu pipeline de release para transmitir,
 comprimir e armazenar em cache os módulos `.wasm`, além de fornecer um fallback em
 JavaScript para navegadores mais antigos. Consulte
-[Serve WebAssembly em produção][serving-wasm] no guia de deploy para a web e veja
+[Sirva WebAssembly em produção][serving-wasm] no guia de deploy para a web e veja
 as instruções completas para as tarefas a seguir:
 
 * Servir os arquivos `.wasm` com o cabeçalho `Content-Type: application/wasm`.
 * Pré-carregar os assets `.mjs` e `.wasm` em paralelo para a compilação em streaming.
 * Pré-comprimir os binários `.wasm` com Brotli (`brotli -q 11`) e Gzip.
 * Configurar cache imutável com hash de conteúdo, deploys atômicos de `.mjs` e
-  `.wasm` e cache de código Wasm da V8.
+  `.wasm` e cache de código Wasm do V8.
 * Fornecer um caminho de fallback com `dart2js` para navegadores mais antigos.
 
 [wasm-org]: https://webassembly.org/

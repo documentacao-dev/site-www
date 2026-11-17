@@ -39,8 +39,8 @@ tenha em mente estas práticas de interoperabilidade e desempenho:
   * **Use `dart:js_interop` e `package:web`**:
     as bibliotecas web e de interop legadas e descontinuadas (`dart:html`, `dart:js`,
     `dart:js_util` e `package:js`) não têm suporte nos alvos Wasm.
-  * **Minimize chamadas frequentes entre a fronteira Wasm e JS**:
-    em código sensível a desempenho ou em loops apertados, mantenha o cálculo no Dart
+  * **Minimize chamadas de alta frequência entre a fronteira Wasm e JS**:
+    em código sensível a desempenho ou em loops críticos, mantenha o cálculo no Dart
     ou agrupe os valores, em vez de fazer chamadas de interop repetidas a cada iteração.
   * **Encontre pacotes compatíveis com Wasm**:
     use o filtro [`wasm-ready`][] no [pub.dev][] para verificar se os pacotes usam
