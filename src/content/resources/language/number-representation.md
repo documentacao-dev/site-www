@@ -1,25 +1,23 @@
 ---
 ia-translate: true
-title: Numbers in Dart
-breadcrumb: Numbers
+title: Números no Dart
+breadcrumb: Números
 description: >-
-  Learn how Dart numbers are slightly different on the web,
-  when that might matter, and how you might adjust your code.
+  Saiba como os números do Dart são um pouco diferentes na web,
+  quando isso pode importar e como você pode ajustar seu código.
 ---
 
-<!-- ia-translate: true -->
-
-Aplicações Dart frequentemente têm como alvo múltiplas plataformas.
-Por exemplo, uma aplicação Flutter pode ter como alvo iOS, Android e a web.
+Apps Dart frequentemente têm como alvo múltiplas plataformas.
+Por exemplo, um app Flutter pode ter como alvo iOS, Android e a web.
 O código pode ser o mesmo,
-desde que a aplicação não dependa de bibliotecas específicas da plataforma
+desde que o app não dependa de bibliotecas específicas da plataforma
 ou use números de uma forma que é dependente da plataforma.
 
 Esta página tem detalhes sobre as diferenças
 entre implementações de números nativas e web,
 e como escrever código para que essas diferenças não importem.
 
-:::secondary Number implementations in Dart and other languages
+:::secondary Implementações de números no Dart e em outras linguagens
 Dart sempre permitiu representações específicas da plataforma
 e semântica para números, por razões de
 performance, tamanho de código e interoperabilidade com a plataforma.
@@ -34,7 +32,7 @@ mas essa restrição foi afrouxada quase imediatamente por razões de eficiênci
 :::
 
 
-## Dart number representation
+## Representação numérica no Dart {:#dart-number-representation}
 
 No Dart, todos os números são parte da hierarquia de tipo comum `Object`,
 e existem dois tipos numéricos concretos e visíveis ao usuário:
@@ -48,7 +46,7 @@ Dependendo da plataforma,
 esses tipos numéricos têm implementações diferentes e ocultas.
 Em particular, Dart tem dois tipos muito diferentes de alvos para os quais compila:
 
-* **Native:** Na maioria das vezes, um processador móvel ou desktop de 64 bits.
+* **Nativo:** Na maioria das vezes, um processador móvel ou desktop de 64 bits.
 * **Web:** JavaScript como o motor de execução principal.
 
 A tabela a seguir mostra como os números Dart são geralmente implementados:
@@ -56,9 +54,9 @@ A tabela a seguir mostra como os números Dart são geralmente implementados:
 <div class="table-wrapper">
   <table class="table table-striped nowrap">
     <tr>
-      <th>Representation</th>
-      <th>Native <code>int</code></th>
-      <th>Native <code>double</code></th>
+      <th>Representação</th>
+      <th>Nativo <code>int</code></th>
+      <th>Nativo <code>double</code></th>
       <th>Web <code>int</code></th>
       <th>Web <code>double</code></th>
     </tr>
@@ -99,7 +97,7 @@ diferentes e entrelaçados.
 A figura a seguir ilustra os tipos específicos da plataforma (em azul)
 para alvos nativos e web.
 Como a figura mostra,
-o tipo concreto para `int` em nativo implementa apenas a interface `int`.
+o tipo concreto para `int` em plataformas nativas implementa apenas a interface `int`.
 No entanto, o tipo concreto para `int` na web implementa
 tanto `int` quanto `double`.
 
@@ -124,7 +122,7 @@ No entanto, valores `int` são sempre também valores `double`,
 o que pode levar a algumas surpresas.
 
 
-## Differences in behavior
+## Diferenças de comportamento {:#differences-in-behavior}
 
 A maioria dos cálculos aritméticos de inteiros e doubles
 tem essencialmente o mesmo comportamento.
@@ -142,7 +140,7 @@ menos surpreendente, mais consistente ou mais performático.
 :::
 
 
-### Precision
+### Precisão {:#precision}
 
 A tabela a seguir demonstra como algumas expressões numéricas
 diferem devido à precisão.
@@ -152,12 +150,12 @@ e `math.pow(2, 53)` é 2<sup>53</sup>.
 Na web, inteiros perdem precisão após 53 bits.
 Em particular, 2<sup>53</sup> e 2<sup>53</sup>+1
 mapeiam para o mesmo valor devido ao truncamento.
-Em nativo, esses valores ainda podem ser diferenciados
+Em plataformas nativas, esses valores ainda podem ser diferenciados
 porque números nativos têm 64 bits—63 bits para o valor e 1 para o sinal.
 
 O efeito do overflow é visível
 ao comparar 2<sup>63</sup>-1 a 2<sup>63</sup>.
-Em nativo, o último causa overflow para -2<sup>63</sup>,
+Em plataformas nativas, o último causa overflow para -2<sup>63</sup>,
 como esperado para aritmética de complemento de dois.
 Na web, esses valores não causam overflow
 porque são representados de forma diferente;
@@ -166,8 +164,8 @@ são aproximações devido à perda de precisão.
 <div class="table-wrapper">
   <table class="table table-striped nowrap">
     <tr>
-      <th>Expression</th>
-      <th>Native</th>
+      <th>Expressão</th>
+      <th>Nativo</th>
       <th>Web</th>
     </tr>
     <tr>
@@ -208,7 +206,7 @@ são aproximações devido à perda de precisão.
   </table>
 </div>
 
-### Identity
+### Identidade {:#identity}
 
 Em plataformas nativas, `double` e `int` são tipos distintos:
 nenhum valor pode ser tanto um `double` quanto um `int` ao mesmo tempo.
@@ -218,14 +216,14 @@ identidade pode diferir entre plataformas,
 embora igualdade (`==`) não.
 
 A tabela a seguir mostra algumas expressões que usam igualdade e identidade.
-As expressões de igualdade são as mesmas em nativo e web;
+As expressões de igualdade são as mesmas em plataformas nativas e web;
 as expressões de identidade geralmente são diferentes.
 
 <div class="table-wrapper">
   <table class="table table-striped nowrap">
     <tr>
-      <th>Expression</th>
-      <th>Native</th>
+      <th>Expressão</th>
+      <th>Nativo</th>
       <th>Web</th>
     </tr>
     <tr>
@@ -271,7 +269,7 @@ as expressões de identidade geralmente são diferentes.
   </table>
 </div>
 
-### Types and type checking
+### Tipos e verificação de tipos {:#types-and-type-checking}
 
 Na web, o tipo `int` subjacente é como um subtipo de `double`:
 é um valor de precisão dupla sem uma parte fracionária.
@@ -292,8 +290,8 @@ pode mudar no futuro.
 <div class="table-wrapper">
   <table class="table table-striped nowrap">
     <tr>
-      <th>Expression</th>
-      <th>Native</th>
+      <th>Expressão</th>
+      <th>Nativo</th>
       <th>Web</th>
     </tr>
     <tr>
@@ -364,7 +362,7 @@ pode mudar no futuro.
   </table>
 </div>
 
-### Bitwise operations
+### Operações bit a bit {:#bitwise-operations}
 
 Por razões de performance na web,
 operadores bitwise (`&`, `|`, `^`, `~`) e de deslocamento (`<<`,`>>`, `>>>`) em `int`
@@ -373,7 +371,7 @@ No JavaScript, os operandos são truncados para inteiros de 32 bits
 que são tratados como não assinados.
 Esse tratamento pode levar a resultados surpreendentes em números maiores.
 Em particular, se os operandos são negativos ou não cabem em 32 bits,
-é provável que produzam resultados diferentes entre nativo e web.
+é provável que produzam resultados diferentes entre plataformas nativas e web.
 
 A tabela a seguir mostra como plataformas nativas e web
 tratam operadores bitwise e de deslocamento quando os operandos
@@ -382,8 +380,8 @@ são negativos ou próximos de 32 bits:
 <div class="table-wrapper">
   <table class="table table-striped nowrap">
     <tr>
-      <th>Expression</th>
-      <th>Native</th>
+      <th>Expressão</th>
+      <th>Nativo</th>
       <th>Web</th>
     </tr>
     <tr>
@@ -414,7 +412,7 @@ são negativos ou próximos de 32 bits:
   </table>
 </div>
 
-### String representation
+### Representação de strings {:#string-representation}
 
 Na web, Dart geralmente delega ao JavaScript para converter um número em uma string
 (por exemplo, para um `print`).
@@ -424,8 +422,8 @@ converter as expressões na primeira coluna pode levar a resultados diferentes.
 <div class="table-wrapper">
   <table class="table table-striped nowrap">
     <tr>
-      <th>Expression</th>
-      <th>Native <code>toString()</code></th>
+      <th>Expressão</th>
+      <th>Nativo <code>toString()</code></th>
       <th>Web <code>toString()</code></th>
     </tr>
     <tr>
@@ -466,7 +464,7 @@ converter as expressões na primeira coluna pode levar a resultados diferentes.
   </table>
 </div>
 
-## What should you do?
+## O que você deve fazer? {:#what-should-you-do}
 
 Geralmente, você não precisa mudar seu código numérico.
 Código Dart tem sido executado em plataformas nativas e web por anos,
@@ -504,7 +502,7 @@ use `int.toSigned(32)`.
 Para outros casos onde a precisão importa,
 considere outros tipos numéricos.
 O tipo [`BigInt`][]
-fornece inteiros de precisão arbitrária tanto em nativo quanto em web.
+fornece inteiros de precisão arbitrária tanto em plataformas nativas quanto na web.
 O pacote [`fixnum`][]
 fornece números assinados estritos de 64 bits, mesmo na web.
 Use esses tipos com cuidado:

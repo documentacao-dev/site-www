@@ -4,7 +4,7 @@ title: Evolução da linguagem Dart
 shortTitle: Evolução da linguagem
 breadcrumb: Legacy
 description: Mudanças e adições notáveis à linguagem de programação Dart.
-lastVerified: 2026-08-12
+lastVerified: 2026-11-11
 ---
 
 :::warning
@@ -50,6 +50,122 @@ no repositório do GitHub da linguagem Dart.
 
 
 ## Mudanças em cada versão {:#changes-in-each-release}
+
+### Dart 3.15
+_Ainda não lançado_
+
+:::note Provisório
+O Dart 3.15 ainda não foi lançado.
+As mudanças a seguir são preliminares e podem mudar antes do lançamento.
+:::
+
+O Dart 3.15 expande a [promoção de tipo][type promotion] e a análise de fluxo,
+e permite apenas um único [combinador][combinator] `show` ou `hide` em cada
+diretiva `import` e `export`. Essas mudanças são [versionadas por linguagem][language versioned]
+e se aplicam apenas ao código com versão de linguagem 3.15 ou superior:
+
+- **Promoção de tipo de `this`:**
+  testes de tipo e verificações de null agora [promovem `this`][this-promotion],
+  assim como uma variável local.
+  Você não precisa mais copiar `this` para uma variável local antes de verificar
+  o tipo ou se ele aceita null,
+  e os acessos a membros, tanto explícitos quanto implícitos, usam o tipo promovido:
+
+  ```dart
+  class Shape {
+    void describe() {
+      if (this is Circle) {
+        print('Radius: $radius');
+      }
+    }
+  }
+
+  class Circle extends Shape {
+    final double radius;
+    Circle(this.radius);
+  }
+
+  extension on int? {
+    bool get isEvenOrNull {
+      if (this == null) return true;
+      return isEven;
+    }
+  }
+  ```
+
+  O lint [`unnecessary_this_alias`][] sinaliza variáveis locais que apenas apelidam
+  `this` para promoção.
+  Se você habilitar o lint, o [`dart fix`][] pode removê-las.
+
+- **Promoção melhorada em pontos de junção do fluxo de controle:**
+  quando os ramos do fluxo de controle se reencontram, o Dart agora
+  [preserva as promoções de tipo comuns aos dois ramos][promotion-join],
+  mesmo que os ramos tenham chegado a esse tipo por tipos intermediários diferentes:
+
+  ```dart
+  class B {}
+  class C {}
+  class D implements B, C {
+    void f() {}
+  }
+
+  void check(Object o, bool condition) {
+    if (condition) {
+      o as B;
+      o as D;
+    } else {
+      o as C;
+      o as D;
+    }
+    o.f(); // `o` retains its promotion to `D`.
+  }
+  ```
+
+  Como parte dessa mudança, uma propriedade pode [perder uma promoção anterior][sdk-64799]
+  depois que os ramos se reencontram, se promover o receptor dela em um dos ramos
+  der à propriedade um tipo não relacionado.
+
+- **Um único combinador `show` ou `hide` por diretiva:**
+  especificar [mais de um combinador `show` ou `hide`][single-combinator] em uma
+  [diretiva `import` ou `export`][selective-imports], o que antes era descontinuado,
+  agora é um erro de compilação.
+
+Para mais informações sobre essas e outras mudanças, consulte o
+[changelog do Dart 3.15][Dart 3.15 changelog].
+
+[type promotion]: /null-safety/understanding-null-safety#type-promotion-on-null-checks
+[combinator]: /resources/glossary#combinator
+[this-promotion]: {{site.repo.dart.lang}}/issues/1397
+[`unnecessary_this_alias`]: /tools/linter-rules/unnecessary_this_alias
+[`dart fix`]: /tools/dart-fix
+[promotion-join]: {{site.repo.dart.lang}}/issues/4757
+[sdk-64799]: {{site.repo.dart.sdk}}/issues/64799
+[selective-imports]: /language/libraries#importing-only-part-of-a-library
+[single-combinator]: {{site.repo.dart.lang}}/issues/2824
+[Dart 3.15 changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#3150
+
+### Dart 3.14
+_Lançado em 11 de novembro de 2026_
+| [Anúncio do Dart 3.14](/blog/announcing-dart-3-14)
+
+Embora o Dart 3.14 não introduza novos recursos de linguagem,
+a versão inclui uma correção de solidez na análise de fluxo, sem versionamento por
+linguagem, e uma nova ferramenta para atualizar para novas versões da linguagem:
+
+- Um subpattern em um [pattern][Patterns] de lista, map ou record
+  não [promove mais toda a propriedade correspondida][sdk-64269]
+  para o tipo do subpattern.
+- O novo comando [`dart migrate`][] automatiza a atualização de projetos para
+  [versões da linguagem][language versions] mais recentes,
+  aplicando as correções preparatórias necessárias,
+  atualizando a restrição de SDK e, opcionalmente, adotando novos recursos da linguagem.
+
+Para mais informações sobre essas e outras mudanças, consulte o
+[changelog do Dart 3.14][Dart 3.14 changelog].
+
+[sdk-64269]: {{site.repo.dart.sdk}}/issues/64269
+[`dart migrate`]: /tools/dart-migrate
+[Dart 3.14 changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#3140
 
 ### Dart 3.13
 _Lançado em 12 de agosto de 2026_

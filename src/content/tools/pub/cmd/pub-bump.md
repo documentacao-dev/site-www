@@ -1,6 +1,6 @@
 ---
 title: dart pub bump
-description: Use dart pub bump to increase the version number of the current package.
+description: Use dart pub bump para aumentar o número de versão do pacote atual.
 ia-translate: true
 ---
 

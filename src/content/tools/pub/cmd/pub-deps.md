@@ -1,6 +1,6 @@
 ---
 title: dart pub deps
-description: Use dart pub deps to print a dependency graph for a package.
+description: Use dart pub deps para imprimir um grafo de dependências de um pacote.
 ia-translate: true
 ---
 

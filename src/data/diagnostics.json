@@ -2168,6 +2168,14 @@
     "previousNames": []
   },
   {
+    "id": "deprecated_web_configuration",
+    "description": "_'dart:{0}' is deprecated and shouldn't be used as an import/export configuration._",
+    "documentation": "## Descrição {:#description}\n\nO analisador emite este diagnóstico quando uma biblioteca descontinuada é\nusada em uma configuração de import. As seguintes bibliotecas web estão\ndescontinuadas: 'dart:html', 'dart:indexed_db', 'dart:js', 'dart:js_util',\n'dart:svg', 'dart:web_audio', 'dart:web_gl'.\n\n## Exemplo {:#example}\n\nDado um pacote que contém um arquivo chamado `a.dart`:\n\n```dart\nclass C {}\n```\n\num arquivo chamado `a_io.dart`:\n\n```dart\nclass C {}\n```\n\ne um arquivo chamado `a_web.dart`:\n\n```dart\nclass C {}\n```\n\nO código a seguir produz este diagnóstico porque a configuração usa o\nidentificador com ponto `dart.library.html`:\n\n```dart\nimport 'src/a.dart'\n    if (dart.library.io) 'src/a_io.dart'\n    if ([!dart.library.html!]) 'src/a_web.dart';\n\nvar c = C();\n```\n\n## Correções comuns {:#common-fixes}\n\nA correção típica é usar a configuração `dart.library.js_interop`:\n\n```dart\nimport 'src/a.dart'\n    if (dart.library.io) 'src/a_io.dart'\n    if (dart.library.js_interop) 'src/a_web.dart';\n\nvar c = C();\n```",
+    "hasDocumentation": true,
+    "fromLint": false,
+    "previousNames": []
+  },
+  {
     "id": "diagnostic_describe_all_properties",
     "description": "_The public property isn't described by either 'debugFillProperties' or 'debugDescribeChildren'._",
     "documentation": "## Descrição {:#description}\n\nO analisador emite este diagnóstico quando uma classe que implementa\n`Diagnosticable` tem uma propriedade pública que não é adicionada como\npropriedade em nenhum dos métodos `debugFillProperties` ou\n`debugDescribeChildren`.\n\n## Exemplo {:#example}\n\nO código a seguir gera este diagnóstico porque a propriedade `p2` não é\nadicionada no método `debugFillProperties`:\n\n```dart\nimport 'package:flutter/material.dart';\n\nclass const C({super.key}) extends Widget {\n  bool get p1 => true;\n\n  bool get [!p2!] => false;\n\n  @override\n  void debugFillProperties(DiagnosticPropertiesBuilder properties) {\n    super.debugFillProperties(properties);\n    properties.add(DiagnosticsProperty<bool>('p1', p1));\n  }\n}\n```\n\n## Correções comuns {:#common-fixes}\n\nSe não houver uma sobrescrita de nenhum dos métodos `debugFillProperties` ou\n`debugDescribeChildren`, então adicione uma.\n\nAdicione uma descrição da propriedade no método `debugFillProperties` ou\n`debugDescribeChildren`:\n\n```dart\nimport 'package:flutter/material.dart';\n\nclass const C({super.key}) extends Widget {\n  bool get p1 => true;\n\n  bool get p2 => false;\n\n  @override\n  void debugFillProperties(DiagnosticPropertiesBuilder properties) {\n    super.debugFillProperties(properties);\n    properties.add(DiagnosticsProperty<bool>('p1', p1));\n    properties.add(DiagnosticsProperty<bool>('p2', p2));\n  }\n}\n```",
@@ -2369,8 +2377,8 @@
   },
   {
     "id": "duplicate_export",
-    "description": "_Duplicate export._",
-    "documentation": "## Descrição {:#description}\n\nO analisador emite este diagnóstico quando é encontrada uma diretiva de\nexport igual a um export anterior no arquivo. O segundo export não acrescenta\nvalor e deve ser removido.\n\n## Exemplo {:#example}\n\nO código a seguir gera este diagnóstico porque a mesma biblioteca está sendo\nexportada duas vezes:\n\n```dart\nexport 'package:meta/meta.dart';\nexport [!'package:meta/meta.dart'!];\n```\n\n## Correções comuns {:#common-fixes}\n\nRemova o export desnecessário:\n\n```dart\nexport 'package:meta/meta.dart';\n```",
+    "description": "_Duplicate export._\n\n_Duplicate of export in '{0}'._",
+    "documentation": "## Descrição {:#description}\n\nO analisador emite este diagnóstico quando é encontrada uma diretiva `export`\nigual a um `export` anterior no mesmo arquivo, ou em um arquivo que o contém\nna hierarquia de arquivos `part`. O segundo `export` não agrega valor e deve\nser removido.\n\n## Exemplo {:#example}\n\nO código a seguir produz este diagnóstico porque a mesma biblioteca está\nsendo exportada duas vezes:\n\n```dart\nexport 'package:meta/meta.dart';\nexport [!'package:meta/meta.dart'!];\n```\n\n## Correções comuns {:#common-fixes}\n\nRemova o `export` desnecessário:\n\n```dart\nexport 'package:meta/meta.dart';\n```",
     "hasDocumentation": true,
     "fromLint": false,
     "previousNames": []
@@ -2409,8 +2417,8 @@
   },
   {
     "id": "duplicate_import",
-    "description": "_Duplicate import._",
-    "documentation": "## Descrição {:#description}\n\nO analisador emite este diagnóstico quando é encontrada uma diretiva de import\nigual a um import anterior no arquivo. O segundo import não acrescenta valor\ne deve ser removido.\n\n## Exemplo {:#example}\n\nO código a seguir gera este diagnóstico:\n\n```dart\nimport 'package:meta/meta.dart';\nimport [!'package:meta/meta.dart'!];\n\n@sealed\nclass C {}\n```\n\n## Correções comuns {:#common-fixes}\n\nRemova o import desnecessário:\n\n```dart\nimport 'package:meta/meta.dart';\n\n@sealed\nclass C {}\n```",
+    "description": "_Duplicate import._\n\n_Duplicate of import in '{0}'._",
+    "documentation": "## Descrição {:#description}\n\nO analisador emite este diagnóstico quando é encontrada uma diretiva `import`\nigual a um `import` anterior no mesmo arquivo, ou em um arquivo que o contém\nna hierarquia de arquivos `part`. O segundo `import` não agrega valor e deve\nser removido.\n\n## Exemplo {:#example}\n\nO código a seguir produz este diagnóstico:\n\n```dart\nimport 'package:meta/meta.dart';\nimport [!'package:meta/meta.dart'!];\n\n@sealed\nclass C {}\n```\n\n## Correções comuns {:#common-fixes}\n\nRemova o `import` desnecessário:\n\n```dart\nimport 'package:meta/meta.dart';\n\n@sealed\nclass C {}\n```",
     "hasDocumentation": true,
     "fromLint": false,
     "previousNames": []
@@ -5950,7 +5958,7 @@
   {
     "id": "multiple_combinators",
     "description": "_At most one 'show' or 'hide' combinator can be used on an import or export directive._\n\n_Using multiple 'hide' or 'show' combinators is never necessary and often produces surprising results._",
-    "documentation": "## Descrição {:#description}\n\nO analisador emite este diagnóstico quando uma diretiva de import ou export\ncontém mais de um combinador.\n\n## Exemplos {:#examples}\n\nO código a seguir gera este diagnóstico porque o segundo combinador `show`\noculta `List` e `int`:\n\n```dart\nimport 'dart:core' [!show Future, List, int show Future!];\n\nvar x = Future.value(1);\n```\n\nO código a seguir gera este diagnóstico porque o segundo combinador `hide` é\nredundante:\n\n```dart\nimport 'dart:math' [!hide Random, max, min hide min!];\n\nvar x = pi;\n```\n\nOs códigos a seguir geram este diagnóstico porque o combinador `hide` é\nredundante:\n\n```dart\nimport 'dart:math' [!show Random, max hide min!];\n\nvar x = max(0, 1);\nvar r = Random();\n```\n\nO código a seguir gera este diagnóstico porque o combinador `show` já oculta\n`Random` e `max`, então o combinador `hide` é redundante:\n\n```dart\nimport 'dart:math' [!hide Random, max show min!];\n\nvar x = min(0, 1);\n```\n\n## Correções comuns {:#common-fixes}\n\nSe você preferir listar os nomes que devem ficar visíveis, então use um único\ncombinador `show`:\n\n```dart\nimport 'dart:math' show min;\n\nvar x = min(0, 1);\n```\n\nSe você preferir listar os nomes que devem ficar ocultos, então use um único\ncombinador `hide`:\n\n```dart\nimport 'dart:math' hide Random, max, min;\n\nvar x = pi;\n```",
+    "documentation": "## Descrição {:#description}\n\nO analisador emite este diagnóstico quando uma diretiva `import` ou `export`\ncontém mais de um combinador.\n\n## Exemplos {:#examples}\n\nO código a seguir produz este diagnóstico porque o segundo combinador `show`\noculta `List` e `int`:\n\n```dart\n// @dart = 3.14\nimport 'dart:core' [!show Future, List, int show Future!];\n\nvar x = Future.value(1);\n```\n\nO código a seguir produz este diagnóstico porque o segundo combinador `hide`\né redundante:\n\n```dart\n// @dart = 3.14\nimport 'dart:math' [!hide Random, max, min hide min!];\n\nvar x = pi;\n```\n\nOs códigos a seguir produzem este diagnóstico porque o combinador `hide` é\nredundante:\n\n```dart\n// @dart = 3.14\nimport 'dart:math' [!show Random, max hide min!];\n\nvar x = max(0, 1);\nvar r = Random();\n```\n\nO código a seguir produz este diagnóstico porque o combinador `show` já oculta\n`Random` e `max`, então o combinador `hide` é redundante:\n\n```dart\n// @dart = 3.14\nimport 'dart:math' [!hide Random, max show min!];\n\nvar x = min(0, 1);\n```\n\n## Correções comuns {:#common-fixes}\n\nSe você preferir listar os nomes que devem ficar visíveis, use um único\ncombinador `show`:\n\n```dart\nimport 'dart:math' show min;\n\nvar x = min(0, 1);\n```\n\nSe você preferir listar os nomes que devem ficar ocultos, use um único\ncombinador `hide`:\n\n```dart\nimport 'dart:math' hide Random, max, min;\n\nvar x = pi;\n```",
     "hasDocumentation": true,
     "fromLint": false,
     "previousNames": []

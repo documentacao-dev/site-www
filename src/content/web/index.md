@@ -7,24 +7,23 @@ showToc: false
 ---
 
 O Dart oferece suporte à web como uma de suas [plataformas][platforms] principais.
-Há compiladores de Dart para JavaScript disponíveis tanto para desenvolvimento
-(com um ciclo rápido de editar e atualizar)
-quanto para produção
-(com foco no tamanho e na velocidade do código).
-Para builds de produção, você também pode compilar Dart para
-[WebAssembly][wasm] (`dart compile wasm`).
+Para desenvolvimento, o compilador de JavaScript do Dart para desenvolvimento
+(`ddc`) oferece um ciclo rápido de editar e atualizar.
+Para o [deploy][deployment] em produção, você pode compilar Dart para
+[WebAssembly (Wasm)][wasm] (`dart2wasm`), para inicialização rápida e execução
+consistente de frames em navegadores modernos, ou para JavaScript minificado
+(`dart2js`).
 
 Além dos compiladores,
 a plataforma web do Dart oferece [bibliotecas principais][core libraries],
-acesso ao [DOM (Document Object Model)][DOM]
+acesso ao [Document Object Model (DOM)][DOM] por meio do [`package:web`][]
 e [interoperabilidade para chamar JavaScript][interop] a partir do Dart.
 
-Você tem a opção de usar o Dart para web com um framework de nível mais alto.
-Muitas aplicações que funcionam na web e também em mobile ou desktop são construídas
-com o [Flutter][] e o suporte ao [Flutter web][].
-Você também pode usar o [Jaspr][] para criar sites HTML rápidos e dinâmicos.
-O suporte ao Flutter web, o Jaspr
-e outros frameworks web para Dart são baseados na plataforma web do Dart.
+Você também pode combinar a web do Dart com um framework de nível mais alto.
+Dá para criar apps multiplataforma para web, mobile e desktop usando o
+[Flutter][] e o [Flutter web][], ou usar o [Jaspr][] para criar sites baseados
+em HTML. A plataforma web do Dart é a base do Flutter web, do Jaspr
+e de outros frameworks web do Dart.
 
 <div class="side-by-side">
 <div class="centered-rows">
@@ -36,16 +35,18 @@ e outros frameworks web para Dart são baseados na plataforma web do Dart.
 <figure>
   <img 
     src="/assets/img/flutter-gallery.jpg"
-    alt="captura de tela do Flutter Gallery">
+    alt="aplicativo Flutter Gallery executando em um navegador web">
   <figcaption>Flutter Gallery, executando em um navegador web</figcaption>
 </figure>
 </div>
 </div>
 
 [platforms]: /overview#platform
+[deployment]: /web/deployment
 [wasm]: /web/wasm
 [core libraries]: /libraries#web-platform-libraries
 [DOM]: /web/get-started
+[`package:web`]: /interop/js-interop/package-web
 [Flutter]: {{site.flutter}}
 [Flutter web]: {{site.flutter}}/web
 [Jaspr]: https://jaspr.site
