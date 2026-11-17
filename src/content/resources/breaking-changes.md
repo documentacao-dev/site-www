@@ -34,7 +34,7 @@ relacionados a mudanças incompatíveis e descontinuações no Dart.
 
   _Estas são a maioria das mudanças e não são marcadas de forma especial nesta lista._
 
-**Versionado por idioma**
+**Versionado pela linguagem**
 : O SDK do Dart mantém a compatibilidade com versões anteriores para o código existente,
   e a mudança de comportamento só tem efeito (podendo quebrar
   código que depende do comportamento anterior) quando você
@@ -207,7 +207,7 @@ A lista a seguir é preliminar e pode mudar antes do lançamento.
   [usa novos códigos de diagnóstico para buscas de nome que falham][64411].
   Por exemplo, `undefined_super_member` agora é `undefined_super_member_read`,
   `undefined_super_member_write` ou `undefined_super_operator`.
-  Atualize os comentários de ignorar e as substituições de severidade que usam os códigos antigos.
+  Atualize os comentários `ignore` e as substituições de severidade que usam os códigos antigos.
 - O analisador agora informa [`argument_type_not_assignable`][64561]
   para um valor incompatível atribuído por meio de `operator []=`.
   Atualize quaisquer ignores de `invalid_assignment`
@@ -907,7 +907,7 @@ A lista a seguir é preliminar e pode mudar antes do lançamento.
   Antes do Dart 3.6, o compilador os calculava no início das
   computações de limite superior e inferior.
   O analisador já seguia esse comportamento, então apps que
-  já passam na análise dificilmente serão afetadas por essa mudança.
+  já passam na análise dificilmente serão afetados por essa mudança.
 
 [56466]: {{site.repo.dart.sdk}}/issues/56466
 
