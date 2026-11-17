@@ -1,150 +1,153 @@
 ---
-title: Web deployment
+ia-translate: true
+title: Deploy na web
 description: >-
-  Learn how to build and serve your Dart web app for production deployment.
+  Aprenda a compilar e servir sua aplicação web Dart para deploy em produção.
 ---
 
-Deploying a Dart web app works like deploying any other web app.
-You compile your Dart code to production WebAssembly (`dart compile wasm`) or
-JavaScript (`dart compile js` or `webdev build`), optimize the generated
-assets, and serve them from a web server or content delivery network (CDN).
+O deploy de uma aplicação web Dart funciona como o deploy de qualquer outra aplicação web.
+Você compila seu código Dart para WebAssembly de produção (`dart compile wasm`) ou
+para JavaScript (`dart compile js` ou `webdev build`), otimiza os assets gerados e
+os serve a partir de um servidor web ou de uma rede de distribuição de conteúdo (CDN).
 
-## Build your app {:#compiling-to-javascript}
+## Compile sua aplicação {:#compiling-to-javascript}
 
-For production deployments, you can compile your Dart web app to
-[WebAssembly (Wasm)][wasm] (`dart2wasm`), JavaScript (`dart2js`), or both (with
-JavaScript as a fallback for older browsers):
+Para deploys de produção, você pode compilar sua aplicação web Dart para
+[WebAssembly (Wasm)][wasm] (`dart2wasm`), para JavaScript (`dart2js`) ou para ambos
+(com JavaScript como fallback para navegadores mais antigos):
 
-* **Compile to WebAssembly (`dart compile wasm`)**:
-  Produces compact `.wasm` binary bytecode and a companion `.mjs` runtime
-  loader for fast startup and consistent frame execution in modern browsers.
-* **Compile to JavaScript (`webdev build` or `dart compile js`)**:
-  Produces minified, tree-shaken `.dart.js` output compatible with all
-  JavaScript-capable browsers.
+* **Compile para WebAssembly (`dart compile wasm`)**:
+  produz um binário de bytecode `.wasm` compacto e um loader de runtime `.mjs`
+  complementar, para inicialização rápida e execução consistente dos frames em
+  navegadores modernos.
+* **Compile para JavaScript (`webdev build` ou `dart compile js`)**:
+  produz uma saída `.dart.js` minificada e com tree shaking, compatível com todos
+  os navegadores que suportam JavaScript.
 
-With a few additional steps, you can make your deployable app
-[smaller, faster, and more reliable](#make-your-app-smaller-faster-and-more-reliable).
+Com alguns passos adicionais, você pode tornar sua aplicação implantável
+[menor, mais rápida e mais confiável](#make-your-app-smaller-faster-and-more-reliable).
 
-### Compile to WebAssembly {:#compile-to-wasm}
+### Compile para WebAssembly {:#compile-to-wasm}
 
-Use the [`dart compile wasm`][dart-compile-wasm] command with the `-O2` flag
-(or higher) to build optimized WebAssembly output:
+Use o comando [`dart compile wasm`][dart-compile-wasm] com a flag `-O2` (ou superior)
+para gerar a saída otimizada em WebAssembly:
 
 ```console
 $ dart compile wasm -O2 web/main.dart -o build/web/main.wasm
 ```
 
-This command generates `build/web/main.wasm`, the companion JavaScript runtime
-`build/web/main.mjs`, and the source map `build/web/main.wasm.map`. Refer to
-[WebAssembly compilation][wasm] for compiler optimization flags and setup
-steps, and [Serve WebAssembly in production](#serving-wasm-in-production) for
-server configuration.
+Esse comando gera `build/web/main.wasm`, o runtime JavaScript complementar
+`build/web/main.mjs` e o source map `build/web/main.wasm.map`. Consulte
+[Compilação para WebAssembly][wasm] para as flags de otimização do compilador e os
+passos de configuração, e [Sirva WebAssembly em produção](#serving-wasm-in-production)
+para a configuração do servidor.
 
-### Compile to JavaScript with webdev {:#compile-using-webdev}
+### Compile para JavaScript com webdev {:#compile-using-webdev}
 
-[Use the `webdev build` command][build] (or run
-[`dart compile js`][dart-compile-js] directly) to create a deployable
-JavaScript build of your app. The `webdev build` command compiles your code to
-JavaScript and saves the result as `build/web/main.dart.js`. You can use
-[any option available to `dart compile js`][dart-compile-js] with
-`webdev build`.
+[Use o comando `webdev build`][build] (ou execute
+[`dart compile js`][dart-compile-js] diretamente) para criar uma versão implantável
+em JavaScript da sua aplicação. O comando `webdev build` compila seu código para
+JavaScript e salva o resultado em `build/web/main.dart.js`. Você pode usar
+[qualquer opção disponível para `dart compile js`][dart-compile-js] com o `webdev build`.
 
-### Make your app smaller, faster, and more reliable
+### Torne sua aplicação menor, mais rápida e mais confiável {:#make-your-app-smaller-faster-and-more-reliable}
 
-The following practices help make your production web app smaller, faster, and
-more secure:
+As práticas a seguir ajudam a tornar sua aplicação web de produção menor, mais rápida
+e mais segura:
 
-* [Use deferred loading to reduce initial download size][deferred-size]
-* [Follow best practices for web apps][best-practices]
-* [Manage source maps and unneeded build files][manage-source-maps]
+* [Use deferred loading para reduzir o tamanho inicial do download][deferred-size]
+* [Siga as melhores práticas para aplicações web][best-practices]
+* [Gerencie source maps e arquivos de build desnecessários][manage-source-maps]
 
-#### Use deferred loading to reduce your app's initial size
+#### Use deferred loading para reduzir o tamanho inicial da sua aplicação {:#use-deferred-loading-to-reduce-your-apps-initial-size}
 
-You can use Dart's support for deferred loading to split rarely used features
-into separate modules loaded on demand.
-For language syntax details, refer to the libraries guide on
-[deferred loading][].
-When compiling to WebAssembly, pass the `--enable-deferred-loading` flag and
-configure a `loadDeferredModules` loader callback as shown in
-[Wasm deferred loading][wasm-deferred-loading].
+Você pode usar o suporte do Dart a deferred loading para dividir recursos pouco usados
+em módulos separados, carregados sob demanda. Para detalhes de sintaxe da linguagem,
+consulte o guia de bibliotecas sobre [deferred loading][]. Ao compilar para WebAssembly,
+passe a flag `--enable-deferred-loading` e configure um callback de carregamento
+`loadDeferredModules`, como mostrado em [deferred loading no Wasm][wasm-deferred-loading].
 
-#### Follow best practices for web apps
+#### Siga as melhores práticas para aplicações web {:#follow-best-practices-for-web-apps}
 
-General web performance practices apply to Dart web apps:
+Práticas gerais de performance web se aplicam às aplicações web Dart:
 
-* [Profile Wasm performance and footprint][profile-wasm]
-* [Fast load times][fast-load-times]
+* [Faça o profiling da performance e do footprint do Wasm][profile-wasm]
+* [Tempos de carregamento rápidos][fast-load-times]
 * [Web Fundamentals][web-fundamentals]
-  (especially [Optimizing Content Efficiency][content-efficiency])
+  (especialmente [Otimização da eficiência de conteúdo][content-efficiency])
 * [Progressive Web Apps][pwa]
 * [Lighthouse][lighthouse]
 
-#### Manage source maps and unneeded build files {:#manage-source-maps-and-unneeded-build-files}
+#### Gerencie source maps e arquivos de build desnecessários {:#manage-source-maps-and-unneeded-build-files}
 
-By default, Dart web compilers (`dart compile js` and `dart compile wasm`)
-generate source map files (`.js.map` and `.wasm.map`) alongside the compiled
-output and embed a `sourceMappingURL` reference in the generated artifact.
-While source maps are useful for debugging and symbolicating production stack
-traces, serving them on public web servers can expose internal details:
+Por padrão, os compiladores web do Dart (`dart compile js` e `dart compile wasm`)
+geram arquivos de source map (`.js.map` e `.wasm.map`) junto com a saída compilada
+e incluem uma referência `sourceMappingURL` no artefato gerado.
+Embora os source maps sejam úteis para depuração e para simbolizar stack traces de
+produção, servi-los em servidores web públicos pode expor detalhes internos:
 
-* **Unminified symbols and structure**:
-  Source maps let browser DevTools reconstruct original class names,
-  function names, and source logic.
-* **Developer file paths**:
-  Source maps can include file system URIs (such as `file:///Users/...`) from
-  the build machine.
+* **Símbolos e estrutura não minificados**:
+  os source maps permitem que o DevTools do navegador reconstrua nomes originais de classes,
+  nomes de funções e a lógica do código-fonte.
+* **Caminhos de arquivos do desenvolvedor**:
+  os source maps podem incluir URIs do sistema de arquivos (como `file:///Users/...`)
+  da máquina de build.
 
 :::warning
-To keep your symbol names, code structure, and local build paths private,
-don't deploy source map files to public web hosts.
+Para manter privados os nomes dos seus símbolos, a estrutura do código e os caminhos locais de build,
+não faça deploy de arquivos de source map em hosts web públicos.
 :::
 
-Depending on your deployment strategy, handle source maps in one of two ways:
+Dependendo da sua estratégia de deploy, trate os source maps de uma das duas formas:
 
-* **Disable source maps at build time**:
-  If you don't need source maps for production debugging or error reporting,
-  pass the `--no-source-maps` flag to the compiler:
+* **Desabilite os source maps no momento do build**:
+  se você não precisa de source maps para depuração em produção ou para relatório de erros,
+  passe a flag `--no-source-maps` para o compilador:
 
   ```console
   $ dart compile wasm --no-source-maps -O2 -o build/main.wasm web/main.dart
   $ dart compile js --no-source-maps -O2 -o build/main.dart.js web/main.dart
   ```
 
-* **Upload map files to error monitoring and exclude them from public hosting**:
-  If you use an error-monitoring or crash-reporting service (such as Sentry or
-  Bugsnag), keep the `.js.map` or `.wasm.map` files during compilation and
-  upload them directly to your monitoring service to symbolicate production
-  stack traces. Then exclude or remove them from your public web server or CDN
-  directory:
+* **Envie os arquivos de map para o monitoramento de erros e exclua-os da hospedagem pública**:
+  se você usa um serviço de monitoramento de erros ou de relatório de crashes (como
+  Sentry ou Bugsnag), mantenha os arquivos `.js.map` ou `.wasm.map` durante a compilação
+  e envie-os diretamente para o seu serviço de monitoramento, para simbolizar stack traces
+  de produção. Depois, exclua-os ou remova-os do seu servidor web público ou do diretório do CDN:
 
   ```console
   # From the root directory of your app:
   $ find build -type f \( -name "*.js.map" -o -name "*.wasm.map" \) -exec rm {} +
   ```
 
-## Serve WebAssembly in production {:#serving-wasm-in-production}
+## Sirva sua aplicação {:#serving-your-app}
 
-When deploying a Dart application compiled with `dart compile wasm`, configure
-your web server, CDN, and HTML bootstrap loader to maximize streaming
-compilation speed and caching efficiency.
+Você pode hospedar sua aplicação web Dart compilada em qualquer host web estático ou
+CDN, como GitHub Pages ou Firebase Hosting.
 
-### Configure the `Content-Type: application/wasm` header {:#wasm-mime-type}
+## Sirva WebAssembly em produção {:#serving-wasm-in-production}
 
-Web servers, CDNs, and object storage buckets must serve `.wasm` files with the
-`application/wasm` MIME type (and `.mjs` files with `text/javascript` or
+Ao fazer deploy de uma aplicação Dart compilada com `dart compile wasm`, configure seu
+servidor web, CDN e o loader de bootstrap do HTML para maximizar a velocidade de
+compilação em streaming e a eficiência do cache.
+
+### Configure o header `Content-Type: application/wasm` {:#wasm-mime-type}
+
+Servidores web, CDNs e buckets de armazenamento de objetos precisam servir arquivos
+`.wasm` com o MIME type `application/wasm` (e arquivos `.mjs` com `text/javascript` ou
 `application/javascript`):
 
-* Browsers require `Content-Type: application/wasm` to execute
+* Os navegadores exigem `Content-Type: application/wasm` para executar
   `WebAssembly.compileStreaming()`.
-* If the server returns `application/octet-stream` or omits the header,
-  streaming compilation fails or falls back to waiting for the entire download
-  to finish before compilation begins.
+* Se o servidor retornar `application/octet-stream` ou omitir o header, a compilação
+  em streaming falha ou passa a esperar o download inteiro terminar antes de começar
+  a compilação.
 
-### Stream compilation and preload resources {:#streaming-compilation}
+### Compilação em streaming e preload de recursos {:#streaming-compilation}
 
-Avoid a sequential network waterfall (`index.html` → `main.mjs` → `main.wasm`).
-Start fetching `main.wasm` and `main.mjs` in parallel from the HTML `<head>`
-with high fetch priority, and pass the `fetch()` promise directly to
+Evite uma cascata sequencial de rede (`index.html` → `main.mjs` → `main.wasm`).
+Comece a buscar `main.wasm` e `main.mjs` em paralelo a partir do `<head>` do HTML,
+com alta prioridade de fetch, e passe a promise do `fetch()` diretamente para
 `compileStreaming()`:
 
 ```html title="index.html"
@@ -171,48 +174,48 @@ with high fetch priority, and pass the `fetch()` promise directly to
 </html>
 ```
 
-### Enable Brotli and Gzip HTTP compression {:#http-compression}
+### Ative a compressão HTTP com Brotli e Gzip {:#http-compression}
 
-* Pre-compress `.wasm` and `.mjs` artifacts during your release build by using
-  Brotli (`brotli -q 11`) and Gzip (`gzip -9`) as a fallback
-  (`Content-Encoding: br` or `gzip`).
-* WasmGC binaries contain structured type sections and bytecode patterns that
-  compress by 35–50% with Brotli, substantially reducing payload transfer and
-  download time during initial page load.
+* Pré-comprima os artefatos `.wasm` e `.mjs` durante o build de release usando
+  Brotli (`brotli -q 11`) e Gzip (`gzip -9`) como fallback
+  (`Content-Encoding: br` ou `gzip`).
+* Binários WasmGC contêm seções de tipos estruturadas e padrões de bytecode que são
+  comprimidos em 35–50% com Brotli, reduzindo bastante a transferência do payload e
+  o tempo de download no carregamento inicial da página.
 
-### Configure caching and atomic deployments {:#wasm-caching}
+### Configure cache e deploys atômicos {:#wasm-caching}
 
-* **Content-hashed filenames**:
-  Fingerprint both outputs (for example, `main.a1b2c3d4.mjs` and
-  `main.a1b2c3d4.wasm`) and serve them with
-  `Cache-Control: public, max-age=31536000, immutable`. Serve `index.html` with
+* **Nomes de arquivo com hash de conteúdo**:
+  gere um hash no nome das duas saídas (por exemplo, `main.a1b2c3d4.mjs` e
+  `main.a1b2c3d4.wasm`) e sirva-as com
+  `Cache-Control: public, max-age=31536000, immutable`. Sirva `index.html` com
   `Cache-Control: no-cache`.
-* **Atomic deployment**:
-  Always deploy `main.mjs`, `main.wasm`, and any deferred
-  `<name>_module<id>.wasm` chunks from the same build together.
-  The generated `.mjs` file contains numeric import and export indices bound
-  to that specific `.wasm` build. Mixing a cached `.mjs` file with a newly
-  deployed `.wasm` binary causes instantiation errors.
-* **V8 Wasm code caching**:
-  When Chrome streams a `.wasm` resource over HTTPS with valid HTTP caching
-  headers, V8 automatically caches the compiled native machine code on disk.
-  Repeat visits skip Wasm compilation altogether.
+* **Deploy atômico**:
+  sempre faça deploy de `main.mjs`, `main.wasm` e de quaisquer chunks deferred
+  `<name>_module<id>.wasm` do mesmo build, juntos. O arquivo `.mjs` gerado contém
+  índices numéricos de import e export vinculados a esse build específico do `.wasm`.
+  Misturar um `.mjs` em cache com um binário `.wasm` recém-publicado causa erros de
+  instanciação.
+* **Cache de código Wasm no V8**:
+  quando o Chrome transmite um recurso `.wasm` via HTTPS com headers de cache HTTP
+  válidos, o V8 armazena automaticamente em disco o código de máquina nativo compilado.
+  Visitas seguintes pulam a compilação do Wasm por completo.
 
-### Provide a JavaScript fallback (`dart2js`) {:#js-fallback}
+### Forneça um fallback em JavaScript (`dart2js`) {:#js-fallback}
 
-To support older browsers that lack WasmGC, JS String Builtins, or Phase 4
-Exception Handling, provide a JavaScript fallback:
+Para oferecer suporte a navegadores mais antigos que não têm WasmGC, JS String Builtins
+ou Phase 4 Exception Handling, forneça um fallback em JavaScript:
 
-1. Build both targets in your release pipeline:
+1. Compile os dois alvos no seu pipeline de release:
 
    ```console
    $ dart compile wasm -O2 web/main.dart -o site/main.wasm
    $ dart compile js -O2 web/main.dart -o site/main.dart.js
    ```
 
-1. In your bootstrap script, attempt Wasm streaming compilation and fall back
-   to loading `main.dart.js` if instantiation fails or the browser doesn't
-   support the required Wasm features:
+1. No seu script de bootstrap, tente a compilação em streaming do Wasm e faça fallback
+   para carregar `main.dart.js` se a instanciação falhar ou se o navegador não suportar
+   os recursos necessários do Wasm:
 
    ```js
    async function bootApp() {
@@ -235,38 +238,31 @@ Exception Handling, provide a JavaScript fallback:
    bootApp();
    ```
 
-## Serve your app {:#serving-your-app}
+### GitHub Pages {:#github-pages}
 
-You can host your compiled Dart web app on any static web host or CDN, such as
-GitHub Pages or Firebase Hosting.
+Se sua aplicação não usa roteamento do lado do servidor, você pode servi-la usando o
+[GitHub Pages][gh-pages]. O pacote [peanut][] gera automaticamente uma branch
+`gh-pages` para qualquer aplicação web Dart.
 
-### GitHub Pages
+O [exemplo startup_namer][startup-namer]
+é hospedado no GitHub Pages.
+Seus arquivos estão na branch `gh-pages` do
+[repositório filiph/startup_namer][startup-namer-repo]
+e foram gerados com o [peanut][].
 
-If your app doesn't use server-side routing, you can serve the app by using
-[GitHub Pages][gh-pages].
-The [peanut][] package automatically produces a `gh-pages` branch for any Dart
-web app.
-
-The [startup_namer example][startup-namer]
-is hosted on GitHub Pages.
-Its files are in the `gh-pages` branch of the
-[filiph/startup_namer repo][startup-namer-repo]
-and were built with [peanut][].
-
-### Firebase
-
+### Firebase {:#firebase}
 {% comment %}
 TODO: Give an example of how to deploy with Firebase, which originally was shown on https://dart.academy/build-a-real-time-chat-web-app-with-dart-angular-2-and-firebase-3/
 {% endcomment %}
 
-To learn more about deploying with Firebase, refer to the following resources:
+Para saber mais sobre deploy com Firebase, consulte os seguintes recursos:
 
-* The [Firebase Hosting documentation][firebase-hosting]
-  describes how to deploy web apps with Firebase.
-* In the Firebase Hosting documentation,
+* A [documentação do Firebase Hosting][firebase-hosting]
+  descreve como fazer deploy de aplicações web com Firebase.
+* Na documentação do Firebase Hosting,
   [Configure Hosting Behavior][firebase-config]
-  covers custom headers (such as `Content-Type` and `Cache-Control`),
-  redirects, and rewrites.
+  aborda cabeçalhos personalizados (como `Content-Type` e `Cache-Control`),
+  redirecionamentos, reescritas e mais.
 
 [wasm]: /web/wasm
 [profile-wasm]: /web/wasm#profile-wasm

@@ -16,8 +16,8 @@ as entradas de diagnósticos e lints em inglês.
 
 ## Progresso
 
-- Páginas traduzidas: **320 / 320** (100.0%)
-- Linhas pendentes (aprox.): 0
+- Páginas traduzidas: **320 / 321** (99.7%)
+- Linhas pendentes (aprox.): 409
 - Diagnósticos e lints em inglês (src/data/*.json): **0** (0 diagnósticos, 0 lints)
 
 | Seção | Traduzidas | Total |
@@ -37,7 +37,7 @@ as entradas de diagnósticos e lints em inglês.
 | `server` | 5 | 5 |
 | `tools` | 69 | 69 |
 | `web` | 6 | 6 |
-| `blog` | 114 | 114 |
+| `blog` | 114 | 115 |
 
 ## Páginas por seção
 
@@ -94,7 +94,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `interop/c-interop.md` (343 linhas)
 - [x] `interop/index.md` (33 linhas)
 - [x] `interop/java-interop.md` (151 linhas)
-- [x] `interop/js-interop/index.md` (57 linhas)
+- [x] `interop/js-interop/index.md` (73 linhas)
 - [x] `interop/js-interop/js-types.md` (295 linhas)
 - [x] `interop/js-interop/mock.md` (127 linhas)
 - [x] `interop/js-interop/package-web.md` (474 linhas)
@@ -190,18 +190,18 @@ as entradas de diagnósticos e lints em inglês.
 ### `resources` (13/13)
 
 - [x] `resources/books.md` (43 linhas)
-- [x] `resources/breaking-changes.md` (1663 linhas)
+- [x] `resources/breaking-changes.md` (2034 linhas)
 - [x] `resources/dart-3-migration.md` (629 linhas)
 - [x] `resources/dart-cheatsheet.md` (2073 linhas)
 - [x] `resources/dart-team-packages.md` (25 linhas)
 - [x] `resources/google-apis.md` (71 linhas)
 - [x] `resources/index.md` (26 linhas)
-- [x] `resources/language/evolution.md` (782 linhas)
+- [x] `resources/language/evolution.md` (898 linhas)
 - [x] `resources/language/index.md` (11 linhas)
 - [x] `resources/language/number-representation.md` (514 linhas)
 - [x] `resources/language/spec/index.md` (61 linhas)
 - [x] `resources/useful-packages.md` (124 linhas)
-- [x] `resources/whats-new.md` (1579 linhas)
+- [x] `resources/whats-new.md` (1722 linhas)
 
 ### `server` (5/5)
 
@@ -220,7 +220,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `tools/cli-distribution.md` (175 linhas)
 - [x] `tools/dart-analyze.md` (69 linhas)
 - [x] `tools/dart-build.md` (113 linhas)
-- [x] `tools/dart-compile.md` (457 linhas)
+- [x] `tools/dart-compile.md` (502 linhas)
 - [x] `tools/dart-create.md` (107 linhas)
 - [x] `tools/dart-devtools.md` (184 linhas)
 - [x] `tools/dart-doc.md` (201 linhas)
@@ -286,13 +286,13 @@ as entradas de diagnósticos e lints em inglês.
 ### `web` (6/6)
 
 - [x] `web/debugging.md` (215 linhas)
-- [x] `web/deployment.md` (139 linhas)
+- [x] `web/deployment.md` (287 linhas)
 - [x] `web/get-started.md` (204 linhas)
-- [x] `web/index.md` (52 linhas)
+- [x] `web/index.md` (53 linhas)
 - [x] `web/libraries.md` (53 linhas)
-- [x] `web/wasm.md` (205 linhas)
+- [x] `web/wasm.md` (389 linhas)
 
-### `blog` (114/114)
+### `blog` (114/115)
 
 - [x] `blog/3-cool-dart-patterns/index.md` (127 linhas)
 - [x] `blog/a-brand-new-dartpad-dev-with-flutter-support/index.md` (50 linhas)
@@ -321,6 +321,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `blog/announcing-dart-3-11/index.md` (91 linhas)
 - [x] `blog/announcing-dart-3-12/index.md` (208 linhas)
 - [x] `blog/announcing-dart-3-13/index.md` (426 linhas)
+- [ ] `blog/announcing-dart-3-14/index.md` (409 linhas)
 - [x] `blog/announcing-dart-3-2/index.md` (102 linhas)
 - [x] `blog/announcing-dart-3-4/index.md` (97 linhas)
 - [x] `blog/announcing-dart-3-5-and-an-update-on-the-dart-roadmap/index.md` (98 linhas)

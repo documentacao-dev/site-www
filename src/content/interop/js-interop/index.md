@@ -1,48 +1,50 @@
 ---
-title: JavaScript interoperability
+ia-translate: true
+title: Interoperabilidade com JavaScript
 shortTitle: JS interop
-description: Integrate JavaScript code into your Dart web app.
+description: Integre código JavaScript na sua aplicação web Dart.
 nextpage:
   url: /interop/js-interop/usage
-  title: Usage
+  title: Uso
 ---
 
-Integrate JavaScript libraries and APIs into Dart web apps.
+Integre bibliotecas e APIs JavaScript em aplicações web Dart.
 
-## Overview {: #overview }
+## Visão geral {: #overview }
 
-The [Dart web platform][] provides tools to call JavaScript from Dart and Dart
-from JavaScript, bringing the JavaScript ecosystem directly to Dart code.
+A [plataforma web Dart][Dart web platform] fornece ferramentas para
+chamar JavaScript a partir do Dart e Dart a partir do JavaScript, trazendo
+o ecossistema JavaScript diretamente para o código Dart.
 
-Find getting-started resources, usage guides, and `dart:js_interop` library
-documentation for calling JavaScript libraries, interacting with browser APIs,
-and compiling web apps to [WebAssembly (Wasm)][wasm].
+Encontre recursos para começar, guias de uso e a documentação da biblioteca
+`dart:js_interop` para chamar bibliotecas JavaScript, interagir com APIs do
+navegador e compilar aplicações web para [WebAssembly (Wasm)][wasm].
 
-Get started with JS interop:
-  * [Get started with JavaScript interop]
-  * [How to mock JavaScript interop objects]
+Comece com o JS interop:
+  * [Começando com interop JavaScript][Get started with JavaScript interop]
+  * [Como fazer mock de objetos de interop JavaScript][How to mock JavaScript interop objects]
 
-Review the reference guides:
-  * [Usage reference]
-  * [JS types reference]
+Revise os guias de referência:
+  * [Referência de uso][Usage reference]
+  * [Referência de tipos JS][JS types reference]
 
-Interact with the browser:
-  * [`package:web` and migration]
+Interaja com o navegador:
+  * [`package:web` e migração][`package:web` and migration]
 
-## WebAssembly (`dart2wasm`) support {: #wasm-support }
+## Suporte a WebAssembly (`dart2wasm`) {: #wasm-support }
 
-When compiling Dart web apps to [WebAssembly][wasm] (`dart compile wasm`),
-keep these interoperability and performance practices in mind:
+Ao compilar aplicações web Dart para [WebAssembly][wasm] (`dart compile wasm`),
+tenha em mente estas práticas de interoperabilidade e desempenho:
 
-  * **Use `dart:js_interop` and `package:web`**:
-    Deprecated legacy web and interop libraries (`dart:html`, `dart:js`,
-    `dart:js_util`, and `package:js`) are unsupported on Wasm targets.
-  * **Minimize high-frequency calls across the Wasm and JS boundary**:
-    In performance-critical code or tight loops, keep computation in Dart or
-    batch values rather than making repeated interop calls per iteration.
-  * **Find Wasm-compatible packages**:
-    Use the [`wasm-ready`][] filter on [pub.dev][] to verify that packages use
-    `dart:js_interop` and `package:web`.
+  * **Use `dart:js_interop` e `package:web`**:
+    as bibliotecas web e de interop legadas e descontinuadas (`dart:html`, `dart:js`,
+    `dart:js_util` e `package:js`) não têm suporte nos alvos Wasm.
+  * **Minimize chamadas frequentes entre a fronteira Wasm e JS**:
+    em código sensível a desempenho ou em loops apertados, mantenha o cálculo no Dart
+    ou agrupe os valores, em vez de fazer chamadas de interop repetidas a cada iteração.
+  * **Encontre pacotes compatíveis com Wasm**:
+    use o filtro [`wasm-ready`][] no [pub.dev][] para verificar se os pacotes usam
+    `dart:js_interop` e `package:web`.
 
 [Dart web platform]: /web
 [wasm]: /web/wasm
@@ -57,14 +59,14 @@ keep these interoperability and performance practices in mind:
 <a id="next-generation-js-interop" aria-hidden="true"></a>
 <a id="deprecated-features" aria-hidden="true"></a>
 
-## Additional resources {: #additional-resources }
+## Recursos adicionais {: #additional-resources }
 
-Explore previous JavaScript interop libraries:
-  * [Past JS interop]
+Explore as bibliotecas anteriores de interoperabilidade com JavaScript:
+  * [JS interop anterior][Past JS interop]
 
-Explore the API reference documentation:
-  * [`dart:js_interop` API reference]
-  * [`dart:js_interop_unsafe` API reference]
+Explore a documentação de referência da API:
+  * [Referência da API `dart:js_interop`][`dart:js_interop` API reference]
+  * [Referência da API `dart:js_interop_unsafe`][`dart:js_interop_unsafe` API reference]
 
 [Past JS interop]: /interop/js-interop/past-js-interop
 [`dart:js_interop` API reference]: {{site.dart-api}}/dart-js_interop/
