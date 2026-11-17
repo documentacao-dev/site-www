@@ -16,8 +16,8 @@ as entradas de diagnósticos e lints em inglês.
 
 ## Progresso
 
-- Páginas traduzidas: **320 / 321** (99.7%)
-- Linhas pendentes (aprox.): 409
+- Páginas traduzidas: **321 / 321** (100.0%)
+- Linhas pendentes (aprox.): 0
 - Diagnósticos e lints em inglês (src/data/*.json): **0** (0 diagnósticos, 0 lints)
 
 | Seção | Traduzidas | Total |
@@ -37,7 +37,7 @@ as entradas de diagnósticos e lints em inglês.
 | `server` | 5 | 5 |
 | `tools` | 69 | 69 |
 | `web` | 6 | 6 |
-| `blog` | 114 | 115 |
+| `blog` | 115 | 115 |
 
 ## Páginas por seção
 
@@ -292,7 +292,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `web/libraries.md` (53 linhas)
 - [x] `web/wasm.md` (389 linhas)
 
-### `blog` (114/115)
+### `blog` (115/115)
 
 - [x] `blog/3-cool-dart-patterns/index.md` (127 linhas)
 - [x] `blog/a-brand-new-dartpad-dev-with-flutter-support/index.md` (50 linhas)
@@ -321,7 +321,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `blog/announcing-dart-3-11/index.md` (91 linhas)
 - [x] `blog/announcing-dart-3-12/index.md` (208 linhas)
 - [x] `blog/announcing-dart-3-13/index.md` (426 linhas)
-- [ ] `blog/announcing-dart-3-14/index.md` (409 linhas)
+- [x] `blog/announcing-dart-3-14/index.md` (408 linhas)
 - [x] `blog/announcing-dart-3-2/index.md` (102 linhas)
 - [x] `blog/announcing-dart-3-4/index.md` (97 linhas)
 - [x] `blog/announcing-dart-3-5-and-an-update-on-the-dart-roadmap/index.md` (98 linhas)
