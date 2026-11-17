@@ -1,8 +1,8 @@
 ---
-title: What not to commit
+title: O que não incluir no commit
 description: >-
-  Your development tools generate a bunch of files.
-  Not all of them should be committed.
+  Suas ferramentas de desenvolvimento geram vários arquivos.
+  Nem todos devem ser incluídos no commit.
 ia-translate: true
 ---
 

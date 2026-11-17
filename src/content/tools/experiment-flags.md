@@ -1,6 +1,6 @@
 ---
-title: Experiment flags
-description: Using experiment flags with Dart tools.
+title: Flags de experimento
+description: Como usar flags de experimento com as ferramentas do Dart.
 ia-translate: true
 ---
 

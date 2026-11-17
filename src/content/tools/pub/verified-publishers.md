@@ -1,6 +1,6 @@
 ---
-title: Verified publishers
-description: Learn what verified publishers are, and they're verified.
+title: Publicadores verificados
+description: Saiba o que são publicadores verificados e como eles são verificados.
 ia-translate: true
 ---
 

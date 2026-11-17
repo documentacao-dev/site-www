@@ -1,8 +1,8 @@
 ---
-title: Security advisories
+title: Avisos de segurança
 description: >-
-  Use security advisories to inform and be informed
-  about security vulnerabilities in Dart packages.
+  Use avisos de segurança para informar e ser informado
+  sobre vulnerabilidades de segurança em pacotes do Dart.
 ia-translate: true
 ---
 

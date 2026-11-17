@@ -1,6 +1,6 @@
 ---
-title: Troubleshooting pub
-description: Common gotchas you might run into when using pub.
+title: Solução de problemas do pub
+description: Armadilhas comuns que você pode encontrar ao usar o pub.
 ia-translate: true
 ---
 

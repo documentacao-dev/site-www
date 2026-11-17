@@ -1,10 +1,10 @@
 ---
 ia-translate: true
-title: Numbers in Dart
+title: Números no Dart
 breadcrumb: Numbers
 description: >-
-  Learn how Dart numbers are slightly different on the web,
-  when that might matter, and how you might adjust your code.
+  Saiba como os números do Dart são um pouco diferentes na web,
+  quando isso pode importar e como você pode ajustar seu código.
 ---
 
 <!-- ia-translate: true -->
