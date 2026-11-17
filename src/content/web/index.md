@@ -1,41 +1,42 @@
 ---
-title: Web platform
+ia-translate: true
+title: Plataforma web
 shortTitle: Web
-description: Resources for developing Dart web apps.
+description: Recursos para desenvolver aplicações web em Dart.
 showToc: false
 ---
 
-Dart supports the web as one of its core [platforms][].
-For development, the Dart development JavaScript compiler (`ddc`) provides a
-quick edit-refresh cycle.
-For production [deployment][], you can compile Dart to
-[WebAssembly (Wasm)][wasm] (`dart2wasm`) for fast startup and consistent frame
-execution in modern browsers, or to minified JavaScript (`dart2js`).
+O Dart oferece suporte à web como uma de suas [plataformas][platforms] principais.
+Para desenvolvimento, o compilador de JavaScript do Dart para desenvolvimento
+(`ddc`) oferece um ciclo rápido de editar e atualizar.
+Para o [deploy][deployment] em produção, você pode compilar Dart para
+[WebAssembly (Wasm)][wasm] (`dart2wasm`), para inicialização rápida e execução
+consistente de frames em navegadores modernos, ou para JavaScript minificado
+(`dart2js`).
 
-In addition to compilers,
-the Dart web platform provides [core libraries][],
-access to the [Document Object Model (DOM)][DOM] through [`package:web`][],
-and [interoperability for calling JavaScript][interop] from Dart.
+Além dos compiladores,
+a plataforma web do Dart oferece [bibliotecas principais][core libraries],
+acesso ao [Document Object Model (DOM)][DOM] por meio do [`package:web`][]
+e [interoperabilidade para chamar JavaScript][interop] a partir do Dart.
 
-You can also pair Dart web with a higher-level framework.
-You can build multi-platform apps for web, mobile, and desktop
-by using [Flutter][] and [Flutter web][],
-or use [Jaspr][] to build HTML-based websites.
-The Dart web platform powers Flutter web, Jaspr,
-and other Dart web frameworks.
+Você também pode combinar a web do Dart com um framework de nível mais alto.
+Dá para criar apps multiplataforma para web, mobile e desktop usando o
+[Flutter][] e o [Flutter web][], ou usar o [Jaspr][] para criar sites baseados
+em HTML. A plataforma web do Dart dá suporte ao Flutter web, ao Jaspr
+e a outros frameworks web do Dart.
 
 <div class="side-by-side">
 <div class="centered-rows">
 <p class="">
-  <a href="/web/get-started" class="filled-button large-button">Build a web app with Dart</a>
+  <a href="/web/get-started" class="filled-button large-button">Crie uma aplicação web com Dart</a>
 </p>
 </div>
 <div class="centered-rows">
 <figure>
   <img 
     src="/assets/img/flutter-gallery.jpg"
-    alt="Flutter Gallery app running in a web browser">
-  <figcaption>Flutter Gallery, running in a web browser</figcaption>
+    alt="aplicativo Flutter Gallery executando em um navegador web">
+  <figcaption>Flutter Gallery, executando em um navegador web</figcaption>
 </figure>
 </div>
 </div>

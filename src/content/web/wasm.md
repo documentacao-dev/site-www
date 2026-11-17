@@ -1,69 +1,70 @@
 ---
-title: WebAssembly (Wasm) compilation
-shortTitle: Wasm compilation
+ia-translate: true
+title: Compilação WebAssembly (Wasm)
+shortTitle: Compilação Wasm
 description: >-
-  Compile Dart web applications to WebAssembly (WasmGC) to reduce load times,
-  eliminate main-thread JIT pauses, and improve rendering responsiveness.
+  Compile aplicações web Dart para WebAssembly (WasmGC) para reduzir os tempos
+  de carregamento, eliminar pausas de JIT na thread principal e melhorar a
+  responsividade da renderização.
 ---
 
-You can compile Dart and [Flutter][] web applications to
-[WebAssembly][wasm-org] (`dart2wasm`) as a high-performance production
-alternative to JavaScript (`dart2js`). Compiling to WebAssembly reduces initial
-page load times, eliminates main-thread JavaScript just-in-time (JIT)
-compilation pauses, and delivers consistent frame rendering in modern browsers.
+Você pode compilar aplicações web do Dart e do [Flutter][] para
+[WebAssembly][wasm-org] (`dart2wasm`) como uma alternativa de alta performance
+ao JavaScript (`dart2js`) em builds de produção. Compilar para WebAssembly
+reduz os tempos de carregamento inicial da página, elimina pausas de compilação
+JavaScript just-in-time (JIT) na thread principal e entrega renderização de
+frames consistente em navegadores modernos.
 
-## Compile your web app to Wasm {:#compiling-to-wasm}
+## Compile sua aplicação web para Wasm {:#compiling-to-wasm}
 
-Use the [`dart compile wasm`][dart-compile-wasm] command to compile a Dart web
-app to a WebAssembly module. For a full list of compiler flags, refer to
-[Compiler optimization levels and flags](#optimization-levels-and-flags) or run
-`dart compile wasm --help`.
+Use o comando [`dart compile wasm`][dart-compile-wasm] para compilar uma
+aplicação web Dart em um módulo WebAssembly. Para a lista completa de flags do
+compilador, consulte [Níveis de otimização e flags do compilador](#optimization-levels-and-flags)
+ou execute `dart compile wasm --help`.
 
 :::note
-If you are building a Flutter web app, run `flutter build web --wasm`
-instead of invoking `dart compile wasm` directly. Refer to the
-[Flutter Wasm documentation][Flutter] for Flutter-specific build instructions.
+Se você está criando uma aplicação web com Flutter, execute `flutter build web --wasm`
+em vez de chamar `dart compile wasm` diretamente. Consulte a
+[documentação do Flutter Wasm][Flutter] para as instruções de build específicas do Flutter.
 :::
 
-To compile and run a Dart web app with Wasm, follow these steps:
+Para compilar e executar uma aplicação web Dart com Wasm, siga estes passos:
 
-1. Create a web app and switch to its directory:
+1. Crie uma aplicação web e entre no diretório dela:
 
    ```console
    $ dart create -t web mywebapp
    $ cd mywebapp
    ```
 
-   The template creates a small web app that uses [`package:web`][], which is
-   required to run Wasm. Existing web apps must [migrate][migrated] from
-   `dart:html` to `package:web`.
+   O template cria uma pequena aplicação web que usa o [`package:web`][],
+   necessário para executar Wasm. Aplicações web existentes devem ser [migradas][migrated]
+   de `dart:html` para `package:web`.
 
-1. Compile the app to Wasm into a `site` output directory:
+1. Compile a aplicação para Wasm em um diretório de saída `site`:
 
    ```console
    $ dart compile wasm -O2 web/main.dart -o site/main.wasm
    ```
 
-   This command produces `site/main.wasm`, the companion JavaScript runtime
-   `site/main.mjs`, and `site/main.wasm.map`.
+   Isso gera `site/main.wasm`, o runtime JavaScript complementar `site/main.mjs`
+   e `site/main.wasm.map`.
 
    :::note
-   By default, `dart compile wasm` generates a `.wasm.map` source map file
-   alongside the `.wasm` output. To disable source map generation for
-   production builds, pass `--no-source-maps`. To learn about security
-   considerations when deploying source maps, refer to
-   [Web deployment][manage-source-maps].
+   Por padrão, o `dart compile wasm` gera um arquivo de source map `.wasm.map`
+   junto com a saída `.wasm`. Para desabilitar a geração de source maps em builds
+   de produção, passe `--no-source-maps`. Para conhecer as considerações de
+   segurança ao publicar source maps, consulte [Deploy na web][manage-source-maps].
    :::
 
-1. Copy over the static web files:
+1. Copie os arquivos web estáticos:
 
    ```console
    $ cp web/index.html web/styles.css site/
    ```
 
-1. Because `index.html` loads `main.dart.js`, create `site/main.dart.js` to
-   fetch `site/main.wasm` and import the generated `site/main.mjs` runtime in
-   parallel:
+1. Como o `index.html` carrega o `main.dart.js`, crie o `site/main.dart.js` para
+   buscar o `site/main.wasm` e importar o runtime `site/main.mjs` gerado, em paralelo:
 
    ```js title="site/main.dart.js"
    (async function () {
@@ -75,132 +76,132 @@ To compile and run a Dart web app with Wasm, follow these steps:
    })();
    ```
 
-1. Serve the `site` directory by using a local HTTP server such as [`dhttpd`][]:
+1. Sirva o diretório `site` usando um servidor HTTP local, como o [`dhttpd`][]:
 
    ```console
    $ dart run dhttpd@ --path site
    ```
 
-You can also explore this small [sandbox example][sandbox].
+Você também pode explorar este pequeno [exemplo de sandbox][sandbox].
 
-## WebAssembly support and requirements {:#webassembly-support}
+## Suporte e requisitos de WebAssembly {:#webassembly-support}
 
-When compiling Dart to WebAssembly, keep the following browser, interop, and
-platform requirements in mind:
+Ao compilar Dart para WebAssembly, tenha em mente os requisitos de navegador,
+de interoperabilidade e de plataforma a seguir:
 
-* **WebAssembly standards and browser compatibility**:
-  The `dart2wasm` compiler targets three standardized WebAssembly proposals:
-  WebAssembly Garbage Collection (WasmGC), JS String Builtins
-  (`wasm:js-string`), and Phase 4 Exception Handling (the `try_table` and
-  `exnref` instructions). Running compiled modules in a browser requires one
-  of the following minimum browser versions:
+* **Padrões de WebAssembly e compatibilidade com navegadores**:
+  O compilador `dart2wasm` tem como alvo três propostas padronizadas de WebAssembly:
+  WebAssembly Garbage Collection (WasmGC), JS String Builtins (`wasm:js-string`)
+  e Phase 4 Exception Handling (as instruções `try_table` e `exnref`).
+  Para executar os módulos compilados em um navegador, é necessária pelo menos
+  uma das seguintes versões mínimas:
+  * Chrome ou Edge 137+
+  * Safari 26.2+ (macOS e iOS)
+  * Firefox 134+ (ou 147+ para Flutter web)
 
-  * Chrome or Edge 137+
-  * Safari 26.2+ (macOS and iOS)
-  * Firefox 134+ (or 147+ for Flutter web)
+  Para mais detalhes de compatibilidade entre navegadores, consulte a
+  [documentação do Flutter Wasm][Flutter].
 
-  For additional browser compatibility details, refer to the
-  [Flutter Wasm documentation][Flutter].
+* **Ambientes de destino e modo standalone**:
+  Por padrão, a saída Wasm compilada tem como alvo ambientes JavaScript (como
+  navegadores) e gera um arquivo de runtime complementar `<name>.mjs`. Para
+  compilar um módulo WebAssembly standalone para runtimes que não são web, como
+  o Wasmtime 39+ (com a flag `-W gc,exceptions,function-references=y`), passe a
+  flag `--standalone` para o `dart compile wasm`. O modo standalone não permite
+  a biblioteca [`dart:js_interop`][] nem a flag `--enable-deferred-loading`.
 
-* **Target environments and standalone mode**:
-  By default, compiled Wasm output targets JavaScript environments (such as
-  browsers) and generates a companion `<name>.mjs` runtime file. To compile a
-  standalone WebAssembly module for non-web runtimes such as Wasmtime 39+
-  (with the `-W gc,exceptions,function-references=y` flag), pass the
-  `--standalone` flag to `dart compile wasm`. Standalone mode disallows the
-  [`dart:js_interop`][] library and the `--enable-deferred-loading` flag.
+* **Interoperabilidade com JavaScript**:
+  A compilação para Wasm oferece suporte apenas ao
+  [mecanismo de interoperabilidade JS de próxima geração do Dart][js-interop]
+  ([`dart:js_interop`][] e [`package:web`][]).
 
-* **JavaScript interop**:
-  Compiling to Wasm supports only Dart's
-  [next-generation JS interop mechanism][js-interop]
-  ([`dart:js_interop`][] and [`package:web`][]).
+* **Ferramentas de build**:
+  A ferramenta `webdev` não oferece suporte à compilação Wasm (`webdev serve`
+  ou `webdev build`). Em vez disso, siga os passos em
+  [Compile sua aplicação web para Wasm](#compiling-to-wasm).
 
-* **Build tooling**:
-  The `webdev` tool doesn't support Wasm compilation (`webdev serve` or
-  `webdev build`). Instead, follow the steps in
-  [Compile your web app to Wasm](#compiling-to-wasm).
+### Pacotes suportados {:#supported-packages}
 
-### Supported packages {:#supported-packages}
+Para encontrar pacotes compatíveis com Wasm, use o filtro
+[`wasm-ready`][] no [pub.dev][].
 
-To find Wasm-compatible packages, use the [`wasm-ready`][] filter on
-[pub.dev][].
+Um pacote é *wasm-ready* quando não importa bibliotecas legadas de web ou de
+interop, como `dart:html`, `dart:js` ou `package:js`. Consulte a
+[página de interoperabilidade JS antiga][past-js-interop] para a lista completa
+de bibliotecas não permitidas.
 
-A package is *wasm-ready* when it doesn't import legacy web or interop
-libraries such as `dart:html`, `dart:js`, or `package:js`. Refer to the
-[past JS interop page][past-js-interop] for the full list of disallowed
-libraries.
+### Imports condicionais e suporte a SIMD {:#conditional-imports-and-simd-support}
 
-### Conditional imports and SIMD support {:#conditional-imports-and-simd-support}
+* **Imports condicionais (`dart.library.isolate`)**:
+  Ao compilar com `dart2wasm`, `dart.library.isolate` é avaliado como `false`
+  nos imports condicionais (`if (dart.library.isolate)`), igual ao comportamento
+  do `dart2js` e do `ddc`.
+* **SIMD de 128 bits em Wasm (`v128`)**:
+  No `dart2wasm`, os tipos SIMD de `dart:typed_data` (`Int32x4`, `Float32x4`,
+  `Float64x2`, `Int32x4List`, `Float32x4List` e `Float64x2List`) são
+  implementados com as instruções SIMD nativas de 128 bits `v128` do WebAssembly.
 
-* **Conditional imports (`dart.library.isolate`)**:
-  When compiling with `dart2wasm`, `dart.library.isolate` evaluates to `false`
-  in conditional imports (`if (dart.library.isolate)`), matching the behavior
-  of `dart2js` and `ddc`.
-* **128-bit Wasm SIMD (`v128`)**:
-  In `dart2wasm`, `dart:typed_data` SIMD types (`Int32x4`, `Float32x4`,
-  `Float64x2`, `Int32x4List`, `Float32x4List`, and `Float64x2List`) are backed
-  by native WebAssembly 128-bit `v128` SIMD instructions.
+## Níveis de otimização e flags do compilador {:#optimization-levels-and-flags}
 
-## Compiler optimization levels and flags {:#optimization-levels-and-flags}
-
-Tune `dart compile wasm` flags to balance compilation speed during development
-against smaller binary size and faster execution in production builds:
+Ajuste as flags de `dart compile wasm` para equilibrar a velocidade de compilação
+durante o desenvolvimento com um binário menor e uma execução mais rápida nos
+builds de produção:
 
 ```console
 $ dart compile wasm -O2 web/main.dart -o site/main.wasm
 ```
 
-### Optimization levels reference {:#optimization-levels}
+### Referência dos níveis de otimização {:#optimization-levels}
 
-The `-O0` through `-O4` optimization levels enable progressively more
-aggressive compiler passes:
+Os níveis de otimização `-O0` a `-O4` habilitam passes do compilador cada vez
+mais agressivos:
 
-| Flag | Binaryen (`wasm-opt`) | Function inlining | Minify runtime names (`--minify`) and omit error details | Omit implicit type checks | Omit index bounds checks |
+| Flag | Binaryen (`wasm-opt`) | Inlining de funções | Minificar nomes de runtime (`--minify`) e omitir detalhes de erro | Omitir verificações de tipo implícitas | Omitir verificações de limites de índice |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `-O0` | Disabled | Disabled | Disabled | Disabled | Disabled |
-| `-O1` (default) | Enabled | Enabled | Disabled | Disabled | Disabled |
-| `-O2` | Enabled | Enabled | Enabled | Disabled | Disabled |
-| `-O3` | Enabled | Enabled | Enabled | Enabled | Disabled |
-| `-O4` | Enabled | Enabled | Enabled | Enabled | Enabled |
+| `-O0` | Desabilitado | Desabilitado | Desabilitado | Desabilitado | Desabilitado |
+| `-O1` (padrão) | Habilitado | Habilitado | Desabilitado | Desabilitado | Desabilitado |
+| `-O2` | Habilitado | Habilitado | Habilitado | Desabilitado | Desabilitado |
+| `-O3` | Habilitado | Habilitado | Habilitado | Habilitado | Desabilitado |
+| `-O4` | Habilitado | Habilitado | Habilitado | Habilitado | Habilitado |
 
 {:.table .table-striped}
 
-For most production builds, use the `-O2` flag. This level enables full size
-and speed optimizations (including `wasm-opt`, function inlining, and
-minification) while preserving standard Dart runtime semantics, type checks,
-and bounds checks.
+Para a maioria dos builds de produção, use a flag `-O2`. Esse nível habilita
+otimizações completas de tamanho e de velocidade (incluindo `wasm-opt`, inlining
+de funções e minificação), preservando a semântica padrão do runtime do Dart,
+as verificações de tipo e as verificações de limites.
 
 :::warning
-The `-O3` level omits implicit type checks, and the `-O4` level additionally
-omits index bounds checks (explicit `as` type checks are still enforced at
-`-O3` and `-O4`). Omitting runtime checks can cause your app to trap or behave
-unexpectedly if a runtime type error or out-of-bounds access occurs. Before
-deploying with `-O3` or `-O4`, test thoroughly with the `-O2` flag to verify
-that your app never throws a subtype of `Error` (such as `TypeError` or
-`RangeError`).
+O nível `-O3` omite verificações de tipo implícitas, e o nível `-O4` omite,
+além disso, as verificações de limites de índice (verificações explícitas de
+tipo com `as` continuam sendo aplicadas em `-O3` e `-O4`). Omitir verificações
+em tempo de execução pode fazer sua aplicação travar ou se comportar de forma
+inesperada se ocorrer um erro de tipo ou um acesso fora dos limites. Antes de
+fazer deploy com `-O3` ou `-O4`, teste bem com a flag `-O2` para verificar que
+sua aplicação nunca lança um subtipo de `Error` (como `TypeError` ou `RangeError`).
 :::
 
-### Additional production CLI flags {:#production-cli-flags}
+### Flags adicionais de CLI para produção {:#production-cli-flags}
 
-Use the following flags with [`dart compile wasm`][dart-compile-wasm] to
-customize output symbols, source maps, module splitting, and compile-time
-configuration:
+Use as flags a seguir com o [`dart compile wasm`][dart-compile-wasm] para
+personalizar os símbolos de saída, os source maps, a divisão em módulos e a
+configuração em tempo de compilação:
 
-| Flag | Default | Description |
+| Flag | Padrão | Descrição |
 | :--- | :--- | :--- |
-| `--minify` | `-O2` and higher | Minifies runtime names (such as `runtimeType.toString()`). |
-| `--[no-]strip-wasm` | Enabled | Strips static symbol names from the `.wasm` binary to reduce download size. Pass `--no-strip-wasm` when [profiling in Chrome DevTools](#profile-wasm). |
-| `--[no-]source-maps` | Enabled | Generates `<output>.wasm.map` to map Wasm instruction offsets back to Dart source files and line numbers. |
-| `--[no-]enable-deferred-loading` | Disabled | Splits `deferred as` imports into separate `<name>_module<id>.wasm` modules loaded on demand. |
-| `--standalone` | Disabled | Emits a standalone Wasm module without JavaScript interop for non-web runtimes such as Wasmtime (disallows [`dart:js_interop`][] and `--enable-deferred-loading`). |
-| `-D<key>=<value>` or `--define` | None | Defines compile-time environment declarations read by `String.fromEnvironment`, `int.fromEnvironment`, or `bool.fromEnvironment`. |
+| `--minify` | `-O2` e superiores | Minifica nomes de runtime (como `runtimeType.toString()`). |
+| `--[no-]strip-wasm` | Habilitado | Remove os nomes estáticos dos símbolos do binário `.wasm` para reduzir o tamanho do download. Passe `--no-strip-wasm` ao [analisar o desempenho no Chrome DevTools](#profile-wasm). |
+| `--[no-]source-maps` | Habilitado | Gera `<output>.wasm.map` para mapear os offsets das instruções Wasm de volta para os arquivos Dart e para as linhas de código. |
+| `--[no-]enable-deferred-loading` | Desabilitado | Divide os imports `deferred as` em módulos `<name>_module<id>.wasm` separados, carregados sob demanda. |
+| `--standalone` | Desabilitado | Gera um módulo Wasm standalone, sem interoperabilidade com JavaScript, para runtimes que não são web, como o Wasmtime (não permite [`dart:js_interop`][] nem `--enable-deferred-loading`). |
+| `-D<key>=<value>` ou `--define` | Nenhum | Define declarações de ambiente em tempo de compilação lidas por `String.fromEnvironment`, `int.fromEnvironment` ou `bool.fromEnvironment`. |
 
 {:.table .table-striped}
 
-### Detect Wasm compilation in Dart code {:#detecting-wasm-compilation}
+### Detectar a compilação Wasm no código Dart {:#detecting-wasm-compilation}
 
-When compiling with `dart2wasm`, the compiler automatically defines
-`dart.tool.dart2wasm` as `true` in the compile-time environment:
+Ao compilar com `dart2wasm`, o compilador define automaticamente
+`dart.tool.dart2wasm` como `true` no ambiente de compilação:
 
 <?code-excerpt "misc/lib/development/environment_declarations.dart (wasm-check)"?>
 ```dart
@@ -209,18 +210,18 @@ const bool isRunningAsWasm = bool.fromEnvironment('dart.tool.dart2wasm');
 
 ### Deferred loading {:#deferred-loading}
 
-By default, compiled applications load as a single `.wasm` module. For large
-applications, pass `--enable-deferred-loading` to split
-[deferred libraries][deferred loading] into separate `<name>_module<id>.wasm`
-files:
+Por padrão, as aplicações compiladas são carregadas como um único módulo `.wasm`.
+Para aplicações grandes, passe `--enable-deferred-loading` para dividir as
+[bibliotecas deferidas][deferred loading] em arquivos `<name>_module<id>.wasm`
+separados:
 
 ```console
 $ dart compile wasm -O2 --enable-deferred-loading web/main.dart -o site/main.wasm
 ```
 
-When you enable deferred loading, your application loader must provide a
-`loadDeferredModules` callback to `app.instantiate()` that fetches and loads
-the deferred module bytes:
+Quando você habilita o deferred loading, o carregador da sua aplicação precisa
+fornecer um callback `loadDeferredModules` para `app.instantiate()`, que busca e
+carrega os bytes dos módulos deferidos:
 
 ```js
 import { compileStreaming } from './main.mjs';
@@ -236,134 +237,134 @@ const instantiatedApp = await app.instantiate({}, {
 instantiatedApp.invokeMain();
 ```
 
-## How `dart2wasm` works {:#architecture-and-wasmgc}
+## Como o `dart2wasm` funciona {:#architecture-and-wasmgc}
 
-The `dart2wasm` ahead-of-time (AOT) compiler translates Dart source code into
-compact WebAssembly bytecode that integrates directly with the browser's native
-garbage collector and string runtime.
+O compilador AOT (ahead-of-time) `dart2wasm` traduz o código-fonte Dart em um
+bytecode WebAssembly compacto, que se integra diretamente ao coletor de lixo
+nativo e ao runtime de strings do navegador.
 
-### The `dart2wasm` AOT compilation pipeline {:#compilation-pipeline}
+### O pipeline de compilação AOT do `dart2wasm` {:#compilation-pipeline}
 
-When you run `dart compile wasm`, the `dart2wasm` compiler executes four
-sequential phases:
+Quando você executa `dart compile wasm`, o compilador `dart2wasm` executa
+quatro fases sequenciais:
 
 1. **`cfe` (Common Front End)**:
-   Parses Dart source code, enforces sound null safety, and applies modular
-   kernel transformations into a `.dill` kernel abstract syntax tree (AST).
+   Analisa o código-fonte Dart, aplica a null safety sólida e transformações
+   modulares do kernel, gerando uma árvore de sintaxe abstrata (AST) de kernel
+   em um arquivo `.dill`.
 1. **`tfa` (Type Flow Analysis)**:
-   Performs closed-world whole-program analysis, tree-shaking unreachable code,
-   devirtualizing method calls, and inferring concrete types and unboxing
-   opportunities.
-1. **`codegen` (Wasm code generation)**:
-   Translates the optimized Dart kernel into WebAssembly instructions and
-   WasmGC struct and array type definitions, emitting `<name>.wasm`, the
-   `<name>.mjs` JavaScript runtime loader, and `<name>.wasm.map`.
-1. **`opt` (Binaryen optimization)**:
-   Runs `wasm-opt` (at `-O1` and higher) to optimize Wasm instruction sequences
-   and shrink binary size.
+   Executa uma análise de programa inteiro em mundo fechado, removendo o código
+   inalcançável (tree shaking), desvirtualizando chamadas de método e inferindo
+   tipos concretos e oportunidades de unboxing.
+1. **`codegen` (geração de código Wasm)**:
+   Traduz o kernel Dart otimizado em instruções WebAssembly e em definições de
+   tipos structs e arrays do WasmGC, emitindo `<name>.wasm`, o loader de runtime
+   JavaScript `<name>.mjs` e `<name>.wasm.map`.
+1. **`opt` (otimização com Binaryen)**:
+   Executa o `wasm-opt` (em `-O1` e superiores) para otimizar as sequências de
+   instruções Wasm e reduzir o tamanho do binário.
 
-### WebAssembly standards used by Dart {:#wasm-standards}
+### Padrões de WebAssembly usados pelo Dart {:#wasm-standards}
 
-The `dart2wasm` compiler targets standardized WebAssembly proposals to
-minimize binary size and runtime overhead:
+O compilador `dart2wasm` tem como alvo propostas padronizadas de WebAssembly
+para minimizar o tamanho do binário e o overhead de execução:
 
 * **WebAssembly Garbage Collection (WasmGC)**:
-  Maps Dart objects, classes, and collections directly to native
-  garbage-collected heap structures managed by the browser engine (such as V8
-  in Chrome). Because `dart2wasm` doesn't ship a custom linear-memory allocator
-  or duplicate garbage collector alongside the browser's garbage collector,
-  modules are smaller and avoid cross-heap memory cycles.
+  Mapeia objetos, classes e coleções do Dart diretamente para estruturas de heap
+  com coleta de lixo nativa, gerenciadas pelo motor do navegador (como o V8, no
+  Chrome). Como o `dart2wasm` não traz um alocador de memória linear próprio nem
+  um coletor de lixo duplicado junto ao coletor do navegador, os módulos ficam
+  menores e evitam ciclos de memória entre heaps.
 * **JS String Builtins (`wasm:js-string`)**:
-  Lets Wasm modules use native JavaScript string operations and pass
-  strings across the JavaScript and Wasm boundary without expensive UTF-8 or
-  UTF-16 transcoding copies.
+  Permite que os módulos Wasm usem operações nativas de string do JavaScript e
+  passem strings entre a fronteira JavaScript e Wasm sem cópias caras de
+  transcodificação UTF-8 ou UTF-16.
 * **Exception Handling (Phase 4)**:
-  Uses native WebAssembly exception tags (`try_table` and `exnref`) for
-  low-overhead `try` and `catch` handling and stack trace generation.
+  Usa tags de exceção nativas do WebAssembly (`try_table` e `exnref`) para
+  tratamento de `try` e `catch` com baixo overhead e para a geração de stack traces.
 
-### Performance benefits over JavaScript {:#why-wasm-improves-performance}
+### Ganhos de desempenho em relação ao JavaScript {:#why-wasm-improves-performance}
 
-Compiling to WebAssembly improves startup latency and frame consistency
-compared to compiling to JavaScript (`dart2js`):
+Compilar para WebAssembly melhora a latência de inicialização e a consistência
+dos frames em comparação com a compilação para JavaScript (`dart2js`):
 
-* **Eliminates JS parse and JIT evaluation bottlenecks**:
-  Large JavaScript bundles require the browser to download text, parse source
-  tokens into an AST, and run multi-tier JIT compilation on the main thread
-  before interactive rendering stabilizes.
-* **Streaming background compilation**:
-  Browsers compile compact binary `.wasm` bytecode across background threads
-  while the network response streams (`WebAssembly.compileStreaming`).
-* **Predictable execution from the first frame**:
-  Closed-world AOT compilation and static dispatch tables deliver consistent
-  execution times without waiting for JIT warm-up or suffering deoptimization
-  bailouts.
+* **Elimina gargalos de parse e de avaliação JIT do JS**:
+  Bundles grandes de JavaScript exigem que o navegador baixe o texto, converta os
+  tokens em uma AST e execute uma compilação JIT multinível na thread principal
+  antes que a renderização interativa se estabilize.
+* **Compilação em segundo plano por streaming**:
+  Os navegadores compilam o bytecode binário compacto `.wasm` em threads de
+  segundo plano enquanto a resposta da rede chega em stream
+  (`WebAssembly.compileStreaming`).
+* **Execução previsível desde o primeiro frame**:
+  A compilação AOT em mundo fechado e as tabelas de despacho estático entregam
+  tempos de execução consistentes, sem esperar pelo aquecimento do JIT nem sofrer
+  bailouts de deoptimization.
 
-## Profile Wasm performance and footprint {:#profile-wasm}
+## Analise o desempenho e o tamanho do Wasm {:#profile-wasm}
 
-Before deploying,
-profile your compiled app in [Chrome DevTools][]
-to verify [Core Web Vitals][]
-and inspect your `.wasm` download and memory footprint.
+Antes de fazer o deploy, analise sua aplicação compilada no [Chrome DevTools][]
+para verificar os [Core Web Vitals][] e inspecionar o download do `.wasm` e o
+uso de memória.
 
-### Measure Core Web Vitals (LCP, INP, and CLS) {:#measure-core-web-vitals}
+### Meça os Core Web Vitals (LCP, INP e CLS) {:#measure-core-web-vitals}
 
-By default, `dart compile wasm` strips the WebAssembly `name` custom section,
-so functions appear as numeric indices in CPU traces.
-To keep readable Dart function and class names
-without disabling production optimizations,
-compile with the `-O2` and `--no-strip-wasm` flags:
+Por padrão, o `dart compile wasm` remove a seção de nomes customizada
+(`name`) do WebAssembly, então as funções aparecem como índices numéricos nos
+traces de CPU. Para manter os nomes legíveis de funções e classes do Dart sem
+desabilitar as otimizações de produção, compile com as flags `-O2` e
+`--no-strip-wasm`:
 
 ```console
 $ dart compile wasm -O2 --no-strip-wasm web/main.dart -o site/main.wasm
 ```
 
 :::note
-Use `--no-strip-wasm` only for local or staging profiling builds.
-Retaining symbol names increases `.wasm` file size,
-so omit `--no-strip-wasm` for your final release build
-and when measuring network transfer size.
+Use `--no-strip-wasm` apenas em builds de profiling locais ou de staging.
+Manter os nomes dos símbolos aumenta o tamanho do arquivo `.wasm`, então omita
+`--no-strip-wasm` no build final de release e ao medir o tamanho transferido pela rede.
 :::
 
-Record a trace in the [Chrome DevTools Performance panel][]
-to evaluate [Core Web Vitals][] and verify that `main.mjs` and `main.wasm`
-fetch in parallel without main-thread long tasks or frequent Wasm-to-JS
-interop calls. For general browser debugging setup, refer to
-[Debugging Dart web apps][].
+Grave um trace no [painel Performance do Chrome DevTools][Chrome DevTools Performance panel]
+para avaliar os [Core Web Vitals][] e verificar se `main.mjs` e `main.wasm` são
+buscados em paralelo, sem tarefas longas na thread principal nem chamadas
+frequentes de interop de Wasm para JS. Para a configuração geral de depuração no
+navegador, consulte [Depurando aplicações web Dart][Debugging Dart web apps].
 
-### Inspect Wasm module size and memory {:#inspect-wasm-footprint}
+### Inspecione o tamanho e a memória do módulo Wasm {:#inspect-wasm-footprint}
 
-Use the Chrome DevTools **Network** and **Memory** panels to check wire size
-and runtime heap usage:
+Use os painéis **Network** e **Memory** do Chrome DevTools para verificar o
+tamanho transferido e o uso de heap em runtime:
 
-* **Network transfer size**:
-  Compile a stripped production build (`dart compile wasm -O2`, without the
-  `--no-strip-wasm` flag) and use the [Chrome DevTools Network panel][]
-  to compare compressed transfer size (`br` or `gzip`) against uncompressed
-  size and confirm the `Content-Type: application/wasm` response header. If
-  initial `.wasm` size delays load, split routes with the
-  `--enable-deferred-loading` flag (refer to
-  [Deferred loading](#deferred-loading)).
-* **Runtime WasmGC heap**:
-  Because `dart2wasm` compiles Dart objects to native WasmGC structs and
-  arrays managed by V8's garbage collector (rather than an opaque
-  linear-memory `ArrayBuffer`), live Dart instances appear directly in
-  JavaScript heap profiles. Compile with the `--no-strip-wasm` flag so WasmGC
-  type and field names remain readable when [recording heap snapshots][].
+* **Tamanho transferido pela rede**:
+  Compile um build de produção sem símbolos (`dart compile wasm -O2`, sem a flag
+  `--no-strip-wasm`) e use o [painel Network do Chrome DevTools][Chrome DevTools Network panel]
+  para comparar o tamanho comprimido transferido (`br` ou `gzip`) com o tamanho
+  descomprimido e confirmar o cabeçalho de resposta `Content-Type: application/wasm`.
+  Se o tamanho inicial do `.wasm` atrasa o carregamento, divida as rotas com a
+  flag `--enable-deferred-loading` (consulte [Deferred loading](#deferred-loading)).
+* **Heap do WasmGC em runtime**:
+  Como o `dart2wasm` compila objetos Dart para structs e arrays nativos do WasmGC,
+  gerenciados pelo coletor de lixo do V8 (e não por um `ArrayBuffer` opaco de
+  memória linear), as instâncias Dart vivas aparecem diretamente nos perfis de
+  heap do JavaScript. Compile com a flag `--no-strip-wasm` para que os nomes de
+  tipos e campos do WasmGC continuem legíveis ao [gravar snapshots do heap][recording heap snapshots].
 
-## Deploy Wasm in production {:#production-deployment}
+## Faça o deploy do Wasm em produção {:#production-deployment}
 
-To get the full startup and runtime benefits of WebAssembly in production,
-configure your web server and release pipeline to stream, compress, and cache
-`.wasm` modules and provide a JavaScript fallback for older browsers. Refer to
-[Serve WebAssembly in production][serving-wasm] in the web deployment guide
-for complete instructions on the following tasks:
+Para obter todos os benefícios de inicialização e de runtime do WebAssembly em
+produção, configure seu servidor web e seu pipeline de release para transmitir,
+comprimir e armazenar em cache os módulos `.wasm`, além de fornecer um fallback em
+JavaScript para navegadores mais antigos. Consulte
+[Serve WebAssembly em produção][serving-wasm] no guia de deploy para a web e veja
+as instruções completas para as tarefas a seguir:
 
-* Serving `.wasm` files with the `Content-Type: application/wasm` header.
-* Preloading `.mjs` and `.wasm` assets in parallel for streaming compilation.
-* Pre-compressing `.wasm` binaries with Brotli (`brotli -q 11`) and Gzip.
-* Configuring content-hashed immutable caching, atomic `.mjs` and `.wasm`
-  deployments, and V8 Wasm code caching.
-* Providing a `dart2js` fallback pathway for older browsers.
+* Servir os arquivos `.wasm` com o cabeçalho `Content-Type: application/wasm`.
+* Pré-carregar os assets `.mjs` e `.wasm` em paralelo para a compilação em streaming.
+* Pré-comprimir os binários `.wasm` com Brotli (`brotli -q 11`) e Gzip.
+* Configurar cache imutável com hash de conteúdo, deploys atômicos de `.mjs` e
+  `.wasm` e cache de código Wasm da V8.
+* Fornecer um caminho de fallback com `dart2js` para navegadores mais antigos.
 
 [wasm-org]: https://webassembly.org/
 [Flutter]: {{site.flutter}}/wasm
