@@ -44,7 +44,7 @@ jobs:
       branch: ${{ steps.sync.outputs.branch }}
       resumo: ${{ steps.sync.outputs.resumo }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -132,7 +132,7 @@ jobs:
       issues: write
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.preparar.outputs.branch }}
           fetch-depth: 0
