@@ -1,95 +1,95 @@
 - question: >-
-    What is the purpose of the `logging` package in Dart?
+    Qual é a finalidade do pacote `logging` em Dart?
   options:
     - text: >-
-        To provide a way to record events and errors in your application.
+        Oferecer uma forma de registrar eventos e erros na sua aplicação.
       correct: true
       explanation: >-
-        The `logging` package provides a flexible system
-        for recording events, warnings, errors,
-        and other messages during application execution.
+        O pacote `logging` oferece um sistema flexível
+        para registrar eventos, avisos, erros
+        e outras mensagens durante a execução da aplicação.
     - text: >-
-        To handle HTTP requests.
+        Tratar requisições HTTP.
       correct: false
       explanation: >-
-        HTTP requests are handled by `package:http`.
-        The `logging` package serves a different purpose.
+        Requisições HTTP são tratadas pelo `package:http`.
+        O pacote `logging` tem outra finalidade.
     - text: >-
-        To manage dependencies in your project.
+        Gerenciar dependências do projeto.
       correct: false
       explanation: >-
-        Dependencies are managed in `pubspec.yaml`.
-        The `logging` package is about runtime behavior, not project setup.
+        As dependências são gerenciadas no `pubspec.yaml`.
+        O pacote `logging` trata do comportamento em tempo de execução, e não da configuração do projeto.
     - text: >-
-        To create a command-line interface.
+        Criar uma interface de linha de comando.
       correct: false
       explanation: >-
-        CLI creation uses packages like `args` or custom code.
-        The `logging` package helps with a different aspect of applications.
+        A criação de CLIs usa pacotes como `args` ou código próprio.
+        O pacote `logging` ajuda em outro aspecto das aplicações.
 - question: >-
-    After creating a `Logger` instance,
-    how do you actually write its log messages to a file or the console?
+    Depois de criar uma instância de `Logger`,
+    como você realmente grava as mensagens de log em um arquivo ou no console?
   options:
     - text: >-
-        Subscribe to `logger.onRecord.listen(...)` and handle each `LogRecord`
-        inside the callback.
+        Assine `logger.onRecord.listen(...)` e trate cada `LogRecord`
+        dentro do callback.
       correct: true
       explanation: >-
-        A `Logger` emits `LogRecord` events on its `onRecord` stream
-        rather than writing output directly.
-        Listening to `onRecord` lets you format and send logs wherever
-        you need, such as a file or the terminal.
+        Um `Logger` emite eventos `LogRecord` pelo stream `onRecord`,
+        em vez de gravar a saída diretamente.
+        Assinar `onRecord` permite formatar e enviar os logs para onde você precisar,
+        como um arquivo ou o terminal.
     - text: >-
-        Pass a file path directly to the `Logger('errors', path: ...)`
-        constructor.
+        Passe um caminho de arquivo diretamente para o construtor
+        `Logger('errors', path: ...)`.
       correct: false
       explanation: >-
-        The `Logger` constructor only takes a logger name.
-        Output destinations are configured separately by listening
-        to log events.
+        O construtor de `Logger` recebe apenas o nome do logger.
+        Os destinos de saída são configurados separadamente, ao assinar
+        os eventos de log.
     - text: >-
-        Set `logger.level = Level.ALL;` to automatically print all records.
+        Defina `logger.level = Level.ALL;` para imprimir automaticamente todos os registros.
       correct: false
       explanation: >-
-        Setting `level` controls which severity levels are recorded,
-        not where log messages are written.
-        Without a listener, recorded messages aren't output anywhere.
+        `level` controla quais níveis de severidade são registrados,
+        e não para onde as mensagens são gravadas.
+        Sem um listener, as mensagens registradas não são exibidas em lugar nenhum.
     - text: >-
-        Nothing extra is needed; `Logger` writes to a `logs/` folder by default.
+        Nada extra é necessário; o `Logger` grava em uma pasta `logs/` por padrão.
       correct: false
       explanation: >-
-        `package:logging` doesn't create files or print output automatically.
-        You have to attach a listener to handle incoming `LogRecord` events.
+        `package:logging` não cria arquivos nem imprime saída automaticamente.
+        Você precisa anexar um listener para tratar os eventos `LogRecord` recebidos.
 - question: >-
-    This lesson uses `logger.severe()`, `logger.warning()`, and `logger.info()`.
-    Why use different log levels instead of just `print()`?
+    Esta lição usa `logger.severe()`, `logger.warning()` e `logger.info()`.
+    Por que usar níveis de log diferentes em vez de apenas `print()`?
   options:
     - text: >-
-        You can filter logs by severity,
-        showing only warnings and errors in production
-        while seeing everything during development.
+        Você pode filtrar os logs por severidade,
+        mostrando só avisos e erros em produção
+        enquanto vê tudo durante o desenvolvimento.
       correct: true
       explanation: >-
-        Log levels let you set a threshold.
-        In production, you might only log warnings and above,
-        while in development you see info and debug messages too.
+        Os níveis de log permitem definir um limite.
+        Em produção, você pode registrar apenas avisos e níveis superiores,
+        enquanto no desenvolvimento também vê mensagens de info e debug.
     - text: >-
-        Different levels use different colors in the console.
+        Níveis diferentes usam cores diferentes no console.
       correct: false
       explanation: >-
-        Colors are a presentation choice, not the core reason.
-        The real benefit is more fundamental than appearance.
+        Cores são uma escolha de apresentação, e não o motivo principal.
+        O benefício real é mais fundamental do que a aparência.
     - text: >-
-        Each level writes to a different file automatically.
+        Cada nível grava automaticamente em um arquivo diferente.
       correct: false
       explanation: >-
-        File destinations must be configured separately.
-        Levels don't automatically determine where logs are stored.
+        Os destinos de arquivo precisam ser configurados separadamente.
+        Os níveis não determinam automaticamente onde os logs são armazenados.
     - text: >-
-        Using levels is required by Dart.
-        `print()` doesn't work in production.
+        O uso de níveis é obrigatório no Dart.
+        O `print()` não funciona em produção.
       correct: false
       explanation: >-
-        `print()` works everywhere in Dart.
-        Levels are optional but provide significant advantages
-        that `print()` can't offer.
+        O `print()` funciona em qualquer lugar no Dart.
+        Os níveis são opcionais, mas oferecem vantagens importantes
+        que o `print()` não consegue oferecer.

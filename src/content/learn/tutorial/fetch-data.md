@@ -1,84 +1,85 @@
 ---
-title: Fetch data from the internet
-shortTitle: HTTP requests
+ia-translate: true
+title: Busque dados da internet
+shortTitle: Requisições HTTP
 description: >-
-  Refactor your application to use a robust, production-ready
-  API client for the Wikipedia CLI.
+  Refatore seu aplicativo para usar um cliente de API robusto e pronto
+  para produção no CLI da Wikipedia.
 layout: learn
 ---
 
-In Chapter 3, you used the `http` package to make a simple request.
-Now, you'll revisit HTTP to
-build a robust, production-ready API client within the `wikipedia` package.
-You'll learn how to handle query parameters,
-map JSON responses to your data models, and
-export these functions for use in your CLI.
+No Capítulo 3, você usou o pacote `http` para fazer uma requisição simples.
+Agora, você vai revisitar o HTTP para
+construir um cliente de API robusto e pronto para produção dentro do pacote `wikipedia`.
+Você vai aprender como lidar com parâmetros de consulta,
+mapear respostas JSON para seus modelos de dados e
+exportar essas funções para uso na sua CLI.
 
 <SummaryCard>
-title: What you'll accomplish
+title: O que você vai realizar
 items:
-  - title: Construct complex URIs with query parameters
+  - title: Construir URIs complexas com parâmetros de consulta
     icon: link
-  - title: Create a production-ready HTTP API client
+  - title: Criar um cliente de API HTTP pronto para produção
     icon: cloud_download
-  - title: Export functions and types for reuse
+  - title: Exportar funções e tipos para reutilização
     icon: export_notes
 </SummaryCard>
 
-## Prerequisites
+## Pré-requisitos {:#prerequisites}
 
-Before you begin this chapter, ensure you:
+Antes de começar este capítulo, certifique-se de:
 
--   Have completed Chapter 11 and have a
-    working Dart development environment with the `dartpedia` project.
--   Understand basic networking concepts (like APIs and HTTP requests).
--   Understand basic data serialization formats such as JSON.
+-   Ter concluído o Capítulo 11 e ter um
+    ambiente de desenvolvimento Dart funcionando com o projeto `dartpedia`.
+-   Entender conceitos básicos de redes (como APIs e requisições HTTP).
+-   Entender formatos básicos de serialização de dados, como JSON.
 
-## Tasks
+## Tarefas {:#tasks}
 
-In this chapter, you'll move beyond simple scripts and
-implement a proper API layer.
-You'll work within the `wikipedia` package to
-implement the API client logic, which
-improves your application's scalability and maintainability.
+Neste capítulo, você vai deixar de lado os scripts simples e
+implementar uma camada de API adequada.
+Você vai trabalhar dentro do pacote `wikipedia` para
+implementar a lógica do cliente de API, o que
+melhora a escalabilidade e a manutenibilidade do seu aplicativo.
 
-### Task 1: Add the http dependency to the wikipedia package
+### Tarefa 1: Adicione a dependência http ao pacote wikipedia {:#task-1-add-the-http-dependency-to-the-wikipedia-package}
 
-To make HTTP requests, you need to
-add the `http` package as a dependency to the `wikipedia` package.
+Para fazer requisições HTTP, você precisa
+adicionar o pacote `http` como dependência do pacote `wikipedia`.
 
-1.  Open the `wikipedia/pubspec.yaml` file within your project.
+1.  Abra o arquivo `wikipedia/pubspec.yaml` no seu projeto.
 
-1.  Locate the `dependencies` section.
+1.  Localize a seção `dependencies`.
 
-1.  Add `http: ^1.3.0` (or the latest stable version) under `dependencies`.
+1.  Adicione `http: ^1.3.0` (ou a versão estável mais recente) em `dependencies`.
 
     ```yaml title="wikipedia/pubspec.yaml"
     dependencies:
       http: ^1.3.0
     ```
 
-1.  Save the `pubspec.yaml` file.
+1.  Salve o arquivo `pubspec.yaml`.
 
-1.  Run `dart pub get` in your terminal from the `wikipedia` directory.
+1.  Execute `dart pub get` no terminal, a partir do diretório `wikipedia`.
 
-### Task 2: Implement Wikipedia API calls
+### Tarefa 2: Implemente as chamadas à API da Wikipedia {:#task-2-implement-wikipedia-api-calls}
 
-Next, you'll create the API functions to fetch data from Wikipedia.
-You'll create three files:
+Em seguida, você vai criar as funções de API para buscar dados da Wikipedia.
+Você vai criar três arquivos:
 
 - `summary.dart`:
-  This file will contain functions for retrieving article summaries.
+  este arquivo vai conter funções para recuperar resumos de artigos.
 - `search.dart`:
-  This file will handle search queries to find articles.
+  este arquivo vai tratar as consultas de busca para encontrar artigos.
 - `get_article.dart`:
-  This file will contain functions for fetching the full content of an article.
+  este arquivo vai conter funções para buscar o conteúdo completo de um artigo.
 
-1.  Create the directory `wikipedia/lib/src/api`.
+1.  Crie o diretório `wikipedia/lib/src/api`.
 
-1.  Create the file `wikipedia/lib/src/api/summary.dart`.
+1.  Crie o arquivo `wikipedia/lib/src/api/summary.dart`.
 
-1.  Add the following code to `wikipedia/lib/src/api/summary.dart`:
+1.  Adicione o seguinte código em `wikipedia/lib/src/api/summary.dart`:
 
     ```dart title="wikipedia/lib/src/api/summary.dart"
     import 'dart:convert';
@@ -125,25 +126,26 @@ You'll create three files:
     }
     ```
 
-    This code defines two functions,
-    `getRandomArticleSummary` and `getArticleSummaryByTitle`,
-    that build on the basic HTTP request you wrote in Chapter 3:
+    Este código define duas funções,
+    `getRandomArticleSummary` e `getArticleSummaryByTitle`,
+    que se baseiam na requisição HTTP básica que você escreveu no Capítulo 3:
 
-    - **`getRandomArticleSummary` and `getArticleSummaryByTitle`:**
-      Fetch a random article summary or a specific summary by interpolating
-      `articleTitle` into the endpoint path.
-    - **Typed JSON parsing:**
-      Instead of returning a raw JSON string, both functions decode
-      `response.body` with `jsonDecode` and pass the map to
-      `Summary.fromJson` to return a strongly typed `Summary` object.
-    - **Explicit failure handling:**
-      When `response.statusCode` isn't `200`, the functions throw an
-      `HttpException` (from `dart:io`) rather than returning an error string,
-      so callers can catch and handle failed requests with `try`/`catch`.
+    - **`getRandomArticleSummary` e `getArticleSummaryByTitle`:**
+      Buscam o resumo de um artigo aleatório ou de um título específico,
+      inserindo `articleTitle` no caminho do endpoint.
+    - **Decodificação de JSON tipada:**
+      Em vez de retornar uma string JSON bruta, as duas funções decodificam
+      `response.body` com `jsonDecode` e passam o `Map` para
+      `Summary.fromJson`, retornando um objeto `Summary` fortemente tipado.
+    - **Tratamento explícito de falhas:**
+      Quando `response.statusCode` não é `200`, as funções lançam uma
+      `HttpException` (de `dart:io`) em vez de retornar uma string de erro,
+      para que quem chama possa capturar e tratar as requisições que falharam
+      com `try`/`catch`.
 
-1.  Next create the file `wikipedia/lib/src/api/search.dart`.
+1.  Em seguida, crie o arquivo `wikipedia/lib/src/api/search.dart`.
 
-1.  Add the following code to `wikipedia/lib/src/api/search.dart`:
+1.  Adicione o seguinte código em `wikipedia/lib/src/api/search.dart`:
 
     ```dart title="wikipedia/lib/src/api/search.dart"
     import 'dart:convert';
@@ -178,22 +180,22 @@ You'll create three files:
     }
     ```
 
-    This code defines the `search` function, which queries Wikipedia's
-    `opensearch` endpoint and returns a `SearchResults` object:
+    Este código define a função `search`, que consulta o endpoint
+    `opensearch` da Wikipedia e retorna um objeto `SearchResults`:
 
-    - **Query parameters:**
-      `Uri.https` accepts an optional third argument—a `Map` of query
-      parameters (`action`, `format`, and `search`).
-      Dart automatically formats these key-value pairs onto the URL and
-      URL-encodes special characters like spaces in `searchTerm`.
-    - **List decoding:**
-      Because the `opensearch` endpoint returns a top-level JSON array,
-      `jsonDecode(response.body)` is cast to `List<Object?>` before passing
-      it to `SearchResults.fromJson`.
+    - **Parâmetros de consulta:**
+      `Uri.https` aceita um terceiro argumento opcional, um `Map` com os
+      parâmetros de consulta (`action`, `format` e `search`).
+      O Dart formata esses pares chave-valor na URL e codifica caracteres
+      especiais, como os espaços em `searchTerm`, para URL.
+    - **Decodificação de lista:**
+      Como o endpoint `opensearch` retorna um array JSON no nível mais alto,
+      `jsonDecode(response.body)` é convertido para `List<Object?>` antes de ser
+      passado para `SearchResults.fromJson`.
 
-1.  Create the file `wikipedia/lib/src/api/get_article.dart`.
+1.  Crie o arquivo `wikipedia/lib/src/api/get_article.dart`.
 
-1.  Add the following code to `wikipedia/lib/src/api/get_article.dart`:
+1.  Adicione o seguinte código em `wikipedia/lib/src/api/get_article.dart`:
 
     ```dart title="wikipedia/lib/src/api/get_article.dart"
     import 'dart:convert';
@@ -231,21 +233,21 @@ You'll create three files:
     }
     ```
 
-    This code defines `getArticleByTitle`, which passes query parameters to
-    `/w/api.php` (using `title.trim()` to strip accidental leading or trailing
-    whitespace) and parses the response into a `List<Article>` using
+    Este código define `getArticleByTitle`, que passa parâmetros de consulta para
+    `/w/api.php` (usando `title.trim()` para remover espaços em branco acidentais
+    no início ou no fim) e converte a resposta em uma `List<Article>` usando
     `Article.listFromJson`.
 
-### Task 3: Export the API functions
+### Tarefa 3: Exporte as funções de API {:#task-3-export-the-api-functions}
 
-Now that you've created the API functions,
-export them and your existing models from the `wikipedia` library
-so that the `cli` package can import and use them.
+Agora que você criou as funções de API,
+exporte-as, junto com os seus modelos existentes, da biblioteca `wikipedia`
+para que o pacote `cli` possa importar e usar tudo isso.
 
-1.  Open the `wikipedia/lib/wikipedia.dart` file.
+1.  Abra o arquivo `wikipedia/lib/wikipedia.dart`.
 
-1.  Replace the generated placeholder code in the file with the following
-    `export` statements:
+1.  Substitua o código de exemplo gerado no arquivo pelas seguintes
+    declarações `export`:
 
     ```dart title="wikipedia/lib/wikipedia.dart"
     export 'src/api/get_article.dart';
@@ -257,71 +259,69 @@ so that the `cli` package can import and use them.
     export 'src/model/title_set.dart';
     ```
 
-    These `export` statements make the API functions and models available to
-    other packages that depend on the `wikipedia` package.
+    Essas declarações `export` tornam as funções de API e os modelos disponíveis para
+    outros pacotes que dependem do pacote `wikipedia`.
 
-### Task 4: Verify with tests
+### Tarefa 4: Verifique com testes {:#task-4-verify-with-tests}
 
-Now that you've implemented the API functions and
-updated the package dependencies,
-run the tests you created in the previous chapter to confirm that
-your changes haven't broken existing functionality in `wikipedia`.
+Agora que você implementou as funções de API e atualizou as
+dependências do pacote, execute os testes que você criou no capítulo
+anterior para confirmar que suas mudanças não quebraram a funcionalidade
+existente no pacote `wikipedia`.
 
-1.  Open your terminal and navigate to the `wikipedia/test` directory.
+1.  Abra o terminal e navegue até o diretório `wikipedia/test`.
 
-1.  Remove the default test file by running `rm wikipedia_test.dart`
-    (on macOS or Linux) or `del wikipedia_test.dart` (on Windows).
-    `dart create` generated this file automatically to test the placeholder
-    code you just replaced, so your project no longer needs it.
+1.  Remova o arquivo de teste padrão executando `rm wikipedia_test.dart`
+    (no macOS ou Linux) ou `del wikipedia_test.dart` (no Windows).
+    O `dart create` gerou esse arquivo automaticamente para testar o código de
+    exemplo que você acabou de substituir, então o projeto não precisa mais dele.
 
-1.  Navigate back to the `wikipedia` directory.
+1.  Volte ao diretório `wikipedia`.
 
-1.  Run `dart test`.
+1.  Execute `dart test`.
 
-    You'll see output similar to the following,
-    confirming that all your model tests pass:
+    Você deve ver uma saída parecida com esta,
+    confirmando que todos os seus testes de modelo passam:
 
     ```bash
     00:02 +3: All tests passed!
     ```
 
-    This confirms that the `wikipedia` package is working as expected.
+    Isso confirma que o pacote `wikipedia` está funcionando como esperado.
 
-## Review
+## Revisão {:#review}
 
 <SummaryCard>
-title: What you accomplished
-subtitle: Here's a summary of what you built and learned in this lesson.
+title: O que você realizou
+subtitle: Veja um resumo do que você construiu e aprendeu nesta lição.
 completed: true
 items:
-  - title: Constructed complex URIs with query parameters
+  - title: Construiu URIs complexas com parâmetros de consulta
     icon: link
     details: >-
-      You used `Uri.https()` with a query parameter map to construct API URLs.
-      This approach properly encodes special characters and
-      handles complex query parameter combinations.
-  - title: Created a production-ready API client
+      Você usou `Uri.https()` com um mapa de parâmetros de consulta para montar
+      as URLs da API. Essa abordagem codifica corretamente os caracteres especiais e
+      lida com combinações complexas de parâmetros.
+  - title: Criou um cliente de API pronto para produção
     icon: cloud_download
     details: >-
-      You implemented API functions that check HTTP status codes,
-      throw an `HttpException` on failed requests, and
-      map raw JSON responses to typed Dart objects.
-  - title: Exported functions and types for reuse
+      Você implementou funções que verificam os códigos de status HTTP,
+      lançam uma `HttpException` em requisições com falha e
+      mapeiam as respostas JSON brutas para objetos Dart tipados.
+  - title: Exportou funções e tipos para reutilização
     icon: export_notes
     details: >-
-      You added export statements in `wikipedia.dart` to
-      expose both the API functions and data model types.
-      This creates a public library that your
-      `cli` package can import and use directly.
+      Você adicionou declarações export em `wikipedia.dart` para
+      expor tanto as funções de API quanto os tipos de modelo de dados.
+      Isso cria uma biblioteca pública que o seu
+      pacote `cli` pode importar e usar diretamente.
 </SummaryCard>
 
-## Quiz
+## Quiz {:#quiz}
 
-<Quiz title="Check your understanding" id="fetch-data" />
+<Quiz title="Confira seu entendimento" id="fetch-data" />
 
-## Next lesson
+## Próxima lição {:#next-lesson}
 
-In the next lesson, you'll complete your CLI application by
-integrating the `wikipedia` package commands with the `cli` package
-and adding logging for debugging and error monitoring.
-
+Na próxima lição, você vai concluir sua CLI integrando os comandos do pacote `wikipedia`
+com o pacote `cli` e adicionando logging para depuração e monitoramento de erros.

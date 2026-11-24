@@ -1,99 +1,96 @@
 - question: >-
-    How do you construct a URL with query parameters using `Uri.https`?
+    Como você monta uma URL com parâmetros de consulta usando `Uri.https`?
   options:
     - text: >-
-        Pass them as a third argument map:
+        Passe-os como um terceiro argumento, um map:
         `Uri.https('api.com', '/search', {'q': 'dart'})`
       correct: true
       explanation: >-
-        The third parameter accepts a `Map<String, dynamic>`
-        of query parameters. Dart handles URL encoding automatically.
+        O terceiro parâmetro aceita um `Map<String, dynamic>`
+        com os parâmetros de consulta. O Dart faz a codificação da URL automaticamente.
     - text: >-
-        Append them to the path string: `Uri.https('api.com', '/search?q=dart')`
+        Acrescente-os à string do caminho: `Uri.https('api.com', '/search?q=dart')`
       correct: false
       explanation: >-
-        Query parameters in the path string work but
-        aren't the cleanest approach.
+        Parâmetros de consulta na string do caminho funcionam, mas
+        não são a abordagem mais limpa.
     - text: >-
-        Use string concatenation: `Uri.https('api.com', '/search') + '?q=dart'`
+        Use concatenação de strings: `Uri.https('api.com', '/search') + '?q=dart'`
       correct: false
       explanation: >-
-        You can't concatenate strings to `Uri` objects using `+`.
-        `Uri` provides a different mechanism for adding query parameters.
+        Não é possível concatenar strings a objetos `Uri` com `+`.
+        `Uri` oferece outro mecanismo para adicionar parâmetros de consulta.
     - text: >-
-        Call `.addQueryParam('q', 'dart')` on the `Uri` object.
+        Chame `.addQueryParam('q', 'dart')` no objeto `Uri`.
       correct: false
       explanation: >-
-        `Uri` objects are immutable and don't have an `addQueryParam` method.
-        Query parameters must be specified differently.
+        Objetos `Uri` são imutáveis e não têm um método `addQueryParam`.
+        Os parâmetros de consulta devem ser especificados de outra forma.
 - question: >-
-    After calling `http.get(url)`,
-    how should you check if the request was successful?
+    Depois de chamar `http.get(url)`,
+    como você deve verificar se a requisição foi bem-sucedida?
   options:
     - text: >-
-        Check if `response.statusCode == 200` (or another success code).
+        Verificar se `response.statusCode == 200` (ou outro código de sucesso).
       correct: true
       explanation: >-
-        HTTP status codes indicate success (200-299)
-        or various failures (400s, 500s).
-        Always check before processing the response body.
+        Os códigos de status HTTP indicam sucesso (200-299)
+        ou diversas falhas (400 e 500).
+        Sempre verifique antes de processar o corpo da resposta.
     - text: >-
-        Check if `response.body` is not empty.
+        Verificar se `response.body` não está vazio.
       correct: false
       explanation: >-
-        An empty body could be valid (like a 204 No Content).
-        The body content alone doesn't tell you if the request succeeded.
+        Um corpo vazio pode ser válido (como um 204 No Content).
+        O conteúdo do corpo, por si só, não diz se a requisição deu certo.
     - text: >-
-        Wrap the call in try/catch as successful requests don't throw.
+        Envolver a chamada em try/catch, já que requisições bem-sucedidas não lançam exceções.
       correct: false
       explanation: >-
-        HTTP errors (such as 404 and 500) don't throw exceptions by default.
-        The request completes normally even when the server returns an error.
+        Erros HTTP (como 404 e 500) não lançam exceções por padrão.
+        A requisição termina normalmente mesmo quando o servidor retorna um erro.
     - text: >-
-        Check if `response.isSuccess` returns true.
+        Verificar se `response.isSuccess` retorna true.
       correct: false
       explanation: >-
-        There's no `isSuccess` property on `Response`.
-        You need to examine a different property of the response object.
+        Não existe uma propriedade `isSuccess` em `Response`.
+        Você precisa consultar outra propriedade do objeto de resposta.
 - question: >-
-    When the Wikipedia API returns a non-200 status code,
-    the lesson's API functions throw an `HttpException`
-    instead of returning an error message string.
-    Why is this a better practice for an API package?
+    Quando a API da Wikipedia retorna um código de status diferente de 200,
+    as funções de API da lição lançam um `HttpException`
+    em vez de retornar uma mensagem de erro em forma de string.
+    Por que essa é uma prática melhor para um pacote de API?
   options:
     - text: >-
-        It separates failure handling from valid data,
-        letting functions return typed models (like `Summary`)
-        while callers handle errors with `try`/`catch`.
+        Ela separa o tratamento de falhas dos dados válidos,
+        permitindo que as funções retornem modelos tipados (como `Summary`)
+        enquanto quem chama trata os erros com `try`/`catch`.
       correct: true
       explanation: >-
-        Returning an error string doesn't fit a return type like
-        `Future<Summary>` and risks treating error text as article data.
-        Throwing an `HttpException` signals failure explicitly so
-        calling code can catch and handle it.
+        Retornar uma string de erro não se encaixa em um tipo de retorno como
+        `Future<Summary>` e corre o risco de tratar o texto do erro como dados do artigo.
+        Lançar um `HttpException` sinaliza a falha explicitamente, para que o código
+        que chama possa capturá-la e tratá-la.
     - text: >-
-        Because `http.get` crashes the Dart runtime
-        if you don't throw an exception on non-200 status codes.
+        Porque `http.get` trava o runtime do Dart se você não lançar uma exceção
+        para códigos de status diferentes de 200.
       correct: false
       explanation: >-
-        `http.get` completes normally with a `Response` object
-        even for 404 or 500 status codes.
-        Throwing `HttpException` is a deliberate design choice,
-        not a runtime requirement.
+        `http.get` termina normalmente com um objeto `Response`, mesmo para os
+        códigos de status 404 ou 500. Lançar `HttpException` é uma escolha de design
+        deliberada, não uma exigência do runtime.
     - text: >-
-        Throwing `HttpException` automatically retries
-        the failed network request up to three times.
+        Porque lançar `HttpException` tenta novamente a requisição de rede
+        que falhou até três vezes automaticamente.
       correct: false
       explanation: >-
-        Throwing an exception stops execution of the function
-        and propagates the failure to the caller;
-        it doesn't retry the request.
+        Lançar uma exceção interrompe a execução da função e propaga a falha
+        para quem chamou; ela não repete a requisição.
     - text: >-
-        Functions marked `async` aren't allowed to return
-        error strings when a network request fails.
+        Porque funções marcadas com `async` não podem retornar strings de erro
+        quando uma requisição de rede falha.
       correct: false
       explanation: >-
-        An `async` function can return any declared type
-        (such as `Future<String>`, as in Chapter 3).
-        Throwing an exception is preferred for type safety
-        and structured error handling, not syntax rules.
+        Uma função `async` pode retornar qualquer tipo declarado (como `Future<String>`,
+        como no Capítulo 3). Lançar uma exceção é preferível por segurança de tipos
+        e tratamento estruturado de erros, não por regras de sintaxe.

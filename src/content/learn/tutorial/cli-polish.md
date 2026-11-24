@@ -1,60 +1,60 @@
 ---
-title: Polish your CLI app
-shortTitle: CLI polish
+ia-translate: true
+title: Polir seu aplicativo CLI
+shortTitle: Polimento do CLI
 description: >-
-  Improve the HelpCommand to provide more detailed information and
-  add an onOutput argument for flexible output handling.
+  Melhore o HelpCommand para fornecer informações mais detalhadas e adicione um
+  argumento onOutput para tratamento flexível da saída.
 layout: learn
 ---
 
-In this chapter, you'll
-put the finishing touches on the `command_runner` package.
-You'll refine the `HelpCommand` to provide more detailed usage information and
-add an `onOutput` argument for more flexible output handling.
-This finalizes the `CommandRunner` package and prepares it for
-use in more complex scenarios.
+Neste capítulo, você vai dar os toques finais no pacote `command_runner`.
+Você vai refinar o `HelpCommand` para fornecer informações de uso mais detalhadas e
+adicionar um argumento `onOutput` para um tratamento de saída mais flexível.
+Isso finaliza o pacote `CommandRunner` e o prepara para uso em
+cenários mais complexos.
 
 <SummaryCard>
-title: What you'll accomplish
+title: O que você vai realizar
 items:
-  - title: Learn how to iteratively build strings
+  - title: Aprenda a construir strings iterativamente
     icon: text_snippet
-  - title: Enhance help usage information
+  - title: Melhore as informações de uso da ajuda
     icon: help
-  - title: Make your command runner more flexible
+  - title: Torne seu executor de comandos mais flexível
     icon: terminal
 </SummaryCard>
 
-## Prerequisites
+## Pré-requisitos {:#prerequisites}
 
-Before you begin this chapter, ensure you:
+Antes de começar este capítulo, certifique-se de que você:
 
-- Have completed Chapter 8 and have a
-  working Dart development environment with the `dartpedia` project.
-- Are familiar with basic programming concepts like
-  variables, functions, and control flow.
-- Understand the concepts of packages and libraries in Dart.
-- Are familiar with object-oriented programming principles like
-  inheritance and abstract classes.
+- Completou o Capítulo 8 e tem um ambiente de desenvolvimento Dart funcionando
+  com o projeto `dartpedia`.
+- Está familiarizado com conceitos básicos de programação, como variáveis, funções e
+  controle de fluxo.
+- Entende os conceitos de pacotes e bibliotecas no Dart.
+- Está familiarizado com princípios de programação orientada a objetos, como herança e
+  classes abstratas.
 
-## Tasks
+## Tarefas {:#tasks}
 
-You will polish the `command_runner` package to
-make it more robust and user-friendly.
+Você vai polir o pacote `command_runner` para torná-lo mais robusto e
+amigável ao usuário.
 
-### Task 1: Improve the `HelpCommand` output
+### Tarefa 1: Melhore a saída do `HelpCommand` {:#task-1-improve-the-helpcommand-output}
 
-Enhance the `HelpCommand` to provide more detailed usage information,
-including options and their descriptions.
-This will make it easier for users to
-understand how to use your CLI application.
+Aprimore o `HelpCommand` para fornecer informações de uso mais detalhadas,
+incluindo opções e suas descrições.
+Isso facilitará para os usuários
+entenderem como usar seu aplicativo CLI.
 
-1.  Open the `command_runner/lib/src/help_command.dart` file.
+1.  Abra o arquivo `command_runner/lib/src/help_command.dart`.
 
-1.  Add imports for `console.dart` and `exceptions.dart` at the top of the file
-    alongside your existing `arguments.dart` import.
-    You need these to use the color extensions and to
-    throw an `ArgumentException`.
+1.  Adicione imports para `console.dart` e `exceptions.dart` no topo do arquivo,
+    junto ao import existente de `arguments.dart`.
+    Você precisa deles para usar as extensões de cor e para lançar uma
+    `ArgumentException`.
 
     ```dart title="command_runner/lib/src/help_command.dart"
     import 'dart:async';
@@ -64,9 +64,9 @@ understand how to use your CLI application.
     import 'exceptions.dart';
     ```
 
-1.  Replace the existing `run` method with the following.
-    This new version uses a `StringBuffer` to efficiently
-    build the help string and includes logic to handle verbose output.
+1.  Substitua o método `run` existente pelo seguinte.
+    Esta nova versão usa um `StringBuffer` para construir a string de ajuda
+    de forma eficiente e inclui lógica para tratar a saída detalhada.
 
     ```dart title="command_runner/lib/src/help_command.dart"
     @override
@@ -107,13 +107,12 @@ understand how to use your CLI application.
     }
     ```
 
-    `StringBuffer` is a Dart class that allows you to efficiently build strings.
-    It's more performant than using the `+` operator,
-    especially when performing many concatenations inside a loop.
+    `StringBuffer` é uma classe Dart que permite construir strings de forma eficiente.
+    Ela tem mais desempenho do que usar o operador `+`,
+    especialmente ao fazer muitas concatenações dentro de um loop.
 
-1.  Add the `_renderCommandVerbose` private helper method to
-    the `HelpCommand` class.
-    This method formats the detailed output for a single command.
+1.  Adicione o método auxiliar privado `_renderCommandVerbose` à classe `HelpCommand`.
+    Este método formata a saída detalhada de um único comando.
 
     ```dart title="command_runner/lib/src/help_command.dart"
     String _renderCommandVerbose(Command cmd) {
@@ -134,15 +133,15 @@ understand how to use your CLI application.
     }
     ```
 
-### Task 2: Add an `onOutput` callback
+### Tarefa 2: Adicione um callback `onOutput` {:#task-2-add-an-onoutput-callback}
 
-Next, add an `onOutput` argument to the `CommandRunner` to
-allow for flexible output handling.
+Em seguida, adicione um argumento `onOutput` ao `CommandRunner` para permitir
+um tratamento de saída flexível.
 
-1.  Open the `command_runner/lib/src/command_runner_base.dart` file.
+1.  Abra o arquivo `command_runner/lib/src/command_runner_base.dart`.
 
-1.  Add the `onOutput` argument to the `CommandRunner` constructor, and
-    add the corresponding `onOutput` member to the class.
+1.  Adicione o argumento `onOutput` ao construtor `CommandRunner` e adicione o
+    membro `onOutput` correspondente à classe.
 
     ```dart title="command_runner/lib/src/command_runner_base.dart"
     class CommandRunner {
@@ -160,7 +159,7 @@ allow for flexible output handling.
     }
     ```
 
-1.  Update the `run` method to use the `onOutput` argument.
+1.  Atualize o método `run` para usar o argumento `onOutput`.
 
     ```dart title="command_runner/lib/src/command_runner_base.dart"
       Future<void> run(List<String> input) async {
@@ -184,21 +183,20 @@ allow for flexible output handling.
       }
     ```
 
-    This updates the `run` method to
-    use the `onOutput` function if it is provided, otherwise it
-    defaults to printing to the console.
+    Isso atualiza o método `run` para usar a função `onOutput`, caso ela seja
+    fornecida. Caso contrário, o padrão é imprimir no console.
 
-### Task 3: Use the `onOutput` callback
+### Tarefa 3: Use o callback `onOutput` {:#task-3-use-the-onoutput-callback}
 
-Finally, update your main application to use the new `onOutput` feature.
+Por fim, atualize seu aplicativo principal para usar o novo recurso `onOutput`.
 
-1.  Open the `cli/bin/cli.dart` file.
+1.  Abra o arquivo `cli/bin/cli.dart`.
 
-1.  Update the `main` function to
-    pass the `onOutput` function to the `CommandRunner`.
-    Because `command_runner` already exports `console.dart`,
-    the `write` function is available through your existing
-    `package:command_runner/command_runner.dart` import:
+1.  Atualize a função `main` para passar a função `onOutput` ao
+    `CommandRunner`.
+    Como o `command_runner` já exporta o `console.dart`,
+    a função `write` fica disponível pelo import existente de
+    `package:command_runner/command_runner.dart`:
 
     ```dart title="cli/bin/cli.dart"
     import 'package:command_runner/command_runner.dart';
@@ -223,52 +221,52 @@ Finally, update your main application to use the new `onOutput` feature.
     }
     ```
 
-### Task 4: Test the changes
+### Tarefa 4: Teste as mudanças {:#task-4-test-the-changes}
 
-Test the improved `HelpCommand` and the `onOutput` callback.
+Teste o `HelpCommand` aprimorado e o callback `onOutput`.
 
-1.  Open your terminal and navigate to the `cli` directory.
+1.  Abra seu terminal e navegue até o diretório `cli`.
 
-1.  Run the command `dart run bin/cli.dart help --verbose`.
+1.  Execute o comando `dart run bin/cli.dart help --verbose`.
 
-    You should see detailed usage information for the `help` command,
-    printed using the custom `write` function.
+    Você deve ver informações de uso detalhadas para o comando `help`, impressas
+    usando a função `write` personalizada.
 
-## Review
+## Revisão {:#review}
 
 <SummaryCard>
-title: What you accomplished
-subtitle: Here's a summary of what you built and learned in this lesson.
+title: O que você concluiu
+subtitle: Aqui está um resumo do que você construiu e aprendeu nesta lição.
 completed: true
 items:
-  - title: Used StringBuffer for efficient string building
+  - title: Usou StringBuffer para construir strings de forma eficiente
     icon: text_snippet
     details: >-
-      You replaced string concatenation with a `StringBuffer`,
-      which can be more efficient for building strings in loops.
-      Methods like `writeln()` and `write()` append content,
-      while `toString()` produces the final string.
-  - title: Enhanced HelpCommand with verbose output
+      Você substituiu a concatenação de strings por um `StringBuffer`,
+      que pode ser mais eficiente para construir strings em loops.
+      Métodos como `writeln()` e `write()` acrescentam conteúdo,
+      enquanto `toString()` produz a string final.
+  - title: Aprimorou o HelpCommand com saída detalhada
     icon: help
     details: >-
-      You improved the help system to show detailed usage information
-      including options, default values, and descriptions.
-      The `--verbose` flag and `--command` option give users
-      control over the level of detail.
-  - title: Added an onOutput callback argument for flexible handling
+      Você melhorou o sistema de ajuda para mostrar informações de uso detalhadas,
+      incluindo opções, valores padrão e descrições.
+      A flag `--verbose` e a opção `--command` dão aos usuários
+      controle sobre o nível de detalhe.
+  - title: Adicionou um argumento de callback onOutput para tratamento flexível
     icon: terminal
     details: >-
-      You added `onOutput` to `CommandRunner`,
-      allowing library consumers to customize how output is displayed.
-      This pattern makes your package more flexible and adaptable,
-      enabling delayed printing, logging, or output redirection.
+      Você adicionou `onOutput` ao `CommandRunner`,
+      permitindo que quem usa a biblioteca personalize como a saída é exibida.
+      Esse padrão torna seu pacote mais flexível e adaptável,
+      possibilitando impressão atrasada, logging ou redirecionamento da saída.
 </SummaryCard>
 
-## Quiz
+## Quiz {:#quiz}
 
 <Quiz title="Check your understanding" id="cli-polish" />
 
-## Next lesson
+## Próxima lição {:#next-lesson}
 
-In the next lesson, you'll prepare for
-the Wikipedia portion of the application.
+Na próxima lição, você vai se preparar para
+a parte da Wikipedia do aplicativo.

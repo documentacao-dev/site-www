@@ -1,82 +1,82 @@
 - question: >-
-    Which keyword is used to declare a constant variable in Dart
-    whose value is known at compile time?
+    Qual palavra-chave é usada para declarar uma variável constante em Dart
+    cujo valor é conhecido em tempo de compilação?
   options:
     - text: >-
         `const`
       correct: true
       explanation: >-
-        `const` declares a compile-time constant.
-        The value must be known at compile time and can never change.
+        `const` declara uma constante de tempo de compilação.
+        O valor precisa ser conhecido em tempo de compilação e nunca pode mudar.
     - text: >-
         `var`
       correct: false
       explanation: >-
-        Variables declared with `var` can be reassigned
-        and aren't required to be known at compile time.
+        Variáveis declaradas com `var` podem ser reatribuídas
+        e não precisam ter o valor conhecido em tempo de compilação.
     - text: >-
         `final`
       correct: false
       explanation: >-
-        `final` creates a variable that can only be initialized once,
-        but its value is determined at runtime, not compile time.
+        `final` cria uma variável que só pode ser inicializada uma vez,
+        mas o valor é definido em tempo de execução, e não de compilação.
     - text: >-
         `static`
       correct: false
       explanation: >-
-        `static` is used for class-level members, not for declaring constants.
-        However, class-level constants must also be `static`.
+        `static` é usado para membros de nível de classe, e não para declarar constantes.
+        No entanto, constantes de nível de classe também precisam ser `static`.
 - question: >-
-    What is the primary purpose of `stdin.readLineSync()` in a CLI application?
+    Qual é a finalidade principal de `stdin.readLineSync()` em um aplicativo CLI?
   options:
     - text: >-
-        To read a single line of text input from the user.
+        Ler uma única linha de texto digitada pelo usuário.
       correct: true
       explanation: >-
-        `stdin.readLineSync()` reads a single line of text
-        from standard input, allowing your program to receive user input.
+        `stdin.readLineSync()` lê uma única linha de texto
+        da entrada padrão, permitindo que o programa receba dados do usuário.
     - text: >-
-        To print output to the console.
+        Imprimir saída no console.
       correct: false
       explanation: >-
-        Printing output is done with `print()`, `stdout.write()`,
-        and other similar methods.
+        A saída é impressa com `print()`, `stdout.write()`
+        e outros métodos semelhantes.
     - text: >-
-        To execute a command.
+        Executar um comando.
       correct: false
       explanation: >-
-        Command execution is done using `Process.run()` or similar methods.
+        A execução de comandos é feita com `Process.run()` ou métodos semelhantes.
     - text: >-
-        To check if a file exists.
+        Verificar se um arquivo existe.
       correct: false
       explanation: >-
-        File existence is checked using `File.existsSync()` or similar methods.
+        A existência de arquivos é verificada com `File.existsSync()` ou métodos semelhantes.
 - question: >-
-    What does `arguments.sublist(1)` return
-    when `arguments` is `['search', 'Dart', 'Programming']`?
+    O que `arguments.sublist(1)` retorna
+    quando `arguments` é `['search', 'Dart', 'Programming']`?
   options:
     - text: >-
         `['Dart', 'Programming']`
       correct: true
       explanation: >-
-        `sublist(1)` creates a new list containing all elements
-        from index 1 onward, skipping the first element.
+        `sublist(1)` cria uma nova lista com todos os elementos
+        a partir do índice 1, pulando o primeiro elemento.
     - text: >-
         `['search']`
       correct: false
       explanation: >-
-        `sublist(1)` returns elements starting from
-        index 1 (the second element), not just the first element.
+        `sublist(1)` retorna os elementos a partir do
+        índice 1 (o segundo elemento), e não apenas o primeiro.
     - text: >-
         `['search', 'Dart']`
       correct: false
       explanation: >-
-        This answer includes `'search'`, but `sublist(1)` starts
-        from index 1, which excludes the element at index 0.
+        Esta resposta inclui `'search'`, mas `sublist(1)` começa
+        no índice 1, o que exclui o elemento do índice 0.
     - text: >-
         `['Programming']`
       correct: false
       explanation: >-
-        This is only the last element.
-        The argument `1` specifies the starting index,
-        not how many elements to skip from the end.
+        Isso é apenas o último elemento.
+        O argumento `1` especifica o índice inicial,
+        e não quantos elementos pular a partir do final.

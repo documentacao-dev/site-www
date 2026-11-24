@@ -1,55 +1,56 @@
 ---
-title: Add logging for debugging and monitoring
-short-title: Logging
+ia-translate: true
+title: Adicione logs para depuração e monitoramento
+short-title: Logs
 description: >-
-  Learn how to add logging to your Dart application to
-  help with debugging and monitoring.
+  Aprenda como adicionar logs à sua aplicação Dart para
+  ajudar na depuração e no monitoramento.
 layout: learn
 ---
 
-In this chapter, you'll learn how to add logging to your Dart application.
-Logging is a critical tool for debugging, monitoring, and
-understanding the behavior of your application in different environments.
+Neste capítulo, você vai aprender como adicionar logs à sua aplicação Dart.
+Logs são uma ferramenta essencial para depurar, monitorar e
+entender o comportamento da aplicação em diferentes ambientes.
 
 <SummaryCard>
-title: What you'll accomplish
+title: O que você vai realizar
 items:
-  - title: Add and learn about the logging package
+  - title: Adicionar e conhecer o pacote logging
     icon: note_stack
-  - title: Configure log levels and file output
+  - title: Configurar níveis de log e saída em arquivo
     icon: tune
-  - title: Integrate logging into your CLI commands
+  - title: Integrar logs aos seus comandos de CLI
     icon: terminal
 </SummaryCard>
 
-## Prerequisites
+## Pré-requisitos {:#prerequisites}
 
-Before you begin this chapter, ensure you:
+Antes de começar este capítulo, certifique-se de:
 
-- Have completed Chapter 12 and have a
-  working Dart development environment with the `dartpedia` project.
-- Understand the basics of debugging and why it's
-  important to track errors and events in your application.
+- Ter concluído o Capítulo 12 e ter um
+  ambiente de desenvolvimento Dart funcionando com o projeto `dartpedia`.
+- Entender o básico de depuração e por que é
+  importante registrar erros e eventos da aplicação.
 
-## Tasks
+## Tarefas {:#tasks}
 
-In this chapter, you'll complete the `dartpedia` CLI application by
-integrating the `wikipedia` package commands and adding logging to
-help track errors and monitor its behavior.
-This involves adding package dependencies,
-creating the CLI commands, configuring a `Logger` instance,
-and running your complete application.
+Neste capítulo, você vai concluir a aplicação de CLI `dartpedia` integrando
+os comandos do pacote `wikipedia` e adicionando logs para
+ajudar a registrar erros e monitorar o comportamento da aplicação.
+Isso envolve adicionar dependências de pacotes,
+criar os comandos de CLI, configurar uma instância de `Logger`
+e executar a aplicação completa.
 
-### Task 1: Add dependencies to the `cli` package
+### Tarefa 1: Adicione dependências ao pacote `cli` {:#task-1-add-dependencies-to-the-cli-package}
 
-First, add the `wikipedia` package (which you built in the previous chapters)
-and the `logging` package to your CLI project's dependencies.
+Primeiro, adicione o pacote `wikipedia` (que você construiu nos capítulos anteriores)
+e o pacote `logging` às dependências do projeto da CLI.
 
-1.  Open the `cli/pubspec.yaml` file.
+1.  Abra o arquivo `cli/pubspec.yaml`.
 
-1.  Locate the `dependencies` section.
+1.  Localize a seção `dependencies`.
 
-1.  Add the `wikipedia` and `logging` packages to your dependencies:
+1.  Adicione os pacotes `wikipedia` e `logging` às suas dependências:
 
     ```yaml title="cli/pubspec.yaml"
     dependencies:
@@ -62,17 +63,17 @@ and the `logging` package to your CLI project's dependencies.
       logging: ^1.2.0
     ```
 
-1.  Run `dart pub get` in the `cli` directory to fetch the new dependencies.
+1.  Execute `dart pub get` no diretório `cli` para buscar as novas dependências.
 
-### Task 2: Create a logger
+### Tarefa 2: Crie um logger {:#task-2-create-a-logger}
 
-Next, create a `Logger` instance and configure it to
-write log messages to a file. This involves
-creating a new file for the logger and setting up the necessary imports.
+Em seguida, crie uma instância de `Logger` e configure-a para
+gravar mensagens de log em um arquivo. Isso envolve
+criar um novo arquivo para o logger e configurar os imports necessários.
 
-1.  Create a new file called `cli/lib/src/logger.dart`.
+1.  Crie um novo arquivo chamado `cli/lib/src/logger.dart`.
 
-1.  Add the necessary imports and define the `initFileLogger` function.
+1.  Adicione os imports necessários e defina a função `initFileLogger`.
 
     ```dart title="cli/lib/src/logger.dart"
     import 'dart:io';
@@ -93,9 +94,9 @@ creating a new file for the logger and setting up the necessary imports.
     }
     ```
 
-1.  Add the code to find the project's root directory,
-    create a `logs` directory if one doesn't exist, and
-    create a unique log file.
+1.  Adicione o código para encontrar o diretório raiz do projeto,
+    criar um diretório `logs` caso ele não exista e
+    criar um arquivo de log com um nome único.
 
     ```dart title="cli/lib/src/logger.dart"
     Logger initFileLogger(String name) {
@@ -124,8 +125,8 @@ creating a new file for the logger and setting up the necessary imports.
     }
     ```
 
-1.  Configure the logger's level and set up a listener to
-    write log messages to the file.
+1.  Configure o nível do logger e configure um listener para
+    gravar as mensagens de log no arquivo.
 
     ```dart title="cli/lib/src/logger.dart"
     Logger initFileLogger(String name) {
@@ -157,37 +158,36 @@ creating a new file for the logger and setting up the necessary imports.
     }
     ```
 
-    The `initFileLogger` function returns a configured `Logger` instance
-    that appends timestamped records to a file in the `logs/` directory:
+    A função `initFileLogger` retorna uma instância de `Logger` configurada
+    que acrescenta registros com data e hora em um arquivo no diretório `logs/`:
 
     - **`hierarchicalLoggingEnabled = true`**:
       By default, `package:logging` routes all configuration through a single
       root logger. Enabling hierarchical logging allows a named logger like
       `Logger('errors')` to configure its own `level` and listeners.
     - **`logger.level = Level.ALL`**:
-      Captures all messages regardless of severity during development.
-      Production apps typically use higher thresholds like
-      `Level.INFO` or `Level.WARNING`.
+      Captura todas as mensagens, independentemente da severidade, durante o desenvolvimento.
+      Aplicações em produção normalmente usam limites mais altos, como
+      `Level.INFO` ou `Level.WARNING`.
     - **`logger.onRecord.listen(...)`**:
-      Subscribes to the stream of `LogRecord` events, formatting each entry
-      with its timestamp, logger name, and severity level before writing to
-      disk.
+      Assina o stream de eventos `LogRecord`, formatando cada entrada com
+      seu horário, o nome do logger e o nível de severidade antes de gravá-la no disco.
 
-### Task 3: Create the SearchCommand command
+### Tarefa 3: Crie o comando SearchCommand {:#task-3-create-the-searchcommand-command}
 
-The core functionality of the CLI lives in its commands.
-Create the `SearchCommand` and `GetArticleCommand` files and
-add the necessary code, including logging and error handling.
+A funcionalidade principal da CLI está nos seus comandos.
+Crie os arquivos `SearchCommand` e `GetArticleCommand` e
+adicione o código necessário, incluindo logs e tratamento de erros.
 
-1.  Create a new file named `cli/lib/src/commands/search.dart`.
+1.  Crie um novo arquivo chamado `cli/lib/src/commands/search.dart`.
 
-1.  Add the imports and a basic class structure.
-    This `SearchCommand` class extends `Command`, and
-    its constructor accepts a `Logger` instance.
-    Accepting the logger in the constructor is a
-    common pattern called dependency injection,
-    which allows the command to log events without
-    needing to create its own logger.
+1.  Adicione os imports e uma estrutura básica de classe.
+    Esta classe `SearchCommand` estende `Command`, e
+    o construtor dela recebe uma instância de `Logger`.
+    Receber o logger pelo construtor é um
+    padrão comum chamado injeção de dependência,
+    que permite ao comando registrar eventos sem
+    precisar criar o próprio logger.
 
     ```dart title="cli/lib/src/commands/search.dart"
     import 'dart:async';
@@ -233,7 +233,7 @@ add the necessary code, including logging and error handling.
     }
     ```
 
-1.  Implement the command logic to search Wikipedia and format the results.
+1.  Implemente a lógica do comando para buscar na Wikipedia e formatar os resultados.
 
     ```dart title="cli/lib/src/commands/search.dart"
     // ...
@@ -268,10 +268,10 @@ add the necessary code, including logging and error handling.
     // ...
     ```
 
-1.  Finally, wrap the main logic in a `try/catch` block.
-    This allows you to handle potential exceptions that
-    could arise from network issues or data formatting problems.
-    You'll use the injected `logger` to record these errors to the log file.
+1.  Por fim, envolva a lógica principal em um bloco `try/catch`.
+    Isso permite tratar possíveis exceções que
+    podem surgir de problemas de rede ou de formatação dos dados.
+    Você vai usar o `logger` injetado para registrar esses erros no arquivo de log.
 
     ```dart title="cli/lib/src/commands/search.dart"
     import 'dart:async';
@@ -353,15 +353,15 @@ add the necessary code, including logging and error handling.
     }
     ```
 
-### Task 4: Create the GetArticleCommand command
+### Tarefa 4: Crie o comando GetArticleCommand {:#task-4-create-the-getarticlecommand-command}
 
-Now, create the `GetArticleCommand` file and add the necessary code.
-The code is similar to the previous `SearchCommand`, as it also
-uses a `try/catch` block to handle potential network or data errors.
+Agora, crie o arquivo `GetArticleCommand` e adicione o código necessário.
+O código é parecido com o do `SearchCommand` anterior, pois também
+usa um bloco `try/catch` para tratar possíveis erros de rede ou de dados.
 
-1.  Create a new file named `cli/lib/src/commands/get_article.dart`.
+1.  Crie um novo arquivo chamado `cli/lib/src/commands/get_article.dart`.
 
-1.  Add the following code to `get_article.dart`:
+1.  Adicione o seguinte código em `get_article.dart`:
 
     ```dart title="cli/lib/src/commands/get_article.dart"
     import 'dart:async';
@@ -418,29 +418,29 @@ uses a `try/catch` block to handle potential network or data errors.
     }
     ```
 
-    Review the code you've just added.
-    The `SearchCommand` and `GetArticleCommand` now:
+    Revise o código que você acabou de adicionar.
+    Os comandos `SearchCommand` e `GetArticleCommand` agora:
 
-    - Import the necessary packages like `command_runner`, `logging`, and
-      `wikipedia` to use their classes and functions.
-    - Accept a `Logger` instance through their constructor.
-      This is a common pattern called dependency injection,
-      which allows the command to log events without
-      needing to create its own logger.
-    - Implement a `run` method that defines the command's logic.
-      This method calls the appropriate wikipedia API and formats the output.
-    - Include `try/catch` blocks to gracefully
-      handle network errors (`HttpException`) and
-      data parsing errors (`FormatException`), logging them for debugging.
+    - Importam os pacotes necessários, como `command_runner`, `logging` e
+      `wikipedia`, para usar suas classes e funções.
+    - Recebem uma instância de `Logger` pelo construtor.
+      Esse é um padrão comum chamado injeção de dependência,
+      que permite ao comando registrar eventos sem
+      precisar criar o próprio logger.
+    - Implementam um método `run` que define a lógica do comando.
+      Esse método chama a API apropriada da Wikipedia e formata a saída.
+    - Incluem blocos `try/catch` para tratar com elegância
+      erros de rede (`HttpException`) e
+      erros de análise de dados (`FormatException`), registrando-os para depuração.
 
-### Task 5: Export commands and wire up `cli.dart`
+### Tarefa 5: Exporte os comandos e conecte tudo no `cli.dart` {:#task-5-export-commands-and-wire-up-cli-dart}
 
-Now, export the logger and commands from the `cli` library,
-then wire them up in `cli/bin/cli.dart` to
-create the complete CLI application.
+Agora, exporte o logger e os comandos da biblioteca `cli`
+e, em seguida, conecte-os em `cli/bin/cli.dart` para
+criar a aplicação de CLI completa.
 
-1.  Open the `cli/lib/cli.dart` file.
-    Replace its placeholder content with exports for your logger and commands:
+1.  Abra o arquivo `cli/lib/cli.dart`.
+    Substitua o conteúdo provisório pelas exportações do seu logger e dos seus comandos:
 
     ```dart title="cli/lib/cli.dart"
     export 'src/commands/get_article.dart';
@@ -448,28 +448,28 @@ create the complete CLI application.
     export 'src/logger.dart';
     ```
 
-    This file acts as the library's public interface,
-    exporting `initFileLogger`, `SearchCommand`, and `GetArticleCommand`
-    so that `cli/bin/cli.dart` can import them from `package:cli/cli.dart`.
+    Esse arquivo funciona como a interface pública da biblioteca,
+    exportando `initFileLogger`, `SearchCommand` e `GetArticleCommand`
+    para que `cli/bin/cli.dart` possa importá-los de `package:cli/cli.dart`.
 
-1.  Remove the generated `cli/test/cli_test.dart` file by running
-    `rm cli/test/cli_test.dart` (on macOS or Linux) or
-    `del cli\test\cli_test.dart` (on Windows) from the root `/dartpedia`
-    directory (or `rm test/cli_test.dart` from `/dartpedia/cli`).
-    `dart create` generated this file to test the placeholder code you just
-    replaced in `cli/lib/cli.dart`.
+1.  Remova o arquivo `cli/test/cli_test.dart` gerado, executando
+    `rm cli/test/cli_test.dart` (no macOS ou Linux) ou
+    `del cli\test\cli_test.dart` (no Windows) a partir do diretório raiz
+    `/dartpedia` (ou `rm test/cli_test.dart` a partir de `/dartpedia/cli`).
+    O `dart create` gerou esse arquivo para testar o código provisório que você
+    acabou de substituir em `cli/lib/cli.dart`.
 
-1.  Open the `cli/bin/cli.dart` file.
+1.  Abra o arquivo `cli/bin/cli.dart`.
 
-1.  Add the imports for `cli` and `command_runner`:
+1.  Adicione os imports de `cli` e `command_runner`:
 
     ```dart title="cli/bin/cli.dart"
     import 'package:cli/cli.dart';
     import 'package:command_runner/command_runner.dart';
     ```
 
-1.  Modify the `main` function to initialize the logger and
-    register the commands with `CommandRunner`:
+1.  Modifique a função `main` para inicializar o logger e
+    registrar os comandos no `CommandRunner`:
 
     ```dart title="cli/bin/cli.dart"
     import 'package:cli/cli.dart';
@@ -503,70 +503,70 @@ create the complete CLI application.
     }
     ```
 
-    This setup initializes an `errors` file logger, passes it to
-    `SearchCommand` and `GetArticleCommand`, and registers all commands
-    with `CommandRunner`.
+    Essa configuração inicializa um logger de arquivo `errors`, passa-o para
+    `SearchCommand` e `GetArticleCommand`, e registra todos os comandos
+    no `CommandRunner`.
 
-### Task 6: Run the application and check the logs
+### Tarefa 6: Execute a aplicação e verifique os logs {:#task-6-run-the-application-and-check-the-logs}
 
-Now that you've implemented the CLI commands,
-wired up `CommandRunner` in `bin/cli.dart`, and configured logging,
-test your application from the terminal.
-Make sure you run these commands from your `cli` directory
+Agora que você implementou os comandos de CLI,
+conectou o `CommandRunner` em `bin/cli.dart` e configurou o logging,
+teste a aplicação pelo terminal.
+Certifique-se de executar estes comandos a partir do diretório `cli`
 (`/dartpedia/cli`).
 
-1.  Run the CLI application to search for an article:
+1.  Execute a aplicação de CLI para buscar um artigo:
 
     ```bash
     dart run bin/cli.dart search "Dart programming"
     ```
 
-    You should see terminal output listing Wikipedia articles
-    matching your search term.
+    Você deve ver no terminal uma lista de artigos da Wikipedia
+    que correspondem ao seu termo de busca.
 
-1.  Try running the command with the `--im-feeling-lucky` flag:
+1.  Tente executar o comando com a flag `--im-feeling-lucky`:
 
     ```bash
     dart run bin/cli.dart search "Dart" --im-feeling-lucky
     ```
 
-1.  Fetch an article summary extract using the `article` command:
+1.  Busque o resumo de um artigo com o comando `article`:
 
     ```bash
     dart run bin/cli.dart article "Dart_(programming_language)"
     ```
 
-1.  Run the application without the required search argument to test
-    error logging:
+1.  Execute a aplicação sem o argumento de busca obrigatório para testar
+    o log de erros:
 
     ```bash
     dart run bin/cli.dart search
     ```
 
-    You should see the error printed to the terminal:
+    Você deve ver o erro impresso no terminal:
 
     ```console
     ArgumentException: Please include a search term
     ```
 
-1.  Check the `cli/logs` directory in your project.
-    You should see a file named with the current date,
-    such as `<year>_<month>_<day>_errors.txt`.
+1.  Verifique o diretório `cli/logs` do seu projeto.
+    Você deve ver um arquivo com a data atual no nome,
+    como `<ano>_<mês>_<dia>_errors.txt`.
 
-1.  Open the log file and verify that the error message is logged:
+1.  Abra o arquivo de log e verifique se a mensagem de erro foi registrada:
 
     ```text
     [2025-02-20 16:23:45.678 - errors] WARNING: ArgumentException: Please include a search term
     ```
 
     :::note
-    Network errors caught by `SearchCommand` or `GetArticleCommand`
-    (such as when your device is offline or Wikipedia is unreachable)
-    are also logged to this file as `WARNING` level entries,
-    followed by an `INFO` entry with command usage.
+    Erros de rede capturados por `SearchCommand` ou `GetArticleCommand`
+    (por exemplo, quando seu dispositivo está offline ou a Wikipedia está inacessível)
+    também são registrados nesse arquivo como entradas de nível `WARNING`,
+    seguidas de uma entrada `INFO` com o uso do comando.
     :::
 
-1.  Verify that your workspace structure matches the completed project:
+1.  Verifique se a estrutura do seu workspace corresponde ao projeto concluído:
 
     ```text
     dartpedia/
@@ -610,45 +610,45 @@ Make sure you run these commands from your `cli` directory
         └── pubspec.yaml
     ```
 
-## Review
+## Revisão {:#review}
 
 <SummaryCard>
-title: What you accomplished
-subtitle: Here's a summary of what you built and learned in this lesson.
+title: O que você realizou
+subtitle: Veja um resumo do que você construiu e aprendeu nesta lição.
 completed: true
 items:
-  - title: Added and learned about the logging package
+  - title: Adicionou e conheceu o pacote logging
     icon: note_stack
     details: >-
-      You added `logging` to your dependencies and imported it into your CLI.
-      The package provides `Logger`, `Level`, and `LogRecord` classes for
-      structured logging with configurable severity levels.
-  - title: Configured log levels and file output
+      Você adicionou `logging` às suas dependências e o importou na CLI.
+      O pacote oferece as classes `Logger`, `Level` e `LogRecord` para
+      logs estruturados com níveis de severidade configuráveis.
+  - title: Configurou níveis de log e saída em arquivo
     icon: tune
     details: >-
-      You created `initFileLogger()` to configure log levels and listen to
-      `logger.onRecord`, writing timestamped entries to files in `logs/`.
-      This enables you to review application behavior after the fact.
-  - title: Integrated logging into your CLI commands
+      Você criou `initFileLogger()` para configurar níveis de log e assinar
+      `logger.onRecord`, gravando entradas com data e hora em arquivos no diretório `logs/`.
+      Isso permite revisar o comportamento da aplicação depois que os fatos acontecem.
+  - title: Integrou logs aos seus comandos de CLI
     icon: terminal
     details: >-
-      You passed the logger to commands using dependency injection,
-      then used `logger.warning()`, `logger.severe()`, and `logger.info()` to
-      record errors of different levels alongside relevant context.
-      This setup helps you more easily debug and filter issues
-      in both development and production.
+      Você passou o logger para os comandos usando injeção de dependência,
+      e depois usou `logger.warning()`, `logger.severe()` e `logger.info()` para
+      registrar erros de diferentes níveis junto com o contexto relevante.
+      Essa configuração ajuda a depurar e filtrar problemas com mais facilidade,
+      tanto no desenvolvimento quanto em produção.
 </SummaryCard>
 
-## Quiz
+## Quiz {:#quiz}
 
-<Quiz title="Check your understanding" id="logging" />
+<Quiz title="Confira seu entendimento" id="logging" />
 
-## Next lesson
+## Próxima lição {:#next-lesson}
 
-Congratulations! You've now completed all the
-core chapters of the Dart Getting Started tutorial.
-Want to continue learning?
-Check out the next step in the
-[Dart and Flutter learning pathway][] on the Flutter site.
+Parabéns! Você concluiu todos os
+capítulos principais do tutorial de introdução ao Dart.
+Quer continuar aprendendo?
+Confira o próximo passo na
+[trilha de aprendizado de Dart e Flutter][Dart and Flutter learning pathway] no site do Flutter.
 
 [Dart and Flutter learning pathway]: {{site.flutter-docs}}/learn/pathway
