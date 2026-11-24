@@ -14,6 +14,10 @@ description: Aprenda a escrever uma boa página de pacote.
     width: 90%;
   }
 
+  .screenshot.diagram-wrap {
+    box-sizing: border-box;
+  }
+
   .screenshot-narrow {
     max-width: 400px;
   }
@@ -27,6 +31,8 @@ na captura de tela a seguir:
 
 <img 
   src="/assets/img/libraries/package-page-sections.png"
+  width="2891"
+  height="1707"
   alt="package page contains sections like package layout, flutter favorite, package scoring, verified publishers, pubspec file" 
   class="screenshot diagram-wrap">
 
@@ -105,6 +111,8 @@ que começa com uma breve explicação do pacote e um alerta:
 
 <img 
   src="/assets/img/libraries/package-page-description.png"
+  width="1518"
+  height="420"
   alt="description of the package in_app_purchase" 
   class="screenshot">
 
@@ -138,6 +146,8 @@ adicionar conteúdo visual deixou a página do pacote `in_app_purchase` informat
 
 <img 
   src="/assets/img/libraries/package-page-example-iap.png"
+  width="1600"
+  height="970"
   alt="in_app_purchase readme without and with images" 
   class="screenshot">
 
@@ -179,6 +189,8 @@ apresenta os recursos do pacote:
 
 <img 
   src="/assets/img/libraries/package-page-features-list.png"
+  width="1508"
+  height="492"
   alt="list of features of the package in_app_purchase" 
   class="screenshot">
 
@@ -187,6 +199,8 @@ que lista os recursos do pacote e o suporte a plataformas:
 
 <img 
   src="/assets/img/libraries/package-page-features-table.png"
+  width="960"
+  height="926"
   alt="list of features of the package just_audio in a table format" 
   class="screenshot-narrow">
 
@@ -201,6 +215,8 @@ Por exemplo, o pacote `url_launcher` tem uma tabela com os esquemas de URL supor
 
 <img 
   src="/assets/img/libraries/package-page-list-property.png"
+  width="1516"
+  height="1062"
   alt="list of supported schemes of the package url_launcher" 
   class="screenshot">
 
@@ -219,6 +235,8 @@ mostra instruções para começar com o Google Maps Platform:
 
 <img 
   src="/assets/img/libraries/package-page-list-requirements.png" 
+  width="1512"
+  height="862"
   alt="additional instructions to use google_maps_flutter" 
   class="screenshot">
 
@@ -253,6 +271,8 @@ e a ir direto ao código que lhes interessa:
 
 <img 
   src="/assets/img/libraries/package-page-list-subsections.png" 
+  width="1510"
+  height="714"
   alt="content of the usage section of the package in_app_purchase" 
   class="screenshot">
 
@@ -282,6 +302,8 @@ pacote `in_app_purchase`:
 
 <img 
   src="/assets/img/libraries/package-page-usage-example.png"
+  width="1514"
+  height="520"
   alt="sample code of the package in_app_purchase" 
   class="screenshot">
 
@@ -333,6 +355,8 @@ pode abandonar a página se ela não usar esse termo.
 
 <img 
   src="/assets/img/libraries/package-page-terms.png"
+  width="1482"
+  height="388"
   alt="the keyword is highlighted when users search for it within the page" 
   class="screenshot">
 
@@ -345,6 +369,8 @@ _underlying store_ logo no início:
 
 <img 
   src="/assets/img/libraries/package-page-terms-definition.png"
+  width="1466"
+  height="110"
   alt="the meaning of underlying store" 
   class="screenshot">
 
@@ -352,6 +378,8 @@ O restante da página usa esse termo de forma consistente:
 
 <img 
   src="/assets/img/libraries/package-page-terms-consistent.png"
+  width="1500"
+  height="686"
   alt="The term underlying store is used consistently across the page" 
   class="screenshot">
 
@@ -375,6 +403,8 @@ que traz informações para possíveis contribuidores:
 
 <img 
   src="/assets/img/libraries/package-page-contribute.png"
+  width="1504"
+  height="462"
   alt="how to contribute to in_app_purchase" 
   class="screenshot">
 

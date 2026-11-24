@@ -8,19 +8,17 @@ nextpage:
   title: Uso
 ---
 
-Integre bibliotecas e APIs JavaScript na sua aplicação web Dart sem atrito.
+Integre bibliotecas e APIs JavaScript em aplicações web Dart.
 
 ## Visão geral {: #overview }
 
-A [plataforma web Dart][Dart web platform] fornece ferramentas poderosas para
-chamar JavaScript a partir do Dart e vice-versa, e permite aproveitar o vasto
-ecossistema JavaScript sem sair do seu código Dart.
+A [plataforma web Dart][Dart web platform] fornece ferramentas para
+chamar JavaScript a partir do Dart e Dart a partir do JavaScript, trazendo
+o ecossistema JavaScript diretamente para o código Dart.
 
-Esta página é o ponto central para aprender sobre interoperabilidade com JavaScript
-no Dart. Você vai encontrar recursos para começar, guias de uso detalhados e
-informações sobre a biblioteca `dart:js_interop` mais recente. Seja se você quer
-usar uma biblioteca JavaScript específica, seja se quer interagir com APIs do navegador,
-este é o lugar para começar.
+Encontre recursos para começar, guias de uso e a documentação da biblioteca
+`dart:js_interop` para chamar bibliotecas JavaScript, interagir com APIs do
+navegador e compilar aplicações web para [WebAssembly (Wasm)][wasm].
 
 Comece com o JS interop:
   * [Começando com interop JavaScript][Get started with JavaScript interop]
@@ -33,7 +31,25 @@ Revise os guias de referência:
 Interaja com o navegador:
   * [`package:web` e migração][`package:web` and migration]
 
+## Suporte a WebAssembly (`dart2wasm`) {: #wasm-support }
+
+Ao compilar aplicações web Dart para [WebAssembly][wasm] (`dart compile wasm`),
+tenha em mente estas práticas de interoperabilidade e desempenho:
+
+  * **Use `dart:js_interop` e `package:web`**:
+    as bibliotecas web e de interop legadas e descontinuadas (`dart:html`, `dart:js`,
+    `dart:js_util` e `package:js`) não têm suporte nos alvos Wasm.
+  * **Minimize chamadas de alta frequência entre a fronteira Wasm e JS**:
+    em código sensível a desempenho ou em loops críticos, mantenha o cálculo no Dart
+    ou agrupe os valores, em vez de fazer chamadas de interop repetidas a cada iteração.
+  * **Encontre pacotes compatíveis com Wasm**:
+    use o filtro [`wasm-ready`][] no [pub.dev][] para verificar se os pacotes usam
+    `dart:js_interop` e `package:web`.
+
 [Dart web platform]: /web
+[wasm]: /web/wasm
+[`wasm-ready`]: {{site.pub-pkg}}?q=is%3Awasm-ready
+[pub.dev]: {{site.pub}}
 [Usage reference]: /interop/js-interop/usage
 [JS types reference]: /interop/js-interop/js-types
 [`package:web` and migration]: /interop/js-interop/package-web
@@ -45,10 +61,10 @@ Interaja com o navegador:
 
 ## Recursos adicionais {: #additional-resources }
 
-Bibliotecas anteriores de interoperabilidade com JavaScript:
+Explore as bibliotecas anteriores de interoperabilidade com JavaScript:
   * [JS interop anterior][Past JS interop]
 
-Documentação adicional sobre interoperabilidade com JavaScript:
+Explore a documentação de referência da API:
   * [Referência da API `dart:js_interop`][`dart:js_interop` API reference]
   * [Referência da API `dart:js_interop_unsafe`][`dart:js_interop_unsafe` API reference]
 

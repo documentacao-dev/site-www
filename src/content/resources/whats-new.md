@@ -2,7 +2,7 @@
 ia-translate: true
 title: Novidades
 description: Uma lista do que há de novo no dart.dev e em sites relacionados.
-lastVerified: 2026-08-12
+lastVerified: 2026-11-11
 ---
 
 Esta página descreve o que há de novo no site e no blog do Dart.
@@ -20,6 +20,150 @@ e siga o [blog do Dart][Dart blog].
 [dart-announce]: https://groups.google.com/a/dartlang.org/d/forum/announce
 [Dart blog]: /blog
 
+## Versão 3.14 {:#3-14-release}
+
+_Lançada em: 11 de novembro de 2026_
+
+Esta seção lista mudanças notáveis feitas de 13 de agosto de 2026
+até 11 de novembro de 2026 no [dart.dev](https://dart.dev/docs).
+Para detalhes sobre a versão 3.14 do Dart,
+confira o [anúncio do 3.14][3.14 announcement] e o
+[changelog do SDK 3.14][3-14-changelog].
+
+[3.14 announcement]: /blog/announcing-dart-3-14
+[3-14-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#3140
+
+### Atualizações da documentação {:.no_toc #documentation-updates}
+
+* Adicionamos um guia para a nova ferramenta de linha de comando
+  [`dart migrate`][3-14-dart-migrate], que automatiza atualizações de versão do SDK.
+* Adicionamos guias sobre como instalar e gerenciar
+  [skills de pacotes para agentes de IA][3-14-ai-skills],
+  criar e validar skills com [`package:skills_lint`][3-14-pub-skills],
+  e pesquisar na documentação oficial com o
+  [servidor MCP Developer Knowledge][3-14-dev-knowledge].
+* Adicionamos um guia sobre [correções baseadas em dados][3-14-data-driven-fixes]
+  para ajudar mantenedores de pacotes a criar migrações automatizadas com
+  [`dart fix`][3-14-dart-fix] para breaking changes de APIs.
+* Expandimos a documentação de [compilação para WebAssembly][3-14-wasm] e
+  [deploy na web][3-14-web-deployment] para cobrir os níveis de otimização do `dart2wasm`,
+  builds standalone para runtimes que não são da web,
+  serving em produção e segurança de source maps.
+* Atualizamos o guia de [depuração na web][3-14-web-debugging]
+  para testes no navegador com Dart 3 e fluxos de trabalho com WebAssembly.
+* Atualizamos a documentação de [interop com JavaScript][3-14-js-types]
+  com as novidades do `dart:js_interop`,
+  incluindo os tipos `JSIterable` e `JSIterator`,
+  conversões de listas primitivas, callbacks assíncronos e variádicos, e
+  [construtores de object literal][3-14-js-literals].
+* Documentamos a flag do compilador [`--no-deprecated-js-interop`][3-14-no-deprecated-js]
+  e as descontinuações de bibliotecas web legadas.
+* Adicionamos exemplos de migração de listeners de eventos do DOM e de helpers de stream
+  ao [guia de migração do `package:web`][3-14-package-web].
+  (Obrigado, [Manar Elhabbal][Manar-Elhabbal7].)
+* Atualizamos o guia de [interop com Objective-C e Swift][3-14-objc-interop]
+  para configurar o `package:ffigen` em Dart em vez de YAML.
+* Expandimos a documentação de [Dart no lado do servidor][3-14-server]
+  para Cloud Functions for Firebase e Firebase Admin SDK,
+  e adicionamos referências ao [Genkit Dart][3-14-genkit].
+* Dividimos o tutorial de programação orientada a objetos nas lições
+  [classes e objetos][3-14-oop] e
+  [herança e classes abstratas][3-14-inheritance],
+  e refinamos as lições de [dados e JSON][3-14-json],
+  [tratamento de erros][3-14-error-handling], [logging][3-14-logging],
+  e [testes][3-14-testing].
+  (Obrigado, [Manuel Santos Souza][manuelzzz] e [Ananya Kaul][ananya-kaul].)
+* Documentamos como [incluir vários arquivos de opções de análise][3-14-analysis-include]
+  em `analysis_options.yaml`.
+* Adicionamos orientações sobre a [descoberta confiável do SDK em ferramentas de linha de comando compiladas com AOT][3-14-cli-aot],
+  usando `package:cli_util`.
+* Documentamos como executar executáveis de pacotes remotos diretamente do pub.dev
+  com o comando [`dart run <package>@[<descriptor>]`][3-14-dart-run].
+  (Obrigado, [Harsh Yadav][harshyadavDeveloper].)
+* Adicionamos instruções de instalação com `winget` para Windows
+  na página [Obtenha o Dart SDK][3-14-get-dart].
+  (Obrigado, [Sanath Kumar U][sanathusk].)
+* Adicionamos exemplos de [classes `abstract interface`][3-14-abstract-interface]
+  aos documentos de modificadores de classe, e esclarecemos a
+  [ordem de execução de `Future.delayed`][3-14-async-await].
+  (Obrigado, [Khanak Khandelwal][khanak0509].)
+* Esclarecemos as orientações sobre o tipo de retorno do operador de atribuição de índice `[]=`
+  no [Effective Dart][3-14-setter-return].
+  (Obrigado, [enlorik][].)
+* Destacamos que os modificadores de parâmetro `final` e `var` agora são reservados
+  para declarar parâmetros em [construtores primários][3-14-primary-constructors],
+  e marcamos a biblioteca `dart:mirrors` como descontinuada na página de
+  [bibliotecas principais][3-14-libraries].
+* Removemos a página de vídeos avulsa e agora ela aponta direto para o
+  [canal do Flutter no YouTube][3-14-youtube].
+
+### Melhorias no site {:.no_toc #site-improvements}
+
+* Melhoramos o [changelog do Dart][3-14-changelog-page]
+  com filtro por intervalo de versões, chips de filtro predefinidos,
+  busca por várias palavras-chave com destaque dos resultados,
+  e permalinks compartilháveis de filtros e entradas.
+* Melhoramos a [busca de regras de linter][3-14-linter-search]
+  para comparar também as descrições das regras e tratar espaços e underscores
+  como equivalentes.
+  (Obrigado, [Khanak Khandelwal][khanak0509].)
+
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
+
+* [Trazendo construtores primários para o Dart][blog-08-20-26]
+* [Skills CLI 1.0: empacote e distribua skills de agentes de IA
+  para os seus pacotes][blog-09-08-26]
+* [Resultados do Google Summer of Code 2026][blog-09-15-26]
+* [Anunciando o Genkit Dart 1.0: crie apps agênticos prontos para produção
+  com Dart e Flutter][blog-10-08-26]
+
+[3-14-dart-migrate]: /tools/dart-migrate
+[3-14-ai-skills]: /ai/package-skills
+[3-14-pub-skills]: /tools/pub/package-skills#validate-and-lint-skills
+[3-14-dev-knowledge]: /ai/package-skills#search-official-docs-with-the-developer-knowledge-mcp-server
+[3-14-data-driven-fixes]: /tools/pub/data-driven-fixes
+[3-14-dart-fix]: /tools/dart-fix
+[3-14-wasm]: /web/wasm
+[3-14-web-deployment]: /web/deployment
+[3-14-web-debugging]: /web/debugging
+[3-14-js-types]: /interop/js-interop/js-types
+[3-14-js-literals]: /interop/js-interop/usage#object-literal-constructors
+[3-14-no-deprecated-js]: /interop/js-interop/past-js-interop#disallow-deprecated-js-interop
+[3-14-package-web]: /interop/js-interop/package-web
+[3-14-objc-interop]: /interop/objective-c-interop
+[3-14-server]: /server
+[3-14-genkit]: /resources/google-apis#genkit
+[3-14-oop]: /learn/tutorial/object-oriented
+[3-14-inheritance]: /learn/tutorial/inheritance
+[3-14-json]: /learn/tutorial/data-and-json
+[3-14-error-handling]: /learn/tutorial/error-handling
+[3-14-logging]: /learn/tutorial/logging
+[3-14-testing]: /learn/tutorial/testing
+[3-14-analysis-include]: /tools/analysis#including-shared-options
+[3-14-cli-aot]: /tools/cli-distribution#access-the-dart-sdk-and-spawn-subprocesses
+[3-14-dart-run]: /tools/dart-run#run-an-executable-from-a-remote-package
+[3-14-get-dart]: /get-dart
+[3-14-abstract-interface]: /language/class-modifiers#abstract-interface
+[3-14-async-await]: /libraries/async/async-await
+[3-14-setter-return]: /effective-dart/design#dont-specify-a-return-type-for-a-setter
+[3-14-primary-constructors]: /language/primary-constructors#parameter-modifier-restrictions
+[3-14-libraries]: /libraries
+[3-14-youtube]: https://www.youtube.com/@flutterdev
+[3-14-changelog-page]: /changelog
+[3-14-linter-search]: /tools/linter-rules#rules
+[blog-08-20-26]: /blog/bringing-primary-constructors-to-dart
+[blog-09-08-26]: /blog/skills-cli-1-0-bundle-and-distribute-ai-agent-skills-for-your-packages
+[blog-09-15-26]: /blog/google-summer-of-code-2026-results
+[blog-10-08-26]: /blog/announcing-genkit-dart-1-0
+
+[Manar-Elhabbal7]: https://github.com/Manar-Elhabbal7
+[manuelzzz]: https://github.com/manuelzzz
+[ananya-kaul]: https://github.com/ananya-kaul
+[harshyadavDeveloper]: https://github.com/harshyadavDeveloper
+[sanathusk]: https://github.com/sanathusk
+[khanak0509]: https://github.com/khanak0509
+[enlorik]: https://github.com/enlorik
+
 ## Versão 3.13 {:#3-13-release}
 
 _Lançada em: 12 de agosto de 2026_
@@ -33,7 +177,7 @@ confira o [anúncio do 3.13][3.13 announcement] e o
 [3.13 announcement]: /blog/announcing-dart-3-13
 [3-13-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#3130
 
-### Atualizações da documentação {:.no_toc} {:#documentation-updates}
+### Atualizações da documentação {:.no_toc #documentation-updates}
 
 * Expandimos a documentação do novo recurso de linguagem [construtores primários][primary constructors],
   incluindo seções sobre enums e construtores constantes.
@@ -104,7 +248,7 @@ confira o [anúncio do 3.12][3.12 announcement] e o
 [3.12 announcement]: /blog/announcing-dart-3-12
 [3-12-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#3120
 
-### Atualizações da documentação {:.no_toc} {:#documentation-updates}
+### Atualizações da documentação {:.no_toc #documentation-updates}
 
 * Adicionamos a documentação do novo recurso de linguagem [parâmetros nomeados privados][private named parameters].
 * Adicionamos a documentação do recurso experimental de linguagem [construtores primários][primary constructors].
@@ -126,7 +270,7 @@ confira o [anúncio do 3.12][3.12 announcement] e o
   (Obrigada, [ANUSHREE BONDIA][Anushreebasics].)
 * Removemos e arquivamos a documentação legada de [migração para null safety][null safety migration].
 
-### Melhorias no site {:.no_toc} {:#site-improvements}
+### Melhorias no site {:.no_toc #site-improvements}
 
 * Criamos um espaço dedicado para o [blog do Dart][Dart blog space] em `/blog`,
   migrando todas as publicações históricas do Medium.
@@ -169,7 +313,7 @@ confira o [anúncio do 3.11][3.11 announcement] e o
 [3.11 announcement]: /blog/announcing-dart-3-11
 [3-11-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#3110
 
-### Atualizações da documentação {:.no_toc} {:#documentation-updates}
+### Atualizações da documentação {:.no_toc #documentation-updates}
 
 *   Lançamos uma nova [experiência de primeiros passos][learn] para aprender Dart.
 *   Atualizamos a [página do IntelliJ e Android Studio][IntelliJ & Android Studio page] após a
@@ -203,7 +347,7 @@ confira o [anúncio do 3.10][3.10 announcement] e o
 [3.10 announcement]: /blog/announcing-dart-3-10
 [3-10-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#3100
 
-### Atualizações da documentação {:.no_toc} {:#documentation-updates}
+### Atualizações da documentação {:.no_toc #documentation-updates}
 
 *   Adicionamos um guia para o novo recurso de linguagem [dot shorthands][].
 *   Adicionamos um guia para o novo suporte a [plugins do analyzer][analyzer plugin].
@@ -221,7 +365,7 @@ confira o [anúncio do 3.10][3.10 announcement] e o
 [`@Deprecated` annotation]: /language/metadata
 [Glossary]: /resources/glossary
 
-### Melhorias no site {:.no_toc} {:#site-improvements}
+### Melhorias no site {:.no_toc #site-improvements}
 
 *   Migramos a infraestrutura central do site para o [framework Jaspr][Jaspr migration]
     para melhorar a experiência de quem contribui.
@@ -238,7 +382,7 @@ confira o [anúncio do 3.10][3.10 announcement] e o
 [Community page redesign]: {{site.repo.this}}/pull/6900
 [Wasm compilation]: {{site.repo.this}}/pull/6953
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos os seguintes artigos no blog do Dart:
 
@@ -256,7 +400,7 @@ Para detalhes sobre a versão 3.9 do Dart,
 confira o [anúncio do 3.9][3.9 announcement] e o
 [changelog do SDK 3.9][3-8-changelog].
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças na documentação deste site:
@@ -294,7 +438,7 @@ Para detalhes sobre a versão 3.8 do Dart,
 confira o [anúncio do 3.8][3.8 announcement] e o
 [changelog do SDK 3.8][3-8-changelog].
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças na documentação deste site:
@@ -350,7 +494,7 @@ fizemos as seguintes mudanças na documentação deste site:
 * Mudamos a orientação para preferir uma frase nominal ou uma frase verbal
   não imperativa para uma função ou método no guia [Effective Dart Documentation][].
 
-### Mudanças no site para o dart.dev {:.no_toc} {:#site-changes-for-dart-dev}
+### Mudanças no site para o dart.dev {:.no_toc #site-changes-for-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças estruturais neste site:
@@ -401,7 +545,7 @@ confira o [anúncio do 3.7][3.7 announcement] e o [changelog do SDK][3-7-changel
 [3.7 announcement]: /blog/announcing-dart-3-7
 [3-7-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#370
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -452,7 +596,7 @@ confira o [anúncio do 3.6][3.6 announcement] e o [changelog do SDK][3-6-changel
 [3.6 announcement]: /blog/announcing-dart-3-6
 [3-6-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#360
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -515,7 +659,7 @@ confira o [anúncio do 3.5][3.5 announcement] e o [changelog do SDK][3-5-changel
 [3.5 announcement]: /blog/announcing-dart-3-5-and-an-update-on-the-dart-roadmap
 [3-5-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#350---2024-08-06
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -565,7 +709,7 @@ confira o [post do blog sobre o 3.4][3.4 blog post] e o [changelog do SDK][3-4-c
 [3.4 blog post]: /blog/announcing-dart-3-4
 [3-4-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#340---2024-05-14
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -592,8 +736,8 @@ fizemos as seguintes mudanças neste site:
 [Renames]: /interop/js-interop/package-web/#renames
 [enabling type promotion]: /effective-dart/usage/#consider-type-promotion-or-null-check-patterns-for-using-nullable-types
 [linter rules]: /tools/linter-rules/
-[diagnostic messages]: /tools/diagnostic-messages/
-[`@mustBeConst`]: /tools/diagnostic-messages/#non_const_argument_for_const_parameter
+[diagnostic messages]: /tools/diagnostics
+[`@mustBeConst`]: /tools/diagnostics/non_const_argument_for_const_parameter
 [Web libraries and packages]: /web/libraries/
 [Records]: /language/records/#multiple-returns
 [Patterns]: /language/patterns/#destructuring-multiple-returns
@@ -602,7 +746,7 @@ fizemos as seguintes mudanças neste site:
 [parenthetical patterns]: /language/pattern-types/#parenthesized
 [`ExternalDartReference`]: /interop/js-interop/js-types/#jsboxeddartobject-vs-externaldartreference
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos os seguintes artigos no blog do Dart:
 
@@ -624,7 +768,7 @@ confira o [post do blog sobre o 3.3][3.3 blog post] e o [changelog do SDK][3-3-c
 [3.3 blog post]: /blog/new-in-dart-3-3-extension-types-javascript-interop-and-more
 [3-3-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#330
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -695,7 +839,7 @@ confira o [post do blog sobre o 3.2][3.2 blog post] e o [changelog do SDK][3-2-c
 [3.2 blog post]: /blog/announcing-dart-3-2
 [3-2-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#320---2023-11-15
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -730,7 +874,7 @@ fizemos as seguintes mudanças neste site:
 [C interop]: /interop/c-interop#native-assets
 [Breaking changes]: /resources/breaking-changes
 [lints]: /tools/linter-rules
-[diagnostics]: /tools/diagnostic-messages
+[diagnostics]: /tools/diagnostics
 [`pub upgrade`]: /tools/pub/cmd/pub-upgrade#tighten
 [Language overview]: /language
 [guard clauses and patterns]: /language/patterns#switch-statements-and-expressions
@@ -755,7 +899,7 @@ e o [changelog do SDK][3-1-changelog].
 [Dart 3.1 & a retrospective on functional style programming in Dart 3]: /blog/dart-3-1-a-retrospective-on-functional-style-programming-in-dart-3
 [3-1-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#310---2023-08-16
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -799,7 +943,7 @@ fizemos as seguintes mudanças neste site:
 [pub cache move]: /resources/dart-3-migration#other-tools-changes
 [null safe]: /null-safety
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos o seguinte artigo no blog do Dart:
 
@@ -820,7 +964,7 @@ e o [changelog do SDK][3-0-changelog].
 [Announcing Dart 3]: /blog/announcing-dart-3
 [3-0-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#300---2023-05-10
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Em preparação para o Dart 3, dividimos e reorganizamos o
 Tour pela linguagem em novas categorias conceituais.
@@ -893,7 +1037,7 @@ em todo o site, fizemos as seguintes mudanças:
 [JS static interop support]: /interop/js-interop
 [analyzer plugins]: /tools/analysis#plugins
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos o seguinte artigo no blog do Dart:
 
@@ -901,7 +1045,7 @@ Publicamos o seguinte artigo no blog do Dart:
 
 [blog-2-09-23]: /blog/introducing-realm-for-dart-flutter
 
-### Vídeos lançados pela equipe Dart {:.no_toc} {:#videos-released-by-the-dart-team}
+### Vídeos lançados pela equipe Dart {:.no_toc #videos-released-by-the-dart-team}
 
 Durante o Google I/O 2023, lançamos os seguintes vídeos:
 
@@ -927,7 +1071,7 @@ e o [changelog do SDK][2-19-changelog].
 [Introducing Dart 3 alpha]: /blog/introducing-dart-3-alpha
 [2-19-changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md#2190---2023-01-24
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -985,10 +1129,10 @@ fizemos as seguintes mudanças neste site:
 [pub's transition to pub.dev]: /tools/pub/troubleshoot#pub-get-socket-error
 [package screenshots]: /tools/pub/pubspec#screenshots
 [explicit downcast section]: /language/type-system#generic-type-assignment
-[analyzer]: /tools/diagnostic-messages
+[analyzer]: /tools/diagnostics
 [lint]: /tools/linter-rules
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos os seguintes artigos no blog do Dart:
 
@@ -1058,7 +1202,7 @@ veja [Dart 2.17: Productivity and integration][Dart 2.17: Productivity and integ
 
 [Dart 2.17: Productivity and integration]: /blog/dart-2-17-productivity-and-integration
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -1146,7 +1290,7 @@ fizemos as seguintes mudanças neste site:
 [`dart compile js`]: /tools/dart-compile#js
 
 [strict language modes]: /tools/analysis#enabling-additional-type-checks
-[diagnostic messages]: /tools/diagnostic-messages
+[diagnostic messages]: /tools/diagnostics
 [linter rules]: /tools/linter-rules
 
 [`webdev`]: /tools/webdev
@@ -1162,7 +1306,7 @@ fizemos as seguintes mudanças neste site:
 [security]: /security
 
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos os seguintes artigos no blog do Dart:
 
@@ -1191,7 +1335,7 @@ veja [Dart 2.16: Improved tooling and platform handling][Dart 2.16: Improved too
 
 [Dart 2.16: Improved tooling and platform handling]: /blog/dart-2-16-improved-tooling-and-platform-handling
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Nós [atualizamos a infraestrutura do site][updated the website infrastructure] para uma configuração baseada em Docker
 para permitir [contribuições mais fáceis][easier contributions] e alinhar-nos melhor com
@@ -1217,7 +1361,7 @@ fizemos as seguintes mudanças neste site:
 [`dart doc`]: /tools/dart-doc
 [`platform` entry]: /tools/pub/pubspec#platforms
 [ignore all linter rules]: /tools/analysis#suppressing-rules-for-a-file
-[diagnostic messages]: /tools/diagnostic-messages
+[diagnostic messages]: /tools/diagnostics
 [linter rules]: /tools/linter-rules
 [Dart SDK overview]: /tools/sdk
 [PREFER using interpolation to compose strings and values]: /effective-dart/usage#prefer-using-interpolation-to-compose-strings-and-values
@@ -1235,7 +1379,7 @@ veja [Announcing Dart 2.15][Announcing Dart 2.15].
 
 [Announcing Dart 2.15]: /blog/announcing-dart-2-15
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -1266,7 +1410,7 @@ fizemos as seguintes mudanças neste site:
 [dart pub token]: /tools/pub/cmd/pub-token
 [Dart runtime]: /overview#runtime
 [DartPad troubleshooting tips]: /tools/dartpad/troubleshoot
-[diagnostic messages]: /tools/diagnostic-messages
+[diagnostic messages]: /tools/diagnostics
 [false_secrets]: /tools/pub/pubspec#false_secrets
 [hosted dependencies]: /tools/pub/dependencies#hosted-packages
 [linter rules]: /tools/linter-rules
@@ -1284,7 +1428,7 @@ veja [Announcing Dart 2.14][Announcing Dart 2.14].
 
 [Announcing Dart 2.14]: /blog/announcing-dart-2-14
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -1316,12 +1460,12 @@ fizemos as seguintes mudanças neste site:
 [recommended linter rules]: /tools/analysis#lints
 [core libraries]: /libraries
 [commonly used packages]: /resources/useful-packages
-[dart.dev/jobs]: /jobs
+[dart.dev/jobs]: {{site.flutter-docs}}/jobs
 [no-promo]: /tools/non-promotion-reasons
 [`dart create`]: /tools/dart-create
 [`dart test`]: /tools/dart-test
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos os seguintes artigos no blog do Dart:
 
@@ -1345,7 +1489,7 @@ veja [Announcing Dart 2.13][Announcing Dart 2.13].
 
 [Announcing Dart 2.13]: /blog/announcing-dart-2-13
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais,
 fizemos as seguintes mudanças neste site:
@@ -1382,7 +1526,7 @@ fizemos as seguintes mudanças neste site:
   * Alteramos as opções de análise do código de exemplo do dart.dev de
     `pedantic` para as regras recomendadas em [`lints`][`lints`].
   * Adicionamos o Docker como forma de [obter o Dart][get Dart].
-  * Atualizamos a [página de evolução da linguagem][language evolution page] para refletir o Dart 2.13.
+  * Atualizamos a [página de evolução da linguagem][evolution] para refletir o Dart 2.13.
 
 [`dart run` page]: /tools/dart-run
 [`dart create`]: /tools/dart-create
@@ -1395,10 +1539,9 @@ fizemos as seguintes mudanças neste site:
 [Using Google APIs]: /resources/google-apis
 [Using Google Cloud]: /server/google-cloud
 [Writing package pages]: /tools/pub/writing-package-pages
-[language evolution page]: /resources/language/evolution
 
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos os seguintes artigos no blog do Dart:
 
@@ -1421,7 +1564,7 @@ Para detalhes sobre a versão 2.12,
 veja [Announcing Dart 2.12][Announcing Dart 2.12].
 
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e melhorias incrementais, fizemos as seguintes mudanças neste site:
 
@@ -1468,7 +1611,7 @@ Também migramos do Travis CI para o GitHub Actions e fizemos várias mudanças 
 [Dart team packages]: /resources/dart-team-packages
 
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos os seguintes artigos no blog do Dart:
 
@@ -1502,7 +1645,7 @@ veja [Announcing Dart 2.10.][210-ann]
 
 <div class="no_toc_section">
 
-### Documentação atualizada ou adicionada ao dart.dev {:.no_toc} {:#docs-updated-or-added-to-dart-dev}
+### Documentação atualizada ou adicionada ao dart.dev {:.no_toc #docs-updated-or-added-to-dart-dev}
 
 Além de correções de bugs e pequenas melhorias,
 fizemos as seguintes mudanças neste site:
@@ -1538,7 +1681,7 @@ fizemos as seguintes mudanças neste site:
     escrito pelo engenheiro do Dart Bob Nystrom.
 
 [dart-tool]: /tools/dart-tool
-[diagnostics]: /tools/diagnostic-messages
+[diagnostics]: /tools/diagnostics
 [dynamic]: /effective-dart/design#avoid-using-dynamic-unless-you-want-to-disable-static-checking
 [Effective Dart]: /effective-dart
 [evolution]: /resources/language/evolution
@@ -1546,11 +1689,11 @@ fizemos as seguintes mudanças neste site:
 [ns-enable]: /null-safety#enable-null-safety
 [Understanding null safety]: /null-safety/understanding-null-safety
 [sound null safety]: /null-safety
-[diagnostics]: /tools/diagnostic-messages
+[diagnostics]: /tools/diagnostics
 [changelog-docs]: /tools/pub/package-layout#changelog
 [spec]: /resources/language/spec
 
-### Artigos adicionados ao blog do Dart {:.no_toc} {:#articles-added-to-the-dart-blog}
+### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
 
 Publicamos os seguintes artigos no [blog do Dart:][Dart blog]
 

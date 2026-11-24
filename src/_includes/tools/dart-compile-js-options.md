@@ -133,7 +133,7 @@ As seguintes opções controlam a análise feita sobre o código Dart.
 : Gera um arquivo (com o sufixo `.info.json`)
   que contém informações sobre o código gerado.
   Você pode inspecionar o arquivo gerado com as ferramentas do
-  [dart2js_info](/go/dart2js-info).
+  [dart2js_info]({{site.repo.dart.sdk}}/blob/main/pkg/dart2js_info/README.md).
 
 `--[no-]deprecated-js-interop`
 : Habilita ou desabilita o suporte à interop JS legada com `dart:*`

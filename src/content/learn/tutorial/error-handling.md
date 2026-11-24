@@ -205,12 +205,20 @@ lançar sua nova `ArgumentException` quando o usuário fornecer uma entrada inv�
     }
     ```
 
-    Observe o uso de `on Exception catch (exception)`.
-    No Dart, um `catch (e)` sem tipo intercepta todos os objetos lançados,
-    incluindo instâncias de `Error`.
-    Especificar `on Exception` garante que seu código capture apenas
-    exceções recuperáveis,
-    deixando os bugs se propagarem sem serem capturados para que você possa corrigi-los.
+    Observe dois detalhes importantes neste bloco de tratamento de erros.
+
+    - **`on Exception catch (exception)`:**
+      No Dart, um `catch (e)` sem tipo intercepta todos os objetos lançados,
+      incluindo instâncias de `Error`.
+      Adicionar uma cláusula `on` filtra por tipo: por exemplo, `on Exception`
+      captura apenas subtipos de `Exception` e deixa instâncias de `Error`
+      se propagarem sem serem capturadas. Um filtro mais específico, como
+      `on FormatException`, também deixa exceções não relacionadas, como
+      `HttpException`, se propagarem.
+    - **`rethrow` versus `throw`:**
+      Usar `rethrow` propaga a exceção capturada e mantém intacto o stack
+      trace original para depuração, enquanto chamar `throw exception;` dentro
+      de um bloco `catch` cria um novo stack trace, começando nessa linha.
 
 1.  Adicione validação ao método `parse`.
 
@@ -448,7 +456,7 @@ items:
       mensagens significativas, para facilitar a depuração e o retorno ao usuário.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="error-handling" />
 

@@ -253,6 +253,9 @@ Você vai usar as funções `group`, `test` e `expect` do pacote `test`.
 
     Esta função `test` faz o seguinte:
 
+    -   Marca o callback do teste como `async` (`() async { ... }`) para que ele possa
+        usar `await` na leitura assíncrona do arquivo; o executor de testes espera
+        automaticamente o `Future` retornado terminar.
     -   Lê o conteúdo do arquivo `dart_lang_summary.json`.
     -   Decodifica a string JSON para um `Map<String, Object?>`.
     -   Cria um objeto `Summary` a partir do mapa, usando
@@ -350,8 +353,8 @@ Você vai usar as funções `group`, `test` e `expect` do pacote `test`.
         a resposta OpenSearch de nível superior é um array JSON).
     -   Cria um objeto `SearchResults` a partir da lista, usando
         o construtor `SearchResults.fromJson`.
-    -   Usa a função `expect` para verificar se a lista `results`
-        tem tamanho maior que `1`.
+    -   Usa `expect` com o matcher `greaterThan(1)` para verificar que a lista
+        `results` tem mais de `1` item.
 
 ### Tarefa 5: Execute os testes {:#task-5-run-the-tests}
 
@@ -399,7 +402,7 @@ items:
       Isso garante que os seus modelos lidem corretamente com respostas reais da API.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="testing" />
 

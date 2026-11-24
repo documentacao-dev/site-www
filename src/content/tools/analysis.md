@@ -468,7 +468,7 @@ Para habilitar um plugin legado:
     $ dart pub add --dev <your_favorite_analyzer_plugin_package>
     ```
 
- 2. Edit your `analysis_options.yaml` file to enable the plugin.
+ 2. Edite o arquivo `analysis_options.yaml` para habilitar o plugin.
 
     ```yaml
     analyzer:
@@ -667,14 +667,14 @@ seção `formatter` ao arquivo de opções de análise.
 
 ### Opções configuráveis {:#configurable-options}
 
-#### `page_width` {:#page_width}
+#### `page_width`
 
 Você pode especificar o `page_width` (comprimento de linha) desejado.
 O padrão é 80 caracteres.
 
 Para mais informações, leia [Configurando a largura de página do formatador][Configuring formatter page width].
 
-#### `trailing_commas` {:#trailing_commas}
+#### `trailing_commas`
 
 Você pode configurar como o formatador trata as vírgulas finais
 nas listas de argumentos e de parâmetros
@@ -704,15 +704,15 @@ Use os recursos a seguir para saber mais sobre análise estática no Dart:
 * [pacote analyzer]({{site.pub-pkg}}/analyzer)
 * [Solucionar problemas de desempenho do analyzer][Troubleshoot analyzer performance]
 
-[invalid_null_aware_operator]: /tools/diagnostic-messages#invalid_null_aware_operator
-[analyzer diagnostics]: /tools/diagnostic-messages
+[invalid_null_aware_operator]: /tools/diagnostics/invalid_null_aware_operator
+[analyzer diagnostics]: /tools/diagnostics
 [change the severity of rules]: #changing-the-severity-of-rules
-[diagnostics]: /tools/diagnostic-messages
-[invalid_assignment]: /tools/diagnostic-messages#invalid_assignment
+[diagnostics]: /tools/diagnostics
+[invalid_assignment]: /tools/diagnostics/invalid_assignment
 [language version]: /language/versioning
 [linter rules]: /tools/linter-rules
 [type-system]: /language/type-system
-[dead_code]: /tools/diagnostic-messages#dead_code
+[dead_code]: /tools/diagnostics/dead_code
 [disable individual rules]: #disabling-individual-rules
 [Effective Dart]: /effective-dart
 [`dart format`]: /tools/dart-format

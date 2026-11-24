@@ -31,7 +31,7 @@ main() {
 }
 ```
 
-Daí, um `Iterable` de inteiros pode ser substituído por um `Iterable` de `Object`s, porque um inteiro *é* um `Object` e pode ser usado em um `Iterable` em todo lugar em que um `Object` seria usado. A linguagem permite isso afirmando que duas instanciações do mesmo tipo genérico (como `Iterable&lt;int&gt;` e `Iterable&lt;Object&gt;` aqui) são consideradas subtipos se os argumentos de tipo delas (`int` e `Object`) também forem. Essa relação de subtipagem é considerada **covariância**.
+Daí, um `Iterable` de inteiros pode ser substituído por um `Iterable` de `Object`s, porque um inteiro *é* um `Object` e pode ser usado em um `Iterable` em todo lugar em que um `Object` seria usado. A linguagem permite isso afirmando que duas instanciações do mesmo tipo genérico (como `Iterable<int>` e `Iterable<Object>` aqui) são consideradas subtipos se os argumentos de tipo delas (`int` e `Object`) também forem. Essa relação de subtipagem é considerada **covariância**.
 
 Isso é conveniente e lógico. Faz sentido, isto é, até você olhar para a variância dos parâmetros de um método. Digamos que você queira criar um `objectWriter` em Dart:
 
@@ -190,7 +190,7 @@ class ReaderWriter<inout T> {
 
 Os erros que o compilador reporta por mau uso de parâmetros de tipo ajudam o autor da classe genérica a **escrever** código correto. A outra metade é o conjunto de erros que ajudam os demais a **usar** a classe corretamente. Uma das mudanças que acompanham os modificadores de variância sólida é a mudança de subtipagem que podemos ver na atribuição.
 
-Se um parâmetro de tipo genérico é covariante, então você pode atribuí-lo quando o argumento de tipo dele é um subtipo do argumento de tipo esperado. Por exemplo, você pode atribuir um `Reader&lt;int&gt;` a algo que espera um `Reader&lt;Object&gt;`.
+Se um parâmetro de tipo genérico é covariante, então você pode atribuí-lo quando o argumento de tipo dele é um subtipo do argumento de tipo esperado. Por exemplo, você pode atribuir um `Reader<int>` a algo que espera um `Reader<Object>`.
 
 ```dart
 class Reader<out T> { /* ... */ }
@@ -199,7 +199,7 @@ main() {
 }
 ```
 
-Da mesma forma, se um parâmetro de tipo genérico é contravariante, a atribuição é permitida quando o argumento de tipo dele é um supertipo do argumento de tipo esperado. Você pode atribuir um `Writer&lt;Object&gt;` a algo que espera um `Writer&lt;int&gt;`, assim:
+Da mesma forma, se um parâmetro de tipo genérico é contravariante, a atribuição é permitida quando o argumento de tipo dele é um supertipo do argumento de tipo esperado. Você pode atribuir um `Writer<Object>` a algo que espera um `Writer<int>`, assim:
 
 ```dart
 class Writer<in T> { /* ... */ }

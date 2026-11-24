@@ -16,7 +16,7 @@ as entradas de diagnósticos e lints em inglês.
 
 ## Progresso
 
-- Páginas traduzidas: **320 / 320** (100.0%)
+- Páginas traduzidas: **321 / 321** (100.0%)
 - Linhas pendentes (aprox.): 0
 - Diagnósticos e lints em inglês (src/data/*.json): **0** (0 diagnósticos, 0 lints)
 
@@ -37,14 +37,14 @@ as entradas de diagnósticos e lints em inglês.
 | `server` | 5 | 5 |
 | `tools` | 69 | 69 |
 | `web` | 6 | 6 |
-| `blog` | 114 | 114 |
+| `blog` | 115 | 115 |
 
 ## Páginas por seção
 
 ### `(raiz)` (7/7)
 
 - [x] `brand.md` (120 linhas)
-- [x] `changelog.md` (17 linhas)
+- [x] `changelog.md` (18 linhas)
 - [x] `docs.md` (48 linhas)
 - [x] `multiplatform-apps.md` (40 linhas)
 - [x] `overview.md` (300 linhas)
@@ -94,7 +94,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `interop/c-interop.md` (343 linhas)
 - [x] `interop/index.md` (33 linhas)
 - [x] `interop/java-interop.md` (151 linhas)
-- [x] `interop/js-interop/index.md` (57 linhas)
+- [x] `interop/js-interop/index.md` (73 linhas)
 - [x] `interop/js-interop/js-types.md` (295 linhas)
 - [x] `interop/js-interop/mock.md` (127 linhas)
 - [x] `interop/js-interop/package-web.md` (474 linhas)
@@ -147,24 +147,24 @@ as entradas de diagnósticos e lints em inglês.
 ### `learn` (15/15)
 
 - [x] `learn/index.md` (38 linhas)
-- [x] `learn/tutorial/advanced-oop.md` (362 linhas)
-- [x] `learn/tutorial/async.md` (437 linhas)
-- [x] `learn/tutorial/cli-polish.md` (271 linhas)
-- [x] `learn/tutorial/data-and-json.md` (609 linhas)
-- [x] `learn/tutorial/error-handling.md` (460 linhas)
-- [x] `learn/tutorial/fetch-data.md` (340 linhas)
+- [x] `learn/tutorial/advanced-oop.md` (374 linhas)
+- [x] `learn/tutorial/async.md` (451 linhas)
+- [x] `learn/tutorial/cli-polish.md` (272 linhas)
+- [x] `learn/tutorial/data-and-json.md` (616 linhas)
+- [x] `learn/tutorial/error-handling.md` (468 linhas)
+- [x] `learn/tutorial/fetch-data.md` (327 linhas)
 - [x] `learn/tutorial/first-app.md` (245 linhas)
 - [x] `learn/tutorial/index.md` (42 linhas)
 - [x] `learn/tutorial/inheritance.md` (539 linhas)
-- [x] `learn/tutorial/interactivity.md` (506 linhas)
-- [x] `learn/tutorial/logging.md` (637 linhas)
+- [x] `learn/tutorial/interactivity.md` (508 linhas)
+- [x] `learn/tutorial/logging.md` (654 linhas)
 - [x] `learn/tutorial/object-oriented.md` (339 linhas)
-- [x] `learn/tutorial/packages-libs.md` (344 linhas)
-- [x] `learn/tutorial/testing.md` (411 linhas)
+- [x] `learn/tutorial/packages-libs.md` (363 linhas)
+- [x] `learn/tutorial/testing.md` (414 linhas)
 
 ### `libraries` (17/17)
 
-- [x] `libraries/async/async-await.md` (1087 linhas)
+- [x] `libraries/async/async-await.md` (1093 linhas)
 - [x] `libraries/async/creating-streams.md` (480 linhas)
 - [x] `libraries/async/futures-error-handling.md` (422 linhas)
 - [x] `libraries/async/index.md` (12 linhas)
@@ -190,18 +190,18 @@ as entradas de diagnósticos e lints em inglês.
 ### `resources` (13/13)
 
 - [x] `resources/books.md` (43 linhas)
-- [x] `resources/breaking-changes.md` (1663 linhas)
+- [x] `resources/breaking-changes.md` (2033 linhas)
 - [x] `resources/dart-3-migration.md` (629 linhas)
 - [x] `resources/dart-cheatsheet.md` (2073 linhas)
 - [x] `resources/dart-team-packages.md` (25 linhas)
 - [x] `resources/google-apis.md` (71 linhas)
 - [x] `resources/index.md` (26 linhas)
-- [x] `resources/language/evolution.md` (782 linhas)
+- [x] `resources/language/evolution.md` (898 linhas)
 - [x] `resources/language/index.md` (11 linhas)
-- [x] `resources/language/number-representation.md` (514 linhas)
+- [x] `resources/language/number-representation.md` (516 linhas)
 - [x] `resources/language/spec/index.md` (61 linhas)
 - [x] `resources/useful-packages.md` (124 linhas)
-- [x] `resources/whats-new.md` (1579 linhas)
+- [x] `resources/whats-new.md` (1722 linhas)
 
 ### `server` (5/5)
 
@@ -220,7 +220,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `tools/cli-distribution.md` (175 linhas)
 - [x] `tools/dart-analyze.md` (69 linhas)
 - [x] `tools/dart-build.md` (113 linhas)
-- [x] `tools/dart-compile.md` (457 linhas)
+- [x] `tools/dart-compile.md` (502 linhas)
 - [x] `tools/dart-create.md` (107 linhas)
 - [x] `tools/dart-devtools.md` (184 linhas)
 - [x] `tools/dart-doc.md` (201 linhas)
@@ -260,7 +260,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `tools/pub/cmd/pub-token.md` (130 linhas)
 - [x] `tools/pub/cmd/pub-unpack.md` (79 linhas)
 - [x] `tools/pub/cmd/pub-upgrade.md` (178 linhas)
-- [x] `tools/pub/create-packages.md` (329 linhas)
+- [x] `tools/pub/create-packages.md` (335 linhas)
 - [x] `tools/pub/custom-package-repositories.md` (252 linhas)
 - [x] `tools/pub/data-driven-fixes.md` (143 linhas)
 - [x] `tools/pub/dependencies.md` (710 linhas)
@@ -274,10 +274,10 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `tools/pub/pubspec.md` (598 linhas)
 - [x] `tools/pub/security-advisories.md` (61 linhas)
 - [x] `tools/pub/troubleshoot.md` (203 linhas)
-- [x] `tools/pub/verified-publishers.md` (58 linhas)
+- [x] `tools/pub/verified-publishers.md` (60 linhas)
 - [x] `tools/pub/versioning.md` (472 linhas)
 - [x] `tools/pub/workspaces.md` (303 linhas)
-- [x] `tools/pub/writing-package-pages.md` (426 linhas)
+- [x] `tools/pub/writing-package-pages.md` (456 linhas)
 - [x] `tools/sdk.md` (86 linhas)
 - [x] `tools/testing.md` (131 linhas)
 - [x] `tools/vs-code.md` (48 linhas)
@@ -286,13 +286,13 @@ as entradas de diagnósticos e lints em inglês.
 ### `web` (6/6)
 
 - [x] `web/debugging.md` (215 linhas)
-- [x] `web/deployment.md` (139 linhas)
+- [x] `web/deployment.md` (288 linhas)
 - [x] `web/get-started.md` (204 linhas)
-- [x] `web/index.md` (52 linhas)
+- [x] `web/index.md` (53 linhas)
 - [x] `web/libraries.md` (53 linhas)
-- [x] `web/wasm.md` (205 linhas)
+- [x] `web/wasm.md` (389 linhas)
 
-### `blog` (114/114)
+### `blog` (115/115)
 
 - [x] `blog/3-cool-dart-patterns/index.md` (127 linhas)
 - [x] `blog/a-brand-new-dartpad-dev-with-flutter-support/index.md` (50 linhas)
@@ -321,6 +321,7 @@ as entradas de diagnósticos e lints em inglês.
 - [x] `blog/announcing-dart-3-11/index.md` (91 linhas)
 - [x] `blog/announcing-dart-3-12/index.md` (208 linhas)
 - [x] `blog/announcing-dart-3-13/index.md` (426 linhas)
+- [x] `blog/announcing-dart-3-14/index.md` (408 linhas)
 - [x] `blog/announcing-dart-3-2/index.md` (102 linhas)
 - [x] `blog/announcing-dart-3-4/index.md` (97 linhas)
 - [x] `blog/announcing-dart-3-5-and-an-update-on-the-dart-roadmap/index.md` (98 linhas)

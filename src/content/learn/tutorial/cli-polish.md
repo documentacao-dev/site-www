@@ -42,7 +42,7 @@ Antes de começar este capítulo, certifique-se de que você:
 Você vai polir o pacote `command_runner` para torná-lo mais robusto e
 amigável ao usuário.
 
-### Tarefa 1 Melhore a saída do `HelpCommand` {:#task-1-improve-the-helpcommand-output}
+### Tarefa 1: Melhore a saída do `HelpCommand` {:#task-1-improve-the-helpcommand-output}
 
 Aprimore o `HelpCommand` para fornecer informações de uso mais detalhadas,
 incluindo opções e suas descrições.
@@ -51,15 +51,15 @@ entenderem como usar seu aplicativo CLI.
 
 1.  Abra o arquivo `command_runner/lib/src/help_command.dart`.
 
-1.  Adicione imports para `console.dart` e `exceptions.dart` no topo do arquivo.
+1.  Adicione imports para `console.dart` e `exceptions.dart` no topo do arquivo,
+    junto ao import existente de `arguments.dart`.
     Você precisa deles para usar as extensões de cor e para lançar uma
     `ArgumentException`.
 
     ```dart title="command_runner/lib/src/help_command.dart"
     import 'dart:async';
 
-    import 'package:command_runner/command_runner.dart';
-
+    import 'arguments.dart';
     import 'console.dart';
     import 'exceptions.dart';
     ```
@@ -133,7 +133,7 @@ entenderem como usar seu aplicativo CLI.
     }
     ```
 
-### Tarefa 2 Adicione um callback `onOutput` {:#task-2-add-an-onoutput-callback}
+### Tarefa 2: Adicione um callback `onOutput` {:#task-2-add-an-onoutput-callback}
 
 Em seguida, adicione um argumento `onOutput` ao `CommandRunner` para permitir
 um tratamento de saída flexível.
@@ -186,7 +186,7 @@ um tratamento de saída flexível.
     Isso atualiza o método `run` para usar a função `onOutput`, caso ela seja
     fornecida. Caso contrário, o padrão é imprimir no console.
 
-### Tarefa 3 Use o callback `onOutput` {:#task-3-use-the-onoutput-callback}
+### Tarefa 3: Use o callback `onOutput` {:#task-3-use-the-onoutput-callback}
 
 Por fim, atualize seu aplicativo principal para usar o novo recurso `onOutput`.
 
@@ -194,8 +194,9 @@ Por fim, atualize seu aplicativo principal para usar o novo recurso `onOutput`.
 
 1.  Atualize a função `main` para passar a função `onOutput` ao
     `CommandRunner`.
-    Você também precisará adicionar um import para `console.dart` para
-    deixar a função `write` disponível.
+    Como o `command_runner` já exporta o `console.dart`,
+    a função `write` fica disponível pelo import existente de
+    `package:command_runner/command_runner.dart`:
 
     ```dart title="cli/bin/cli.dart"
     import 'package:command_runner/command_runner.dart';
@@ -220,7 +221,7 @@ Por fim, atualize seu aplicativo principal para usar o novo recurso `onOutput`.
     }
     ```
 
-### Tarefa 4 Teste as mudanças {:#task-4-test-the-changes}
+### Tarefa 4: Teste as mudanças {:#task-4-test-the-changes}
 
 Teste o `HelpCommand` aprimorado e o callback `onOutput`.
 
@@ -261,7 +262,7 @@ items:
       possibilitando impressão atrasada, logging ou redirecionamento da saída.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="cli-polish" />
 

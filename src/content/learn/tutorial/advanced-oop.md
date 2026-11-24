@@ -106,9 +106,13 @@ métodos para aplicar cores ao texto.
     }
     ```
 
-    Este enum define um conjunto de cores do console com seus
-    valores RGB correspondentes.
-    Cada cor é uma instância constante do enum `ConsoleColor`.
+    `ConsoleColor` é um **enum aprimorado**.
+    Diferente de enums básicos, que apenas listam valores fixos (como
+    `OptionType` no Capítulo 5), enums aprimorados podem declarar propriedades
+    `final` (`r`, `g`, `b`), um construtor `const` (`const ConsoleColor(...)`)
+    e métodos ou getters. Eles combinam o conjunto fixo de valores de um enum
+    com os recursos de uma classe.
+    Cada cor é uma instância constante inicializada com seus valores RGB.
 
 1.  Adicione métodos ao enum `ConsoleColor` para aplicar cores ao texto:
 
@@ -201,11 +205,19 @@ para aplicar cores do console e formatar texto.
     }
     ```
 
-    Este código define uma extension chamada `TextRenderUtils` na classe `String`.
-    Ela adiciona três métodos getter para aplicar cores do console:
-    `errorText`, `instructionText` e `titleText`.
-    Também adiciona um método para dividir uma string em linhas de um
-    comprimento especificado, chamado `splitLinesByLength`.
+    Este código define uma **extension** chamada `TextRenderUtils` na classe
+    `String` (`extension TextRenderUtils on String`).
+    Extensions permitem adicionar novos getters e métodos a um tipo existente
+    sem modificar o código-fonte dele nem criar uma subclasse, o que é
+    especialmente útil para tipos centrais do Dart, como `String`, que não
+    podem ser estendidos por subclasse.
+
+    Dentro de uma extension, `this` se refere à string em que o getter ou
+    método é chamado.
+    `TextRenderUtils` adiciona três getters para aplicar cores do console
+    (`errorText`, `instructionText` e `titleText`) e um método
+    `splitLinesByLength`, todos chamáveis diretamente em qualquer string
+    (como `'Warning'.errorText`).
 
 ### Tarefa 3: Atualize o pacote command_runner {:#task-3-update-command_runner-package}
 
@@ -350,7 +362,7 @@ items:
       exibir erros em vermelho, títulos em azul e instruções em amarelo.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="advanced-oop" />
 

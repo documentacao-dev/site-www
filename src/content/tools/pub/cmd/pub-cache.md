@@ -1,6 +1,6 @@
 ---
 title: dart pub cache
-description: Use dart pub cache to manage your system cache.
+description: Use dart pub cache para gerenciar o cache do sistema.
 ia-translate: true
 ---
 

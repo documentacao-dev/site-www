@@ -20,6 +20,7 @@ import 'src/components/common/tabs.dart';
 import 'src/components/common/youtube_embed.dart';
 import 'src/components/pages/changelog/changelog_index.dart';
 import 'src/components/tutorial/quiz.dart';
+import 'src/components/tutorial/stepper.dart';
 import 'src/components/tutorial/summary_card.dart';
 import 'src/components/tutorial/tutorial_outline.dart';
 import 'src/extensions/attribute_processor.dart';
@@ -36,9 +37,11 @@ import 'src/layouts/learn_layout.dart';
 import 'src/loaders/data_processor.dart';
 import 'src/markdown/markdown_parser.dart';
 import 'src/pages/atom_feed.dart';
+import 'src/pages/changelog_slices.dart';
 import 'src/pages/custom_pages.dart';
 import 'src/pages/diagnostic_index.dart';
 import 'src/pages/lint_index.dart';
+import 'src/pages/markdown.dart';
 import 'src/pages/robots_txt.dart';
 import 'src/templating/dash_template_engine.dart';
 import 'src/util.dart';
@@ -58,150 +61,111 @@ void main() {
 
   ServerApp.addMiddleware(assetManager.middleware);
 
+  final passThroughPattern = RegExp(r'.*\.(txt|json)$');
+
+  final defaultPageConfig = PageConfig(
+    dataLoaders: [
+      FilesystemDataLoader(path.join(siteSrcDirectoryPath, 'data')),
+      DataProcessor(),
+      assetManager.dataLoader,
+    ],
+    templateEngine: DashTemplateEngine(
+      partialDirectoryPath: path.canonicalize(
+        path.join(siteSrcDirectoryPath, '_includes'),
+      ),
+    ),
+    parsers: const [
+      DashMarkdownParser(),
+      HtmlParser(),
+    ],
+    rawOutputPattern: passThroughPattern,
+    extensions: [
+      const AttributeProcessor(),
+      const HeaderExtractorExtension(),
+      const HeaderWrapperExtension(),
+      const TableWrapperExtension(),
+      const CodeBlockProcessor(),
+      const GlossaryLinkProcessor(),
+      const TutorialNavigationExtension(),
+      assetManager.pageExtension,
+    ],
+    components: [
+      const DashTabs(),
+      const Stepper(),
+      const YoutubeEmbed(),
+      const FileTree(),
+      const Quiz(),
+      const SummaryCard(),
+      const TutorialOutline(),
+      const PostBreak(),
+      CustomComponent(
+        pattern: RegExp('ArchiveTable'),
+        builder: (_, attrs, _) => ArchiveTable.fromAttributes(attrs),
+      ),
+      CustomComponent(
+        pattern: RegExp('LintRuleIndex', caseSensitive: false),
+        builder: (_, _, _) => const LintRuleIndex(),
+      ),
+      CustomComponent(
+        pattern: RegExp('DiagnosticIndex', caseSensitive: false),
+        builder: (_, _, _) => const DiagnosticIndex(),
+      ),
+      CustomComponent(
+        pattern: RegExp('Card', caseSensitive: false),
+        builder: (_, attrs, child) => Card.fromAttributes(attrs, child),
+      ),
+      CustomComponent(
+        pattern: RegExp('ChangelogIndex', caseSensitive: false),
+        builder: (_, _, _) => const ChangelogIndex(),
+      ),
+      CustomComponent(
+        pattern: RegExp('BlogIndex', caseSensitive: false),
+        builder: (_, _, _) => const BlogIndex(),
+      ),
+      CustomComponent(
+        pattern: RegExp('DashImage', caseSensitive: false),
+        builder: (_, attrs, _) => DashImage.fromAttributes(attrs),
+      ),
+      CustomComponent(
+        pattern: RegExp('GitHubEmbed', caseSensitive: false),
+        builder: (_, attrs, _) => GitHubEmbed.fromAttributes(attrs),
+      ),
+    ],
+    layouts: const [
+      DocLayout(),
+      HomepageLayout(),
+      LearnLayout(),
+      BlogLayout(),
+    ],
+    theme: const ContentTheme.none(),
+    secondaryOutputs: [
+      const AtomFeedOutput(),
+      const RobotsTxtOutput(),
+      canonicalMarkdownOutput,
+    ],
+  );
+
+  // Static changelog slices emit pre-rendered Markdown and JSON directly,
+  // bypassing Liquid templating, HTML layout wrapping, and secondary outputs.
+  final changelogSlicePageConfig = PageConfig(
+    enableFrontmatter: false,
+    rawOutputPattern: changelogSlicePathPattern,
+  );
+
   final app = ContentApp.custom(
     eagerlyLoadAllPages: true,
     loaders: [
       FilesystemLoader(
         _contentDirectory,
-        filterExtensions: const {'.md', '.html'},
+        filterExtensions: const {'.md', '.html', '.txt'},
+        keepSuffixPattern: passThroughPattern,
       ),
       MemoryLoader(pages: allMemoryPages),
     ],
-    configResolver: PageConfig.all(
-      dataLoaders: [
-        FilesystemDataLoader(path.join(siteSrcDirectoryPath, 'data')),
-        DataProcessor(),
-        assetManager.dataLoader,
-      ],
-      templateEngine: DashTemplateEngine(
-        partialDirectoryPath: path.canonicalize(
-          path.join(siteSrcDirectoryPath, '_includes'),
-        ),
-      ),
-      parsers: const [
-        DashMarkdownParser(),
-        HtmlParser(),
-      ],
-      rawOutputPattern: RegExp(r'.*\.(txt|json)$'),
-      extensions: [
-        const AttributeProcessor(),
-        const HeaderExtractorExtension(),
-        const HeaderWrapperExtension(),
-        const TableWrapperExtension(),
-        const CodeBlockProcessor(),
-        const GlossaryLinkProcessor(),
-        const TutorialNavigationExtension(),
-        assetManager.pageExtension,
-      ],
-      components: [
-        const DashTabs(),
-        const YoutubeEmbed(),
-        const FileTree(),
-        const Quiz(),
-        const SummaryCard(),
-        const TutorialOutline(),
-        const PostBreak(),
-        CustomComponent(
-          pattern: RegExp('ArchiveTable'),
-          builder: (_, attrs, _) => ArchiveTable.fromAttributes(attrs),
-        ),
-        CustomComponent(
-          pattern: RegExp('LintRuleIndex', caseSensitive: false),
-          builder: (_, _, _) => const LintRuleIndex(),
-        ),
-        CustomComponent(
-          pattern: RegExp('DiagnosticIndex', caseSensitive: false),
-          builder: (_, _, _) => const DiagnosticIndex(),
-        ),
-        CustomComponent(
-          pattern: RegExp('Card', caseSensitive: false),
-          builder: (_, attrs, child) => Card.fromAttributes(attrs, child),
-        ),
-        CustomComponent(
-          pattern: RegExp('ChangelogIndex', caseSensitive: false),
-          builder: (_, _, _) => const ChangelogIndex(),
-        ),
-        CustomComponent(
-          pattern: RegExp('BlogIndex', caseSensitive: false),
-          builder: (_, _, _) => const BlogIndex(),
-        ),
-        CustomComponent(
-          pattern: RegExp('DashImage', caseSensitive: false),
-          builder: (_, attrs, _) => DashImage.fromAttributes(attrs),
-        ),
-        CustomComponent(
-          pattern: RegExp('GitHubEmbed', caseSensitive: false),
-          builder: (_, attrs, _) => GitHubEmbed.fromAttributes(attrs),
-        ),
-      ],
-      layouts: const [
-        DocLayout(),
-        HomepageLayout(),
-        LearnLayout(),
-        BlogLayout(),
-      ],
-      theme: const ContentTheme.none(),
-      secondaryOutputs: [
-        const AtomFeedOutput(),
-        const RobotsTxtOutput(),
-        _DashMarkdownOutput(
-          createHeader: (page) {
-            final header = StringBuffer();
-            if (page.data.page['title'] case final String title
-                when title.isNotEmpty) {
-              header.writeln('# $title');
-
-              if (page.data.page['description'] case final String description
-                  when description.isNotEmpty) {
-                header.writeln();
-                header.writeln('> $description');
-              }
-            }
-
-            return header.toString();
-          },
-        ),
-      ],
-    ),
+    configResolver: (source) => changelogSlicePathPattern.hasMatch(source.path)
+        ? changelogSlicePageConfig
+        : defaultPageConfig,
   );
 
   runApp(app);
-}
-
-final class _DashMarkdownOutput extends MarkdownOutput {
-  static final _changelogTagPattern = RegExp(
-    r'<ChangelogIndex\s*(?:/>|>\s*</ChangelogIndex>)',
-    caseSensitive: false,
-  );
-
-  _DashMarkdownOutput({super.createHeader});
-
-  @override
-  Component build(Page page) {
-    if (!_changelogTagPattern.hasMatch(page.content)) {
-      return super.build(page);
-    }
-
-    return Builder(
-      builder: (context) {
-        final pageContent = StringBuffer();
-        if (createHeader case final createHeader?) {
-          final headerForPage = createHeader(page);
-          pageContent.writeln(headerForPage);
-        }
-
-        final changesData = page.data['changelog'] as List<Object?>?;
-        final renderedChangelog = changesData != null
-            ? ChangelogIndex.renderMarkdown(changesData)
-            : '';
-        pageContent.writeln(
-          page.content.replaceFirst(_changelogTagPattern, renderedChangelog),
-        );
-
-        context.setHeader('Content-Type', 'text/markdown; charset=utf-8');
-        context.setStatusCode(200, responseBody: pageContent.toString());
-        return const Component.empty();
-      },
-    );
-  }
 }

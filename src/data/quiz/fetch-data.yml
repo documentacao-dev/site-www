@@ -27,7 +27,7 @@
         Objetos `Uri` são imutáveis e não têm um método `addQueryParam`.
         Os parâmetros de consulta devem ser especificados de outra forma.
 - question: >-
-    Depois de chamar `client.get(url)`,
+    Depois de chamar `http.get(url)`,
     como você deve verificar se a requisição foi bem-sucedida?
   options:
     - text: >-
@@ -56,32 +56,41 @@
         Não existe uma propriedade `isSuccess` em `Response`.
         Você precisa consultar outra propriedade do objeto de resposta.
 - question: >-
-    As funções de API da lição usam um bloco `finally` para chamar `client.close()`.
-    Por que isso é importante?
+    Quando a API da Wikipedia retorna um código de status diferente de 200,
+    as funções de API da lição lançam um `HttpException`
+    em vez de retornar uma mensagem de erro em forma de string.
+    Por que essa é uma prática melhor para um pacote de API?
   options:
     - text: >-
-        Para garantir que os recursos de rede sejam liberados mesmo se ocorrer uma exceção.
+        Ela separa o tratamento de falhas dos dados válidos,
+        permitindo que as funções retornem modelos tipados (como `Summary`)
+        enquanto quem chama trata os erros com `try`/`catch`.
       correct: true
       explanation: >-
-        O `finally` roda tanto se o bloco try for bem-sucedido quanto se lançar uma exceção.
-        Isso garante que as conexões do client sejam fechadas corretamente,
-        evitando vazamento de recursos.
+        Retornar uma string de erro não se encaixa em um tipo de retorno como
+        `Future<Summary>` e corre o risco de tratar o texto do erro como dados do artigo.
+        Lançar um `HttpException` sinaliza a falha explicitamente, para que o código
+        que chama possa capturá-la e tratá-la.
     - text: >-
-        Para salvar os dados da resposta em disco antes de a função retornar.
+        Porque `http.get` trava o runtime do Dart se você não lançar uma exceção
+        para códigos de status diferentes de 200.
       correct: false
       explanation: >-
-        `close()` não salva dados em lugar nenhum.
-        Salvar dados exigiria operações explícitas com arquivos.
+        `http.get` termina normalmente com um objeto `Response`, mesmo para os
+        códigos de status 404 ou 500. Lançar `HttpException` é uma escolha de design
+        deliberada, não uma exigência do runtime.
     - text: >-
-        Para enviar uma mensagem de 'conexão fechada' ao servidor.
+        Porque lançar `HttpException` tenta novamente a requisição de rede
+        que falhou até três vezes automaticamente.
       correct: false
       explanation: >-
-        Embora fechar afete a conexão,
-        o principal objetivo é a limpeza do lado do cliente,
-        não a comunicação com o servidor.
+        Lançar uma exceção interrompe a execução da função e propaga a falha
+        para quem chamou; ela não repete a requisição.
     - text: >-
-        Para limpar a resposta da memória e acionar o garbage collector.
+        Porque funções marcadas com `async` não podem retornar strings de erro
+        quando uma requisição de rede falha.
       correct: false
       explanation: >-
-        O garbage collector do Dart cuida da memória automaticamente.
-        `close()` libera outro tipo de recurso.
+        Uma função `async` pode retornar qualquer tipo declarado (como `Future<String>`,
+        como no Capítulo 3). Lançar uma exceção é preferível por segurança de tipos
+        e tratamento estruturado de erros, não por regras de sintaxe.

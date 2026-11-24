@@ -1,8 +1,8 @@
 ---
-title: What not to commit
+title: O que não incluir no commit
 description: >-
-  Your development tools generate a bunch of files.
-  Not all of them should be committed.
+  Suas ferramentas de desenvolvimento geram vários arquivos.
+  Nem todos devem ser incluídos no commit.
 ia-translate: true
 ---
 
@@ -18,7 +18,7 @@ Alguns arquivos que você normalmente não colocaria em um repositório
 são úteis ou essenciais quando você faz deploy de um aplicativo.
 :::
 
-## The rules
+## As regras {:#the-rules}
 
 **Não faça commit** dos seguintes arquivos e diretórios
 criados pelo pub:
@@ -55,7 +55,7 @@ considere colocá-los em um arquivo ignore global:
 
 Para mais detalhes, continue lendo.
 
-## Details
+## Detalhes {:#details}
 
 Como regra, faça commit apenas dos arquivos que as pessoas precisam
 para usar seu pacote ou repositório de código-fonte.
@@ -79,7 +79,7 @@ então seu pacote publicado não conterá o arquivo `keys.txt`.
 
 Para mais informações sobre arquivos `.gitignore`,
 veja a página de ajuda do GitHub
-[Ignoring files.](https://help.github.com/articles/ignoring-files)
+[Ignorando arquivos.](https://help.github.com/articles/ignoring-files)
 
 ### .dart_tool/
 

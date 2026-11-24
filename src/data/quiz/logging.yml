@@ -27,32 +27,39 @@
         A criação de CLIs usa pacotes como `args` ou código próprio.
         O pacote `logging` ajuda em outro aspecto das aplicações.
 - question: >-
-    O que a linha `hierarchicalLoggingEnabled = true;` faz?
+    Depois de criar uma instância de `Logger`,
+    como você realmente grava as mensagens de log em um arquivo ou no console?
   options:
     - text: >-
-        Habilita um logger para capturar eventos de loggers filhos.
+        Assine `logger.onRecord.listen(...)` e trate cada `LogRecord`
+        dentro do callback.
       correct: true
       explanation: >-
-        Com o logging hierárquico habilitado,
-        loggers pais podem receber e processar eventos dos seus loggers filhos.
+        Um `Logger` emite eventos `LogRecord` pelo stream `onRecord`,
+        em vez de gravar a saída diretamente.
+        Assinar `onRecord` permite formatar e enviar os logs para onde você precisar,
+        como um arquivo ou o terminal.
     - text: >-
-        Habilita o logging em um sistema de arquivos hierárquico.
+        Passe um caminho de arquivo diretamente para o construtor
+        `Logger('errors', path: ...)`.
       correct: false
       explanation: >-
-        Essa configuração não afeta sistemas de arquivos nem onde os logs são armazenados.
-        "Hierárquico" se refere a outra coisa.
+        O construtor de `Logger` recebe apenas o nome do logger.
+        Os destinos de saída são configurados separadamente, ao assinar
+        os eventos de log.
     - text: >-
-        Desabilita o logging no console.
+        Defina `logger.level = Level.ALL;` para imprimir automaticamente todos os registros.
       correct: false
       explanation: >-
-        A saída no console é controlada por listeners, e não por essa configuração.
-        Essa configuração afeta como os loggers interagem entre si.
+        `level` controla quais níveis de severidade são registrados,
+        e não para onde as mensagens são gravadas.
+        Sem um listener, as mensagens registradas não são exibidas em lugar nenhum.
     - text: >-
-        Habilita o logging de requisições HTTP.
+        Nada extra é necessário; o `Logger` grava em uma pasta `logs/` por padrão.
       correct: false
       explanation: >-
-        O logging de HTTP exige configuração específica no seu código HTTP.
-        Essa configuração afeta a estrutura interna do sistema de logging.
+        `package:logging` não cria arquivos nem imprime saída automaticamente.
+        Você precisa anexar um listener para tratar os eventos `LogRecord` recebidos.
 - question: >-
     Esta lição usa `logger.severe()`, `logger.warning()` e `logger.info()`.
     Por que usar níveis de log diferentes em vez de apenas `print()`?

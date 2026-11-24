@@ -102,7 +102,7 @@ Usar um publisher verificado tem as seguintes vantagens:
 * Você evita que o pub.dev exiba seu endereço de e-mail pessoal.
   Em vez disso, o pub.dev exibe o domínio do publisher e o endereço de contato.
 * O site pub.dev exibe um selo de publisher verificado
-  <img src="/assets/img/verified-publisher.svg" class="text-icon" alt="pub.dev verified publisher logo">
+  <img src="/assets/img/verified-publisher.svg" class="text-icon" width="20" height="20" alt="pub.dev verified publisher logo">
   ao lado do nome do seu pacote nas páginas de busca e nas páginas individuais dos pacotes.
 
 ### Crie um publisher verificado {:#create-verified-publisher}
@@ -328,7 +328,7 @@ Quando você publica esse pacote no pub.dev, ele é marcado como uma versão de 
 A captura de tela a seguir ilustra isso.
 Ela lista a versão estável como `1.6.0` e a versão de preview como `2.0.0`.
 
-![Ilustração de uma versão de preview](/assets/img/tools/pub/preview-version.png){:width="600px"}
+![Ilustração de uma versão de preview](/assets/img/tools/pub/preview-version.png){:width="600" height="178"}
 
 Quando o Dart lançar a versão estável `3.0.0`,
 o pub.dev atualiza a listagem do pacote para exibir

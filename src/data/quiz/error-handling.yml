@@ -31,35 +31,41 @@
         Estado global é propenso a erros e fácil de esquecer.
         Essa abordagem não obriga quem chama a tratar o erro.
 - question: >-
-    Qual é a diferença entre `throw` e `rethrow` em um bloco catch?
+    Nesta lição, por que você criou uma classe de exceção personalizada
+    `ArgumentException` que estende `FormatException` em vez de simplesmente
+    lançar uma `String` comum?
   options:
     - text: >-
-        `throw` sempre cria um novo stack trace;
-        `rethrow` preserva o stack trace original.
+        Isso permite que quem chama capture tipos específicos de falha com
+        cláusulas `on` e anexe contexto estruturado, como `command` e `argumentName`.
       correct: true
       explanation: >-
-        Use `rethrow` quando quiser registrar ou tratar parcialmente uma exceção,
-        mas ainda deixá-la se propagar
-        com o stack trace original intacto para depuração.
+        Classes de exceção personalizadas funcionam com cláusulas `on` baseadas
+        em tipo (como `on ArgumentException` ou `on FormatException`) e reúnem
+        campos úteis junto com a mensagem de erro.
     - text: >-
-        `throw` cria uma nova exceção; `rethrow` apenas imprime a atual.
+        A keyword `throw` do Dart só aceita subclasses de `FormatException` e não
+        pode lançar strings nem exceções embutidas.
       correct: false
       explanation: >-
-        Nenhum dos dois imprime nada.
-        `rethrow` propaga a exceção, não apenas a exibe.
+        Tecnicamente, o Dart permite lançar qualquer objeto não nulo, embora o
+        Effective Dart recomende lançar tipos `Exception` para falhas recuperáveis.
     - text: >-
-        `throw` funciona dentro de blocos catch, enquanto
-        `rethrow` só funciona fora deles.
+        Classes de exceção personalizadas são capturadas e impressas automaticamente
+        pelo Dart, sem precisar de um bloco `try`/`catch`.
       correct: false
       explanation: >-
-        É quase o contrário. `rethrow` só funciona dentro de blocos catch.
-        `throw` funciona em qualquer lugar.
+        Exceções personalizadas se comportam como as embutidas: se não forem
+        capturadas, continuam se propagando e encerram o programa.
     - text: >-
-        `throw` serve para erros; `rethrow` serve para exceções.
+        Estender `FormatException` transforma falhas em tempo de execução em erros
+        de compilação, para que entradas inválidas do usuário sejam detectadas
+        antes de o app rodar.
       correct: false
       explanation: >-
-        Os dois funcionam com qualquer objeto lançável.
-        A diferença não está no tipo do objeto lançado.
+        A entrada de linha de comando do usuário só é conhecida em tempo de
+        execução, então entradas inválidas continuam sendo tratadas em tempo de
+        execução com `try`/`catch`.
 - question: >-
     Considere este código:
     `try { riskyOperation(); } on FormatException catch (e) { print(e); }`.

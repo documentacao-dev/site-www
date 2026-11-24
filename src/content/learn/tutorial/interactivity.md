@@ -254,7 +254,9 @@ manipulação de `List`, verificações de nulabilidade e interpolação de stri
     Destaques do código anterior:
 
     - Variáveis `final` só podem ser definidas uma vez e são usadas quando
-      você não pretende mais alterar a variável no código.
+      você não pretende mais reatribuir a variável, mesmo quando o valor é
+      determinado em tempo de execução (como a entrada de linha de comando),
+      ao contrário de `const`, que exige uma constante de tempo de compilação.
     - `arguments.sublist(1)` cria uma nova lista com todos os elementos da
       lista `arguments` _depois_ do primeiro elemento (que era `search`).
     - `arguments.length > 1 ? ... : null;` é um operador condicional (ternário).
@@ -493,7 +495,7 @@ items:
       como alternativa ou complemento aos argumentos de linha de comando.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="interactivity" />
 

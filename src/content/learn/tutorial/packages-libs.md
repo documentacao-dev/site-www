@@ -128,6 +128,26 @@ vai tratar a lógica de análise de argumentos de linha de comando.
       este método pode executar operações assíncronas,
       mas não retorna um valor.
 
+1.  Atualize o arquivo gerado `command_runner/example/command_runner_example.dart`
+    para usar `CommandRunner` em vez da classe inicial `Awesome`, que você
+    acabou de remover:
+
+    ```dart title="command_runner/example/command_runner_example.dart"
+    import 'package:command_runner/command_runner.dart';
+
+    void main(List<String> arguments) async {
+      var runner = CommandRunner();
+      await runner.run(arguments);
+    }
+    ```
+
+1.  Remova o arquivo gerado `command_runner/test/command_runner_test.dart`
+    executando `rm command_runner/test/command_runner_test.dart`
+    (no macOS ou Linux) ou `del command_runner\test\command_runner_test.dart`
+    (no Windows).
+    `dart create` gerou esse arquivo para testar a classe provisória `Awesome`,
+    então seu projeto não precisa mais dele.
+
 ### Tarefa 3: Adicione command_runner como dependência {:#task-3-add-command_runner-as-a-dependency}
 
 Agora que você criou o pacote `command_runner` e
@@ -228,16 +248,15 @@ pela nova classe `CommandRunner`.
     ```
 
     **Agora, substitua todo o conteúdo de `cli/bin/cli.dart`
-    (exceto a importação de `http`) pela versão atualizada a seguir:**
+    pela versão atualizada a seguir:**
 
     ```dart title="cli/bin/cli.dart"
-    import 'dart:io';
-    import 'package:http/http.dart' as http;
     import 'package:command_runner/command_runner.dart';
 
-    void main(List<String> arguments) async { // main is now async and awaits the runner
-      var runner = CommandRunner(); // Create an instance of your new CommandRunner
-      await runner.run(arguments); // Call its run method, awaiting its Future<void>
+    void main(List<String> arguments) async {
+      // Create an instance of your new CommandRunner and await its execution
+      var runner = CommandRunner();
+      await runner.run(arguments);
     }
     ```
 
@@ -333,7 +352,7 @@ items:
       antes de serem publicados separadamente.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="packages-libs" />
 

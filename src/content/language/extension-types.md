@@ -66,7 +66,7 @@ cujo tipo estático é esse extension type.
 Por padrão, elas são distintas da interface do seu tipo subjacente.
 :::
 
-[static JS interop]: /go/next-gen-js-interop
+[static JS interop]: /interop/js-interop
 [ext]: /language/extension-methods
 
 ## Sintaxe {:#syntax}

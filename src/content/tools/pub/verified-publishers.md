@@ -1,15 +1,15 @@
 ---
-title: Verified publishers
-description: Learn what verified publishers are, and they're verified.
+title: Publicadores verificados
+description: Saiba o que são publicadores verificados e como eles são verificados.
 ia-translate: true
 ---
 
-O badge de verified publisher do pub.dev <img src="/assets/img/verified-publisher.svg" class="text-icon" alt="pub.dev verified publisher logo">
+O badge de verified publisher do pub.dev <img src="/assets/img/verified-publisher.svg" class="text-icon" width="20" height="20" alt="pub.dev verified publisher logo">
 informa que o site pub.dev
 verificou a identidade do publisher de um pacote.
 Por exemplo, [dart.dev]({{site.pub}}/publishers/dart.dev/)
 é o verified publisher para pacotes que o time Dart do Google
-suporta.
+mantém.
 
 O badge aparece em vários lugares no pub.dev,
 ao lado de pacotes que verified publishers publicaram:
@@ -25,11 +25,13 @@ além de detalhes adicionais como o email de contato do publisher.
 Para visitar a página do publisher, clique no link de identidade do publisher
 (por exemplo, `dart.dev`) ao lado do badge de verified publisher
 <img
-class="text-icon"
+  class="text-icon"
   src="/assets/img/verified-publisher.svg"
+  width="20"
+  height="20"
   alt="pub.dev verified publisher logo">.
 
-## Verification process
+## Processo de verificação {:#verification-process}
 
 Para garantir que criar verified publishers seja de baixo custo e disponível para qualquer um,
 pub.dev depende de domínios DNS (domain name system) como um token de identificação.
@@ -48,7 +50,7 @@ A propriedade do nome de domínio é verificada apenas uma vez quando um publish
 - A propriedade do publisher deve ser explicitamente transferida pelo dono atual do publisher.
 :::
 
-## Creating a verified publisher account
+## Criando uma conta de publicador verificado {:#creating-a-verified-publisher-account}
 
 Se você publica pacotes e quer criar um novo verified publisher,
 veja as instruções na [página de publicação][publishing page].

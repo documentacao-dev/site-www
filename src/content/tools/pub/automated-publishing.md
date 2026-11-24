@@ -77,7 +77,7 @@ O _tag pattern_ é uma string que deve conter `{% raw %}{{version}}{% endraw %}`
 Somente GitHub Actions acionadas por um push de uma tag que corresponda a este
 _tag pattern_ poderão publicar o seu pacote.
 
-![Configuração de publicação a partir do GitHub Actions no pub.dev](/assets/img/tools/pub/pub-dev-gh-setup.png)
+![Configuração de publicação a partir do GitHub Actions no pub.dev](/assets/img/tools/pub/pub-dev-gh-setup.png){:width="804" height="511"}
 
 **Exemplo:** um _tag pattern_ como `v{% raw %}{{version}}{% endraw %}` permite que
 GitHub Actions (acionadas por `git tag v1.2.3 && git push v1.2.3`) publiquem a
@@ -214,7 +214,7 @@ Depois de publicado, você pode ver o evento de publicação no `audit-log` do
 A entrada do `audit-log` deve conter um link para a execução do GitHub Action que
 publicou a versão do pacote.
 
-![Audit log após a publicação a partir do GitHub Actions](/assets/img/tools/pub/audit-log-pub-gh.png)
+![Audit log após a publicação a partir do GitHub Actions](/assets/img/tools/pub/audit-log-pub-gh.png){:width="790" height="248"}
 
 Se você não gosta de usar a CLI do `git` para criar tags, pode criar _releases_
 no GitHub em `https://github.com/<organization>/<repository>/releases/new`.
@@ -245,7 +245,7 @@ Para exigir um _ambiente do GitHub Actions_ para a publicação, você precisa:
 1. Clicar em **Require GitHub Actions environment**.
 1. Especificar um nome de **Environment** (`pub.dev` costuma ser um bom nome).
 
-![Configure o pub.dev para exigir um ambiente de deploy do GitHub](/assets/img/tools/pub/pub-dev-gh-env-setup.png)
+![Configure o pub.dev para exigir um ambiente de deploy do GitHub](/assets/img/tools/pub/pub-dev-gh-env-setup.png){:width="754" height="168"}
 
 Quando um ambiente é exigido no pub.dev, o GitHub Actions não consegue
 publicar a menos que tenha `environment: pub.dev`. Por isso, você precisa:
@@ -285,7 +285,7 @@ configurar _revisores obrigatórios_. Se você configurar essa opção, o GitHub
 as ações do ambiente sejam executadas até que um dos
 _revisores obrigatórios_ aprove a execução.
 
-![GitHub Action aguardando revisão de deploy](/assets/img/tools/pub/gh-pending-review.png)
+![GitHub Action aguardando revisão de deploy](/assets/img/tools/pub/gh-pending-review.png){:width="718" height="544"}
 
 ## Publicando a partir do Google Cloud Build {:#publishing-from-google-cloud-build}
 
@@ -342,7 +342,7 @@ essa service account.
       Você criou esta conta na etapa anterior:
       `pub-dev@$PROJECT_ID.iam.gserviceaccount.com`
 
-![Configuração que permite que a service account publique no pub.dev](/assets/img/tools/pub/pub-dev-gcb-config.png)
+![Configuração que permite que a service account publique no pub.dev](/assets/img/tools/pub/pub-dev-gcb-config.png){:width="721" height="361"}
 
 Concluído este procedimento, qualquer pessoa que consiga personificar a service account pode
 publicar novas versões do pacote. Certifique-se de revisar quem tem permissão para
@@ -454,7 +454,7 @@ repositório, no arquivo `/cloudbuild.yaml`.
 **Não** especifique uma _service account_ para o build que será acionado.
 Em vez disso, use a service account padrão do Cloud Build.
 
-![Configuração do gatilho](/assets/img/tools/pub/gcb-trigger-configuration.png)
+![Configuração do gatilho](/assets/img/tools/pub/gcb-trigger-configuration.png){:width="552" height="730"}
 
 :::note
 Você pode configurar o gatilho do Cloud Build para ser executado com uma
@@ -487,12 +487,12 @@ exigir aprovação, ele não será executado quando acionado. Em vez disso, ele 
 a aprovação.
 Isso pode ser usado para limitar quem pode publicar novas versões do seu pacote.
 
-![Habilitando aprovações na configuração do gatilho do Cloud Build](/assets/img/tools/pub/gcb-approval-checkbox.png)
+![Habilitando aprovações na configuração do gatilho do Cloud Build](/assets/img/tools/pub/gcb-approval-checkbox.png){:width="544" height="158"}
 
 Somente um usuário com o papel **Cloud Build Approver** pode conceder a aprovação.
 Ao aprovar, o aprovador pode especificar uma URL e um comentário.
 
-![Execução do Cloud Build aguardando aprovação para ser executada](/assets/img/tools/pub/gcp-waiting-for-approval.png)
+![Execução do Cloud Build aguardando aprovação para ser executada](/assets/img/tools/pub/gcp-waiting-for-approval.png){:width="965" height="708"}
 
 Você também pode configurar notificações para aprovações pendentes.
 Para saber mais, veja [controlando o build com aprovação][17].

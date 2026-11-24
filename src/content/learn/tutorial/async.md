@@ -33,6 +33,20 @@ items:
 
 [Application Programming Interfaces]: https://www.postman.com/what-is-an-api/
 
+## Como o código assíncrono funciona no Dart {:#how-asynchronous-code-works-in-dart}
+
+O Dart executa seu código em um **event loop** de thread única.
+Se seu programa esperasse de forma síncrona por uma resposta lenta da rede,
+o app inteiro travaria até o servidor responder.
+
+Em vez disso, operações assíncronas retornam um `Future`, um objeto que representa
+um valor que estará disponível mais tarde.
+Quando uma função `async` chega a uma expressão `await`, o Dart pausa *apenas*
+essa função, sem iniciar uma nova thread nem bloquear o programa.
+Enquanto espera a resposta, o event loop do Dart continua livre para processar
+outras operações assíncronas e manipuladores de eventos,
+retomando sua função quando o `Future` for concluído.
+
 ## Tarefas {:#tasks}
 
 Neste capítulo, você vai modificar o aplicativo CLI `dartpedia` existente para
@@ -424,7 +438,7 @@ items:
       Seu CLI agora busca dados reais da web!
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="async" />
 

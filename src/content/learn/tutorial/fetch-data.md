@@ -90,71 +90,64 @@ Você vai criar três arquivos:
     import '../model/summary.dart';
 
     Future<Summary> getRandomArticleSummary() async {
-      final http.Client client = http.Client();
-      try {
-        final Uri url = Uri.https(
-          'en.wikipedia.org',
-          '/api/rest_v1/page/random/summary',
+      final Uri url = Uri.https(
+        'en.wikipedia.org',
+        '/api/rest_v1/page/random/summary',
+      );
+      final http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        return Summary.fromJson(jsonData);
+      } else {
+        throw HttpException(
+          '[WikipediaApiClient.getRandomArticleSummary] '
+          'statusCode=${response.statusCode}, body=${response.body}',
         );
-        final http.Response response = await client.get(url);
-        if (response.statusCode == 200) {
-          final Map<String, Object?> jsonData =
-              jsonDecode(response.body) as Map<String, Object?>;
-          return Summary.fromJson(jsonData);
-        } else {
-          throw HttpException(
-            '[WikipediaApiClient.getRandomArticleSummary] '
-            'statusCode=${response.statusCode}, body=${response.body}',
-          );
-        }
-      } on FormatException {
-        // todo: log exceptions
-        rethrow;
-      } finally {
-        client.close();
       }
     }
 
     Future<Summary> getArticleSummaryByTitle(String articleTitle) async {
-      final http.Client client = http.Client();
-      try {
-        final Uri url = Uri.https(
-          'en.wikipedia.org',
-          '/api/rest_v1/page/summary/$articleTitle',
+      final Uri url = Uri.https(
+        'en.wikipedia.org',
+        '/api/rest_v1/page/summary/$articleTitle',
+      );
+      final http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        return Summary.fromJson(jsonData);
+      } else {
+        throw HttpException(
+          '[WikipediaApiClient.getArticleSummaryByTitle] '
+          'statusCode=${response.statusCode}, body=${response.body}',
         );
-        final http.Response response = await client.get(url);
-        if (response.statusCode == 200) {
-          final Map<String, Object?> jsonData =
-              jsonDecode(response.body) as Map<String, Object?>;
-          return Summary.fromJson(jsonData);
-        } else {
-          throw HttpException(
-            '[WikipediaApiClient.getArticleSummaryByTitle] '
-            'statusCode=${response.statusCode}, body=${response.body}',
-          );
-        }
-      } on FormatException {
-        // todo: log exceptions
-        rethrow;
-      } finally {
-        client.close();
       }
     }
     ```
 
-    Este código define duas funções:
-    `getRandomArticleSummary` e `getArticleSummaryByTitle`.
-    Ambas usam o pacote `http` para
-    fazer requisições GET à API da Wikipedia e retornar um objeto `Summary`.
-    `getRandomArticleSummary` busca o resumo de um artigo aleatório, enquanto
-    `getArticleSummaryByTitle` busca o resumo de um título de artigo específico.
+    Este código define duas funções,
+    `getRandomArticleSummary` e `getArticleSummaryByTitle`,
+    que se baseiam na requisição HTTP básica que você escreveu no Capítulo 3:
+
+    - **`getRandomArticleSummary` e `getArticleSummaryByTitle`:**
+      Buscam o resumo de um artigo aleatório ou de um título específico,
+      inserindo `articleTitle` no caminho do endpoint.
+    - **Decodificação de JSON tipada:**
+      Em vez de retornar uma string JSON bruta, as duas funções decodificam
+      `response.body` com `jsonDecode` e passam o `Map` para
+      `Summary.fromJson`, retornando um objeto `Summary` fortemente tipado.
+    - **Tratamento explícito de falhas:**
+      Quando `response.statusCode` não é `200`, as funções lançam uma
+      `HttpException` (de `dart:io`) em vez de retornar uma string de erro,
+      para que quem chama possa capturar e tratar as requisições que falharam
+      com `try`/`catch`.
 
 1.  Em seguida, crie o arquivo `wikipedia/lib/src/api/search.dart`.
 
 1.  Adicione o seguinte código em `wikipedia/lib/src/api/search.dart`:
 
     ```dart title="wikipedia/lib/src/api/search.dart"
-
     import 'dart:convert';
     import 'dart:io';
 
@@ -163,41 +156,42 @@ Você vai criar três arquivos:
     import '../model/search_results.dart';
 
     Future<SearchResults> search(String searchTerm) async {
-      final http.Client client = http.Client();
-      try {
-        final Uri url = Uri.https(
-          'en.wikipedia.org',
-          '/w/api.php',
-          <String, Object?>{
-            'action': 'opensearch',
-            'format': 'json',
-            'search': searchTerm,
-          },
+      final Uri url = Uri.https(
+        'en.wikipedia.org',
+        '/w/api.php',
+        <String, Object?>{
+          'action': 'opensearch',
+          'format': 'json',
+          'search': searchTerm,
+        },
+      );
+      final http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<Object?> jsonData =
+            jsonDecode(response.body) as List<Object?>;
+        return SearchResults.fromJson(jsonData);
+      } else {
+        throw HttpException(
+          '[WikipediaApiClient.search] '
+          'statusCode=${response.statusCode}, '
+          'body=${response.body}',
         );
-        final http.Response response = await client.get(url);
-        if (response.statusCode == 200) {
-          final List<Object?> jsonData = jsonDecode(response.body) as List<Object?>;
-          return SearchResults.fromJson(jsonData);
-        } else {
-          throw HttpException(
-            '[WikipediaApiClient.search] '
-            'statusCode=${response.statusCode}, '
-            'body=${response.body}',
-          );
-        }
-      } on FormatException {
-        rethrow;
-      } finally {
-        client.close();
       }
     }
     ```
 
-    Este código define a função `search`, que
-    usa o pacote `http` para fazer uma requisição GET ao endpoint
-    `opensearch` da API da Wikipedia e retorna um objeto `SearchResults`.
-    O endpoint `opensearch` é usado para buscar
-    artigos da Wikipedia com base em um termo de busca.
+    Este código define a função `search`, que consulta o endpoint
+    `opensearch` da Wikipedia e retorna um objeto `SearchResults`:
+
+    - **Parâmetros de consulta:**
+      `Uri.https` aceita um terceiro argumento opcional, um `Map` com os
+      parâmetros de consulta (`action`, `format` e `search`).
+      O Dart formata esses pares chave-valor na URL e codifica caracteres
+      especiais, como os espaços em `searchTerm`, para URL.
+    - **Decodificação de lista:**
+      Como o endpoint `opensearch` retorna um array JSON no nível mais alto,
+      `jsonDecode(response.body)` é convertido para `List<Object?>` antes de ser
+      passado para `SearchResults.fromJson`.
 
 1.  Crie o arquivo `wikipedia/lib/src/api/get_article.dart`.
 
@@ -212,56 +206,48 @@ Você vai criar três arquivos:
     import '../model/article.dart';
 
     Future<List<Article>> getArticleByTitle(String title) async {
-      final http.Client client = http.Client();
-      try {
-        final Uri url = Uri.https(
-          'en.wikipedia.org',
-          '/w/api.php',
-          <String, Object?>{
-            // order matters - explaintext must come after prop
-            'action': 'query',
-            'format': 'json',
-            'titles': title.trim(),
-            'prop': 'extracts',
-            'explaintext': '',
-          },
+      final Uri url = Uri.https(
+        'en.wikipedia.org',
+        '/w/api.php',
+        <String, Object?>{
+          // order matters - explaintext must come after prop
+          'action': 'query',
+          'format': 'json',
+          'titles': title.trim(),
+          'prop': 'extracts',
+          'explaintext': '',
+        },
+      );
+      final http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        return Article.listFromJson(jsonData);
+      } else {
+        throw HttpException(
+          '[WikipediaApiClient.getArticleByTitle] '
+          'statusCode=${response.statusCode}, '
+          'body=${response.body}',
         );
-        final http.Response response = await client.get(url);
-        if (response.statusCode == 200) {
-          final Map<String, Object?> jsonData =
-              jsonDecode(response.body) as Map<String, Object?>;
-          return Article.listFromJson(jsonData);
-        } else {
-          throw HttpException(
-            '[WikipediaApiClient.getArticleByTitle] '
-            'statusCode=${response.statusCode}, '
-            'body=${response.body}',
-          );
-        }
-      } on FormatException {
-        // TODO: log
-        rethrow;
-      } finally {
-        client.close();
       }
     }
     ```
 
-    Este código define a função `getArticleByTitle`, que usa o pacote `http`
-    para fazer uma requisição GET à API da Wikipedia e retorna um
-    objeto `List<Article>`. Essa função recupera o conteúdo de um
-    artigo da Wikipedia com base no seu título.
+    Este código define `getArticleByTitle`, que passa parâmetros de consulta para
+    `/w/api.php` (usando `title.trim()` para remover espaços em branco acidentais
+    no início ou no fim) e converte a resposta em uma `List<Article>` usando
+    `Article.listFromJson`.
 
 ### Tarefa 3: Exporte as funções de API {:#task-3-export-the-api-functions}
 
 Agora que você criou as funções de API,
-precisa exportá-las da biblioteca `wikipedia` para que
-possam ser usadas pelo pacote `cli`.
-Você também vai exportar os modelos existentes.
+exporte-as, junto com os seus modelos existentes, da biblioteca `wikipedia`
+para que o pacote `cli` possa importar e usar tudo isso.
 
 1.  Abra o arquivo `wikipedia/lib/wikipedia.dart`.
 
-1.  Adicione as seguintes declarações `export` ao arquivo:
+1.  Substitua o código de exemplo gerado no arquivo pelas seguintes
+    declarações `export`:
 
     ```dart title="wikipedia/lib/wikipedia.dart"
     export 'src/api/get_article.dart';
@@ -276,31 +262,32 @@ Você também vai exportar os modelos existentes.
     Essas declarações `export` tornam as funções de API e os modelos disponíveis para
     outros pacotes que dependem do pacote `wikipedia`.
 
-
-## Tarefa 4: Verifique com testes {:#task-4-verify-with-tests}
+### Tarefa 4: Verifique com testes {:#task-4-verify-with-tests}
 
 Agora que você implementou as funções de API e atualizou as
-dependências do pacote, é uma boa prática executar os testes que você criou no capítulo
-anterior. Isso confirma que suas mudanças não quebraram a funcionalidade
-existente do pacote `wikipedia`.
+dependências do pacote, execute os testes que você criou no capítulo
+anterior para confirmar que suas mudanças não quebraram a funcionalidade
+existente no pacote `wikipedia`.
 
 1.  Abra o terminal e navegue até o diretório `wikipedia/test`.
 
-1.  Remova o arquivo de teste padrão executando o comando `rm wikipedia_test.dart`
+1.  Remova o arquivo de teste padrão executando `rm wikipedia_test.dart`
     (no macOS ou Linux) ou `del wikipedia_test.dart` (no Windows).
-    Esse arquivo foi gerado automaticamente, mas não é usado no nosso projeto.
+    O `dart create` gerou esse arquivo automaticamente para testar o código de
+    exemplo que você acabou de substituir, então o projeto não precisa mais dele.
 
-1.  Abra o terminal e navegue até o diretório `wikipedia`.
+1.  Volte ao diretório `wikipedia`.
 
-1.  Execute o comando `dart test`.
+1.  Execute `dart test`.
 
     Você deve ver uma saída parecida com esta,
-    confirmando que todos os seus testes existentes continuam passando:
+    confirmando que todos os seus testes de modelo passam:
 
     ```bash
     00:02 +3: All tests passed!
-    This confirms that the wikipedia package is still working as expected.
     ```
+
+    Isso confirma que o pacote `wikipedia` está funcionando como esperado.
 
 ## Revisão {:#review}
 
@@ -318,9 +305,9 @@ items:
   - title: Criou um cliente de API pronto para produção
     icon: cloud_download
     details: >-
-      Você implementou várias funções que gerenciam corretamente o ciclo de vida
-      do cliente HTTP com `try` e `finally`, e
-      mapeia as respostas JSON brutas para objetos Dart tipados.
+      Você implementou funções que verificam os códigos de status HTTP,
+      lançam uma `HttpException` em requisições com falha e
+      mapeiam as respostas JSON brutas para objetos Dart tipados.
   - title: Exportou funções e tipos para reutilização
     icon: export_notes
     details: >-
@@ -330,7 +317,7 @@ items:
       pacote `cli` pode importar e usar diretamente.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="fetch-data" />
 

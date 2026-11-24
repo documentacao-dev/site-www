@@ -116,6 +116,13 @@ Primeiro, crie um novo pacote Dart para abrigar os modelos de dados.
     Agora você deve ver uma nova pasta `wikipedia` na raiz do projeto,
     ao lado de `cli` e `command_runner`.
 
+1.  Remova o diretório `wikipedia/bin` gerado executando
+    `rm -r wikipedia/bin` (no macOS ou Linux) ou
+    `Remove-Item -Recurse wikipedia\bin` (no Windows).
+    Como `cli` serve como o ponto de entrada executável da sua aplicação,
+    `wikipedia` é usado estritamente como um pacote de biblioteca e não
+    precisa da própria pasta `bin/`.
+
 ### Tarefa 2: Configure um workspace Dart {:#task-2-configure-a-dart-workspace}
 
 Workspaces Dart permitem
@@ -597,7 +604,7 @@ items:
       extrai valores em expressões concisas e legíveis.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="data-and-json" />
 

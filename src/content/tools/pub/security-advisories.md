@@ -1,8 +1,8 @@
 ---
-title: Security advisories
+title: Avisos de segurança
 description: >-
-  Use security advisories to inform and be informed
-  about security vulnerabilities in Dart packages.
+  Use avisos de segurança para informar e ser informado
+  sobre vulnerabilidades de segurança em pacotes do Dart.
 ia-translate: true
 ---
 
@@ -19,7 +19,7 @@ GitHub e ingerido no banco de dados central de advisory.
 [GitHub Advisory Database]: https://github.com/advisories
 [Creating a repository security advisory]: https://docs.github.com/code-security/security-advisories/working-with-repository-security-advisories/creating-a-repository-security-advisory
 
-## Security advisories in the pub client
+## Avisos de segurança no cliente pub {:#security-advisories-in-the-pub-client}
 
 O cliente pub exibe security advisories na resolução de dependências.
 Por exemplo, ao executar `dart pub get` você obterá a seguinte saída:
@@ -39,7 +39,7 @@ Se você avaliar que a vulnerabilidade afeta seu pacote,
 você deve fortemente considerar atualizar para uma versão não afetada da dependência.
 
 
-### Ignoring security advisories
+### Ignorando avisos de segurança {:#ignoring-security-advisories}
 
 Se um security advisory não é relevante para sua aplicação,
 você pode suprimir o aviso adicionando o identificador do advisory à

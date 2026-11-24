@@ -58,7 +58,7 @@ funciona bem enquanto nenhuma dessas dependências _se sobrepõe_.
 
 Considere o exemplo a seguir:
 
-<img src="/assets/img/tools/pub/PubConstraintsDiagram.png" alt="grafo de dependências">
+<img src="/assets/img/tools/pub/PubConstraintsDiagram.png" width="292" height="265" alt="grafo de dependências">
 
 Então o seu app usa `widgets` e `templates`, e _ambos_ usam
 `collection`. Isso é chamado de **dependência compartilhada**. Agora, o que acontece quando
@@ -280,7 +280,7 @@ todo o grafo de dependências do app que o contém.
 Os autores de pacotes precisam definir as restrições de pacote com cuidado.
 Considere o cenário a seguir:
 
-<img src="/assets/img/tools/pub/PubExportedConstraints.png" alt="grafo de dependências" class="diagram-wrap">
+<img src="/assets/img/tools/pub/PubExportedConstraints.png" width="130" height="265" alt="grafo de dependências" class="diagram-wrap">
 
 O pacote `bookshelf` depende de `widgets`.
 O pacote `widgets`, atualmente na versão 1.2.0, exporta
@@ -340,7 +340,7 @@ também.
 Usar essa convenção garante que os usuários tenham a versão correta de
 ambos os pacotes, mesmo que um deles não seja uma dependência direta.
 
-## Lockfiles {:#lockfiles}
+## Lockfiles
 
 Então, depois que o pub resolve as restrições de versão do seu app, o que acontece? O resultado final
 é uma lista completa de todos os pacotes dos quais o seu app depende, direta ou

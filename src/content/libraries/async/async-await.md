@@ -194,9 +194,11 @@ Mesmo com um atraso de zero, o console imprime "Fetching user order..." primeiro
 ### Exemplo: completando com um erro {:#example-completing-with-an-error}
 
 Execute o exemplo a seguir para ver como um future completa com um erro.
-Um pouco mais tarde você vai aprender como lidar com o erro.
+O exemplo usa `catchError()` para imprimir o erro, para que você possa vê-lo.
+Mais adiante neste tutorial, você vai aprender a tratar erros usando `try-catch`
+com `async` e `await`.
 
-<?code-excerpt "async_await/bin/futures_intro.dart (error)" replace="/Error//g"?>
+<?code-excerpt "async_await/bin/futures_intro.dart (error)" replace="/fetchUserOrderError/fetchUserOrder/g; /mainError/main/g"?>
 ```dartpad
 Future<void> fetchUserOrder() {
   // Imagine that this function is fetching user info but encounters a bug.
@@ -207,7 +209,11 @@ Future<void> fetchUserOrder() {
 }
 
 void main() {
-  fetchUserOrder();
+  // Print the error so that you can see it in the output.
+  // You'll learn the recommended way to handle errors later.
+  fetchUserOrder().catchError((Object error) {
+    print('Error: $error');
+  });
   print('Fetching user order...');
 }
 ```

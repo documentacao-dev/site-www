@@ -18,12 +18,12 @@ confira a página [Ferramentas Dart](/tools).
 :::version-note
 A menos que indicado o contrário,
 a documentação e os exemplos deste site assumem
-a versão `{{site.sdkVersion}}` do **Dart SDK**.
+a versão `{{site.documentedDartVersion}}` do **Dart SDK**.
 :::
 
 {% comment %}
-  IMPORTANT: After each release, EDIT src/_data/pkg-vers.json
-  to update the SDK version number.
+  When updating the docs for a new major or minor Dart release,
+  update documentedDartVersion in src/data/site.yaml.
   More info: https://github.com/dart-lang/site-www/wiki/Updating-to-new-SDK-releases
 {% endcomment %}
 

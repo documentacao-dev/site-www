@@ -1,15 +1,15 @@
 ---
-title: Creating packages
-description: Learn how to create packages in Dart.
+title: Criando pacotes
+description: Saiba como criar pacotes no Dart.
 ia-translate: true
 ---
 
-O ecossistema Dart usa [packages](/tools/pub/packages)
+O ecossistema Dart usa [pacotes](/tools/pub/packages)
 para compartilhar software como bibliotecas e ferramentas.
 Esta página ensina como criar um
-[package](/resources/glossary#package) compartilhado padrão.
+[pacote](/resources/glossary#package) compartilhado padrão.
 
-## Creating a new package
+## Criando um novo pacote {:#creating-a-new-package}
 
 Para criar o diretório e estrutura inicial para um pacote,
 use o comando [`dart create`][]
@@ -20,28 +20,30 @@ $ dart create -t package <PACKAGE_NAME>
 ```
 
 Para saber mais sobre os templates disponíveis e como usar a flag `-t`,
-veja a [`dart create` documentation][].
+veja a [documentação do `dart create`][`dart create` documentation].
 
 [`dart create`]: /tools/dart-create
 [`dart create` documentation]: /tools/dart-create#available-templates
 
-## What makes a package
+## O que forma um pacote {:#what-makes-a-package}
 
 O diagrama a seguir mostra o layout mais simples de um pacote:
 
 <img
   src="/assets/img/libraries/simple-lib2.png"
   class="diagram-wrap"
+  width="284"
+  height="72"
   alt="root directory contains pubspec.yaml and lib/file.dart">
 
 Os requisitos mínimos para uma biblioteca são:
 
-pubspec file
+arquivo pubspec
 : O arquivo `pubspec.yaml` para uma biblioteca é o mesmo
-  que para um [application package][]—não há designação especial
+  que para um [pacote de aplicação][application package]—não há designação especial
   para indicar que o pacote é uma biblioteca.
 
-lib directory
+diretório lib
 : Como você pode esperar, o código da biblioteca fica sob o diretório _lib_
   e é público para outros pacotes.
   Você pode criar qualquer hierarquia sob lib, conforme necessário.
@@ -53,7 +55,7 @@ lib directory
 
 [application package]: /resources/glossary#application-package
 
-## Organizing a package
+## Organizando um pacote {:#organizing-a-package}
 
 Pacotes são mais fáceis de manter, estender e testar
 quando você cria bibliotecas pequenas e individuais, referidas como
@@ -89,6 +91,8 @@ e é organizado em uma estrutura que é comumente usada para pacotes Dart:
 <img
   src="/assets/img/libraries/shelf.png"
   class="diagram-wrap"
+  width="658"
+  height="207"
   alt="shelf root directory contains example, lib, test, and tool subdirectories">
 
 Diretamente sob lib, o arquivo de biblioteca principal,
@@ -119,14 +123,14 @@ Este adaptador manipula objetos HttpRequest de `dart:io`.
 :::tip
 Para o melhor desempenho ao desenvolver com o
 compilador JavaScript de desenvolvimento através de [`webdev serve`][],
-coloque [implementation files](/tools/pub/package-layout#implementation-files)
+coloque [arquivos de implementação](/tools/pub/package-layout#implementation-files)
 sob `/lib/src`, em vez de em outro lugar sob `/lib`.
 Além disso, evite imports de <code>package:<em>package_name</em>/src/...</code>.
 :::
 
 [`webdev serve`]: /tools/webdev#serve
 
-## Importing library files
+## Importando arquivos de biblioteca {:#importing-library-files}
 
 Ao importar um arquivo de biblioteca de outro pacote, use
 a diretiva `package:` para especificar a URI daquele arquivo.
@@ -146,10 +150,12 @@ importar `lib/foo/a.dart` tanto de lib quanto de web.
 <img
   src="/assets/img/libraries/import-lib-rules.png"
   class="diagram-wrap"
+  width="615"
+  height="292"
   alt="lib/bar/b.dart uses a relative import; web/main.dart uses a package import">
 
 
-## Conditionally importing and exporting library files
+## Importando e exportando arquivos de biblioteca condicionalmente {:#conditionally-importing-and-exporting-library-files}
 
 Se sua biblioteca suporta múltiplas plataformas,
 então você pode precisar importar ou exportar arquivos de biblioteca condicionalmente.
@@ -225,7 +231,7 @@ void main() {
 }
 ```
 
-## Providing additional files
+## Fornecendo arquivos adicionais {:#providing-additional-files}
 
 Um pacote bem projetado é fácil de testar.
 Recomendamos que você escreva testes usando o
@@ -250,16 +256,16 @@ uso público vão no diretório `tool`.
 
 Outros arquivos que são necessários se você publicar sua biblioteca no
 site [pub.dev]({{site.pub}}), como `README.md` e `CHANGELOG.md`, são
-descritos em [Publishing a package](/tools/pub/publishing).
+descritos em [Publicando um pacote](/tools/pub/publishing).
 Para mais informações sobre como organizar um diretório de pacote,
-veja as [pub package layout conventions](/tools/pub/package-layout).
+veja as [convenções de layout de pacotes do pub](/tools/pub/package-layout).
 
-## Documenting a library
+## Documentando uma biblioteca {:#documenting-a-library}
 
-Você pode gerar documentação API para sua biblioteca usando
+Você pode gerar documentação da API para sua biblioteca usando
 a ferramenta [`dart doc`][].
 `dart doc` analisa o código-fonte procurando por
-[documentation comments](/effective-dart/documentation#doc-comments),
+[comentários de documentação](/effective-dart/documentation#doc-comments),
 que usam a sintaxe `///`:
 
 ```dart
@@ -274,11 +280,11 @@ Para um exemplo de documentação gerada, veja a
 
 Para incluir qualquer documentação *em nível de biblioteca* na documentação gerada,
 adicione uma diretiva `library` e anexe o comentário diretamente acima dela.
-Para o como e porquê de documentar bibliotecas, veja
-[Effective Dart: Documentation](/effective-dart/documentation#consider-writing-a-library-level-doc-comment).
+Para o como e o porquê de documentar bibliotecas, veja
+[Effective Dart: Documentação](/effective-dart/documentation#consider-writing-a-library-level-doc-comment).
 
 
-## Distributing an open source library {:#distributing-a-library}
+## Distribuindo uma biblioteca open source {:#distributing-a-library}
 
 Se sua biblioteca é open source,
 recomendamos compartilhá-la no [site pub.dev.]({{site.pub}})
@@ -286,36 +292,36 @@ Para publicar ou atualizar a biblioteca,
 use [pub publish](/tools/pub/cmd/pub-lish),
 que faz upload do seu pacote e cria ou atualiza sua página.
 Por exemplo, veja a página do [pacote shelf.]({{site.pub-pkg}}/shelf)
-Veja [Publishing a package](/tools/pub/publishing)
+Veja [Publicando um pacote](/tools/pub/publishing)
 para detalhes sobre como preparar seu pacote para publicação.
 
 O site pub.dev não apenas hospeda seu pacote,
 mas também gera e hospeda a documentação de referência da API do seu pacote.
 Um link para a documentação gerada mais recente está na caixa **About** do pacote;
 por exemplo, veja a
-[documentação API]({{site.pub-api}}/shelf) do pacote shelf.
+[documentação da API]({{site.pub-api}}/shelf) do pacote shelf.
 Links para documentação de versões anteriores estão na
 aba **Versions** da página do pacote.
 
-Para garantir que a documentação API do seu pacote pareça boa no site pub.dev,
+Para garantir que a documentação da API do seu pacote pareça boa no site pub.dev,
 siga estas etapas:
 
 * Antes de publicar seu pacote, execute a ferramenta [`dart doc`][]
-  para ter certeza de que sua documentação gera com sucesso e parece como esperado.
+  para ter certeza de que sua documentação gera com sucesso e está como esperado.
 * Após publicar seu pacote, verifique a aba **Versions**
   para ter certeza de que a documentação foi gerada com sucesso.
 * Se a documentação não foi gerada,
   clique em **failed** na aba **Versions** para ver a saída do `dart doc`.
 
-## Resources
+## Recursos {:#resources}
 
 Use os seguintes recursos para aprender mais sobre pacotes:
 
-* [Libraries and imports](/language/libraries) cobre
+* [Bibliotecas e imports](/language/libraries) cobre
   o uso de arquivos de biblioteca.
 * A documentação de [package](/tools/pub/packages) é útil, particularmente as
-  [package layout conventions](/tools/pub/package-layout).
-* [What not to commit](/tools/pub/private-files)
+  [convenções de layout de pacotes do pub](/tools/pub/package-layout).
+* [O que não incluir no commit](/tools/pub/private-files)
   cobre o que não deve ser feito commit em um repositório de código-fonte.
 * Os pacotes mais novos sob a
   organização [dart-lang]({{site.repo.dart.org}}) tendem

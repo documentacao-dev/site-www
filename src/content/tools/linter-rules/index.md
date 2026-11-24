@@ -114,7 +114,7 @@ Para saber mais sobre uma regra específica,
 clique no botão **Learn more** no card dela.
 
 Para uma lista gerada automaticamente com todas as regras do linter
-no Dart `{{site.sdkVersion}}`,
+no Dart `{{site.documentedDartVersion}}`,
 confira [Todas as regras do linter](/tools/linter-rules/all).
 
 ---

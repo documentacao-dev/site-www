@@ -80,7 +80,7 @@ criar um novo arquivo para o logger e configurar os imports necessários.
     import 'package:logging/logging.dart';
 
     Logger initFileLogger(String name) {
-      // Enables logging from child loggers.
+      // Allow named loggers to configure their own levels and listeners.
       hierarchicalLoggingEnabled = true;
 
       // Create a logger instance with the provided name.
@@ -161,12 +161,17 @@ criar um novo arquivo para o logger e configurar os imports necessários.
     A função `initFileLogger` retorna uma instância de `Logger` configurada
     que acrescenta registros com data e hora em um arquivo no diretório `logs/`:
 
+    - **`hierarchicalLoggingEnabled = true`**:
+      Por padrão, o `package:logging` direciona toda a configuração por um
+      único logger raiz. Ativar o logging hierárquico permite que um logger
+      nomeado, como `Logger('errors')`, configure seu próprio `level` e seus
+      próprios listeners.
     - **`logger.level = Level.ALL`**:
       Captura todas as mensagens, independentemente da severidade, durante o desenvolvimento.
       Aplicações em produção normalmente usam limites mais altos, como
       `Level.INFO` ou `Level.WARNING`.
     - **`logger.onRecord.listen(...)`**:
-      Assina o stream de eventos de log, formatando cada entrada com
+      Assina o stream de eventos `LogRecord`, formatando cada entrada com
       seu horário, o nome do logger e o nível de severidade antes de gravá-la no disco.
 
 ### Tarefa 3: Crie o comando SearchCommand {:#task-3-create-the-searchcommand-command}
@@ -448,6 +453,13 @@ criar a aplicação de CLI completa.
     exportando `initFileLogger`, `SearchCommand` e `GetArticleCommand`
     para que `cli/bin/cli.dart` possa importá-los de `package:cli/cli.dart`.
 
+1.  Remova o arquivo `cli/test/cli_test.dart` gerado, executando
+    `rm cli/test/cli_test.dart` (no macOS ou Linux) ou
+    `del cli\test\cli_test.dart` (no Windows) a partir do diretório raiz
+    `/dartpedia` (ou `rm test/cli_test.dart` a partir de `/dartpedia/cli`).
+    O `dart create` gerou esse arquivo para testar o código provisório que você
+    acabou de substituir em `cli/lib/cli.dart`.
+
 1.  Abra o arquivo `cli/bin/cli.dart`.
 
 1.  Adicione os imports de `cli` e `command_runner`:
@@ -517,6 +529,12 @@ Certifique-se de executar estes comandos a partir do diretório `cli`
 
     ```bash
     dart run bin/cli.dart search "Dart" --im-feeling-lucky
+    ```
+
+1.  Busque o resumo de um artigo com o comando `article`:
+
+    ```bash
+    dart run bin/cli.dart article "Dart_(programming_language)"
     ```
 
 1.  Execute a aplicação sem o argumento de busca obrigatório para testar
@@ -609,8 +627,8 @@ items:
   - title: Configurou níveis de log e saída em arquivo
     icon: tune
     details: >-
-      Você criou `initFileLogger()` para configurar logs hierárquicos
-      em arquivos com data e hora no diretório `logs/`.
+      Você criou `initFileLogger()` para configurar níveis de log e assinar
+      `logger.onRecord`, gravando entradas com data e hora em arquivos no diretório `logs/`.
       Isso permite revisar o comportamento da aplicação depois que os fatos acontecem.
   - title: Integrou logs aos seus comandos de CLI
     icon: terminal
@@ -622,7 +640,7 @@ items:
       tanto no desenvolvimento quanto em produção.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="logging" />
 
