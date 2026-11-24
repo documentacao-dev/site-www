@@ -1,127 +1,128 @@
 - question: >-
-    You're writing a function that parses user input.
-    If the input is invalid,
-    what's the best way to signal this to the calling code?
+    Você está escrevendo uma função que interpreta a entrada do usuário.
+    Se a entrada for inválida,
+    qual é a melhor forma de sinalizar isso para o código que chamou a função?
   options:
     - text: >-
-        Throw an exception describing what went wrong.
+        Lançar uma exceção descrevendo o que deu errado.
       correct: true
       explanation: >-
-        Throwing an exception immediately stops the invalid code path,
-        provides a clear error message,
-        and forces the caller to handle the error explicitly.
+        Lançar uma exceção interrompe de imediato o caminho inválido,
+        fornece uma mensagem de erro clara
+        e obriga quem chamou a função a tratar o erro explicitamente.
     - text: >-
-        Return `null` and let the caller check for it.
+        Retornar `null` e deixar quem chamou verificar.
       correct: false
       explanation: >-
-        Returning `null` forces callers to remember to check for it.
-        If they forget, bugs can occur silently.
-        There's a more explicit way to signal problems.
+        Retornar `null` obriga quem chama a lembrar de verificar.
+        Se esquecer, os bugs podem acontecer silenciosamente.
+        Existe uma forma mais explícita de sinalizar problemas.
     - text: >-
-        Print an error message and continue execution.
+        Imprimir uma mensagem de erro e continuar a execução.
       correct: false
       explanation: >-
-        Printing doesn't stop invalid data from being used.
-        The function would still need to return something,
-        potentially causing bugs downstream.
+        Imprimir não impede que dados inválidos sejam usados.
+        A função ainda precisaria retornar algo,
+        o que pode causar bugs mais adiante.
     - text: >-
-        Set a global error flag that other code can check.
+        Definir uma flag global de erro que outro código possa consultar.
       correct: false
       explanation: >-
-        Global state is error-prone and easy to forget.
-        This approach doesn't force callers to handle the error.
+        Estado global é propenso a erros e fácil de esquecer.
+        Essa abordagem não obriga quem chama a tratar o erro.
 - question: >-
-    In this lesson, why did you create a custom `ArgumentException` class
-    that extends `FormatException` instead of just throwing a plain `String`?
+    Nesta lição, por que você criou uma classe de exceção personalizada
+    `ArgumentException` que estende `FormatException` em vez de simplesmente
+    lançar uma `String` comum?
   options:
     - text: >-
-        It lets callers catch specific failure types with `on` clauses and
-        attach structured context like `command` and `argumentName`.
+        Isso permite que quem chama capture tipos específicos de falha com
+        cláusulas `on` e anexe contexto estruturado, como `command` e `argumentName`.
       correct: true
       explanation: >-
-        Custom exception classes integrate with type-based `on` clauses
-        (such as `on ArgumentException` or `on FormatException`) and bundle
-        helpful fields alongside the error message.
+        Classes de exceção personalizadas funcionam com cláusulas `on` baseadas
+        em tipo (como `on ArgumentException` ou `on FormatException`) e reúnem
+        campos úteis junto com a mensagem de erro.
     - text: >-
-        Dart's `throw` keyword only accepts subclasses of `FormatException`
-        and can't throw strings or built-in exceptions.
+        A keyword `throw` do Dart só aceita subclasses de `FormatException` e não
+        pode lançar strings nem exceções embutidas.
       correct: false
       explanation: >-
-        Technically, Dart allows throwing any non-null object,
-        though Effective Dart recommends throwing `Exception` types
-        for recoverable failures.
+        Tecnicamente, o Dart permite lançar qualquer objeto não nulo, embora o
+        Effective Dart recomende lançar tipos `Exception` para falhas recuperáveis.
     - text: >-
-        Custom exception classes are automatically caught and printed by Dart
-        without needing a `try`/`catch` block.
+        Classes de exceção personalizadas são capturadas e impressas automaticamente
+        pelo Dart, sem precisar de um bloco `try`/`catch`.
       correct: false
       explanation: >-
-        Custom exceptions behave like built-in exceptions—if uncaught,
-        they still propagate up and terminate the program.
+        Exceções personalizadas se comportam como as embutidas: se não forem
+        capturadas, continuam se propagando e encerram o programa.
     - text: >-
-        Extending `FormatException` turns runtime failures into compile-time
-        errors so invalid user input is caught before the app runs.
+        Estender `FormatException` transforma falhas em tempo de execução em erros
+        de compilação, para que entradas inválidas do usuário sejam detectadas
+        antes de o app rodar.
       correct: false
       explanation: >-
-        User command-line input isn't known until runtime,
-        so invalid input is still handled at runtime with `try`/`catch`.
+        A entrada de linha de comando do usuário só é conhecida em tempo de
+        execução, então entradas inválidas continuam sendo tratadas em tempo de
+        execução com `try`/`catch`.
 - question: >-
-    Consider this code:
+    Considere este código:
     `try { riskyOperation(); } on FormatException catch (e) { print(e); }`.
-    What happens if `riskyOperation()` throws an `HttpException`?
+    O que acontece se `riskyOperation()` lançar um `HttpException`?
   options:
     - text: >-
-        The `HttpException` propagates up, uncaught by this try/catch.
+        O `HttpException` se propaga, sem ser capturado por este try/catch.
       correct: true
       explanation: >-
-        The `on` clause filters by exception type.
-        Since `HttpException` isn't a `FormatException`,
-        it bypasses this catch block entirely.
+        A cláusula `on` filtra pelo tipo da exceção.
+        Como `HttpException` não é um `FormatException`,
+        ela ignora este bloco catch por completo.
     - text: >-
-        The `HttpException` is caught and printed.
+        O `HttpException` é capturado e impresso.
       correct: false
       explanation: >-
-        The `on FormatException` clause only
-        catches `FormatException` and its subtypes.
-        `HttpException` is a different type.
+        A cláusula `on FormatException` captura apenas `FormatException`
+        e seus subtipos. `HttpException` é outro tipo.
     - text: >-
-        The program crashes because you can't use `on` with `catch`.
+        O programa falha porque não é possível usar `on` com `catch`.
       correct: false
       explanation: >-
-        `on Type catch (e)` is valid syntax that
-        filters which exceptions to catch.
-        The issue is the type mismatch, not the syntax.
+        `on Type catch (e)` é uma sintaxe válida que
+        filtra quais exceções capturar.
+        O problema é a incompatibilidade de tipo, não a sintaxe.
     - text: >-
-        The exception is silently ignored and execution continues.
+        A exceção é ignorada silenciosamente e a execução continua.
       correct: false
       explanation: >-
-        Exceptions are never silently ignored in Dart.
-        If a catch block doesn't match, the exception doesn't just disappear.
+        No Dart, exceções nunca são ignoradas silenciosamente.
+        Se nenhum bloco catch corresponder, a exceção não simplesmente desaparece.
 - question: >-
-    In Dart, what is the primary difference between an `Error` and an `Exception`?
+    No Dart, qual é a diferença principal entre um `Error` e uma `Exception`?
   options:
     - text: >-
-        An `Error` indicates a programming bug that shouldn't be caught,
-        while an `Exception` represents an expected condition that code can recover from.
+        Um `Error` indica um bug de programação que não deveria ser capturado,
+        enquanto uma `Exception` representa uma condição esperada da qual o código pode se recuperar.
       correct: true
       explanation: >-
-        Subtypes of `Error` (such as `RangeError` or `TypeError`) indicate bugs
-        in code that you should fix. Subtypes of `Exception`
-        (such as `FormatException` or `HttpException`) represent conditions
-        that your code can anticipate and handle gracefully.
+        Subtipos de `Error` (como `RangeError` ou `TypeError`) indicam bugs
+        no código que você deve corrigir. Subtipos de `Exception`
+        (como `FormatException` ou `HttpException`) representam situações
+        que o seu código pode prever e tratar com elegância.
     - text: >-
-        `Error` is thrown by the Dart runtime, while `Exception` can only be thrown by user code.
+        `Error` é lançado pelo runtime do Dart, enquanto `Exception` só pode ser lançada pelo código do usuário.
       correct: false
       explanation: >-
-        Both the Dart runtime and user code can throw exceptions and errors.
+        Tanto o runtime do Dart quanto o código do usuário podem lançar exceções e erros.
     - text: >-
-        `Exception` requires a `try/catch` block, but `Error` is ignored if uncaught.
+        `Exception` exige um bloco `try/catch`, mas `Error` é ignorado se não for capturado.
       correct: false
       explanation: >-
-        Uncaught errors and uncaught exceptions both terminate execution.
-        Neither is silently ignored.
+        Erros e exceções não capturados encerram a execução.
+        Nenhum dos dois é ignorado silenciosamente.
     - text: >-
-        `Error` and `Exception` are identical in Dart and can be used interchangeably.
+        `Error` e `Exception` são idênticos no Dart e podem ser usados um no lugar do outro.
       correct: false
       explanation: >-
-        Dart distinguishes between them by design:
-        errors indicate bugs, while exceptions represent recoverable failures.
+        O Dart distingue os dois por design:
+        erros indicam bugs, enquanto exceções representam falhas recuperáveis.
