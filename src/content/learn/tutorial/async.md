@@ -1,85 +1,84 @@
 ---
-title: Write asynchronous code
-shortTitle: Async code
+ia-translate: true
+title: Escreva código assíncrono
+shortTitle: Código assíncrono
 description: >-
-  Learn about asynchronous programming in Dart and how to make HTTP requests.
+  Aprenda sobre programação assíncrona em Dart e como fazer requisições HTTP.
 layout: learn
 ---
 
-In this chapter, you'll explore asynchronous programming in Dart,
-allowing your applications to perform multiple tasks concurrently.
-You'll learn how to fetch data from the internet using the `http` package,
-to retrieve an article summary from Wikipedia.
+Neste capítulo, você vai explorar a programação assíncrona em Dart,
+que permite que seus aplicativos executem várias tarefas de forma concorrente.
+Você vai aprender a buscar dados da internet usando o pacote `http`,
+para obter um resumo de artigo da Wikipedia.
 
 <SummaryCard>
-title: What you'll accomplish
+title: O que você vai realizar
 items:
-  - title: Write asynchronous code with futures and await
+  - title: Escreva código assíncrono com futures e await
     icon: sync
-  - title: Install and use external packages
+  - title: Instale e use pacotes externos
     icon: package_2
-  - title: Fetch live data from the Wikipedia API
+  - title: Busque dados em tempo real da API da Wikipedia
     icon: cloud_download
 </SummaryCard>
 
-## Prerequisites
+## Pré-requisitos {:#prerequisites}
 
-- Completion of Chapter 2, which covered
-  basic Dart syntax and command-line interaction.
-  You should have a `dartpedia` project set up.
-- Familiarity with the concept of APIs ([Application Programming Interfaces][])
-  as a way to retrieve data.
+- Ter concluído o Capítulo 2, que abordou a
+  sintaxe básica do Dart e a interação pela linha de comando.
+  Você deve ter um projeto `dartpedia` configurado.
+- Estar familiarizado com o conceito de APIs ([Interfaces de Programação de Aplicações][Application Programming Interfaces])
+  como uma forma de obter dados.
 
 [Application Programming Interfaces]: https://www.postman.com/what-is-an-api/
 
-## How asynchronous code works in Dart
+## Como o código assíncrono funciona no Dart {:#how-asynchronous-code-works-in-dart}
 
-Dart executes your code on a single-threaded **event loop**.
-If your program waited synchronously for a slow network response,
-the entire application would freeze until the server replied.
+O Dart executa seu código em um **event loop** de thread única.
+Se seu programa esperasse de forma síncrona por uma resposta lenta da rede,
+o app inteiro travaria até o servidor responder.
 
-Instead, asynchronous operations return a `Future`—an object representing a
-value that will be available later.
-When an `async` function reaches an `await` expression,
-Dart pauses *only* that function without starting a new thread or
-blocking the program.
-While waiting for the response, Dart's event loop remains free to process
-other asynchronous operations and event handlers,
-resuming your function once the `Future` completes.
+Em vez disso, operações assíncronas retornam um `Future`, um objeto que representa
+um valor que estará disponível mais tarde.
+Quando uma função `async` chega a uma expressão `await`, o Dart pausa *apenas*
+essa função, sem iniciar uma nova thread nem bloquear o programa.
+Enquanto espera a resposta, o event loop do Dart continua livre para processar
+outras operações assíncronas e manipuladores de eventos,
+retomando sua função quando o `Future` for concluído.
 
-## Tasks
+## Tarefas {:#tasks}
 
-In this chapter, you will
-modify the existing `dartpedia` CLI application to
-fetch and display an **[article summary][]** using
-the `http` package and asynchronous programming techniques.
+Neste capítulo, você vai modificar o aplicativo CLI `dartpedia` existente para
+buscar e exibir um **[resumo de artigo][article summary]** usando
+o pacote `http` e técnicas de programação assíncrona.
 
 [article summary]: http://en.wikipedia.org/api/rest_v1/#/Page%20content/get_page_summary__title_
 
-### Task 1: Add the http dependency
+### Tarefa 1: Adicione a dependência http {:#task-1-add-the-http-dependency}
 
-Before you can make HTTP requests,
-you need to add the `http` package as a
-dependency to your project.
+Antes de fazer requisições HTTP,
+você precisa adicionar o pacote `http` como uma
+dependência do seu projeto.
 
-1.  Open the `dartpedia/cli/pubspec.yaml` file within your project.
-    This file is called the **pubspec**, and it manages your
-    Dart project's metadata, dependencies (like the `http` package), and assets.
-1.  Locate the `dependencies` section.
-1.  Add `http: ^1.4.0` (or the latest stable version) under `dependencies`.
-    The `^` symbol allows compatible versions to be used.
+1.  Abra o arquivo `dartpedia/cli/pubspec.yaml` dentro do seu projeto.
+    Esse arquivo se chama **pubspec** e gerencia os metadados do seu
+    projeto Dart, suas dependências (como o pacote `http`) e seus assets.
+1.  Localize a seção `dependencies`.
+1.  Adicione `http: ^1.4.0` (ou a versão estável mais recente) em `dependencies`.
+    O símbolo `^` permite que versões compatíveis sejam usadas.
 
     ```yaml title="cli/pubspec.yaml"
     dependencies:
       http: ^1.4.0
     ```
 
-1.  Save the `pubspec.yaml` file.
-1.  Run `dart pub get` in your terminal from the `dartpedia/cli` directory.
-    This command fetches the newly added dependency and
-    makes it available for use in your project.
+1.  Salve o arquivo `pubspec.yaml`.
+1.  Execute `dart pub get` no seu terminal, a partir do diretório `dartpedia/cli`.
+    Esse comando baixa a dependência recém-adicionada e
+    a deixa disponível para uso no seu projeto.
 
-    You should see output similar to this:
+    Você deve ver uma saída parecida com esta:
 
     ```bash
     Resolving dependencies...
@@ -91,36 +90,36 @@ dependency to your project.
     Try `dart pub outdated` for more information.
     ```
 
-### Task 2: Import the http package
+### Tarefa 2: Importe o pacote http {:#task-2-import-the-http-package}
 
-Now that you've added the `http` package,
-you need to import it into your Dart file to use its functionalities.
+Agora que você adicionou o pacote `http`,
+precisa importá-lo no seu arquivo Dart para usar suas funcionalidades.
 
-1.  Open the `cli/bin/cli.dart` file.
-1.  Add the following `import` statement at the top of the file,
-    along with the existing `dart:io` import:
+1.  Abra o arquivo `cli/bin/cli.dart`.
+1.  Adicione a seguinte instrução `import` no topo do arquivo,
+    junto com o import existente de `dart:io`:
 
     ```dart title="cli/bin/cli.dart"
     import 'dart:io';
     import 'package:http/http.dart' as http; // Add this line
     ```
 
-    This line imports the `http` package and gives it the alias `http`.
-    After you do this, you can refer to classes and functions within
-    the `http` package using `http.` (for example, `http.Client`, `http.get`).
-    The `as http` part is a standard convention to avoid naming conflicts if
-    another imported library also has a similarly named class or function.
+    Essa linha importa o pacote `http` e dá a ele o alias `http`.
+    Depois disso, você pode se referir a classes e funções do pacote `http`
+    usando `http.` (por exemplo, `http.Client`, `http.get`).
+    A parte `as http` é uma convenção comum para evitar conflitos de nome caso
+    outra biblioteca importada também tenha uma classe ou função com nome semelhante.
 
-### Task 3: Implement the `getWikipediaArticle` function
+### Tarefa 3: Implemente a função `getWikipediaArticle` {:#task-3-implement-the-getwikipediaarticle-function}
 
-Now create a new function called `getWikipediaArticle` that
-handles fetching data from an external API.
-This function will be `async` because
-network requests are asynchronous operations.
+Agora, crie uma nova função chamada `getWikipediaArticle` que
+cuida de buscar dados de uma API externa.
+Essa função será `async`, porque
+requisições de rede são operações assíncronas.
 
-1.  **Define the function signature:**
-    Below your `main` function (and `printUsage` function),
-    add the following function signature.
+1.  **Defina a assinatura da função:**
+    Abaixo da sua função `main` (e da função `printUsage`),
+    adicione a seguinte assinatura de função.
 
     ```dart title="cli/bin/cli.dart"
     // ... (your existing printUsage() function)
@@ -130,21 +129,21 @@ network requests are asynchronous operations.
     }
     ```
 
-    Highlights from the preceding code:
+    Destaques do código anterior:
 
-    - The `Future<String>` return type indicates that
-      this function will eventually produce a `String` result,
-      but not immediately, because it's an asynchronous operation.
-    - The `async` keyword marks the function as asynchronous,
-      allowing you to use `await` inside it.
+    - O tipo de retorno `Future<String>` indica que
+      essa função vai, eventualmente, produzir um resultado `String`,
+      mas não imediatamente, porque é uma operação assíncrona.
+    - A keyword `async` marca a função como assíncrona,
+      permitindo que você use `await` dentro dela.
 
-1.  **Construct the API URL:**
-    Inside your new `getWikipediaArticle` function,
-    create a `Uri` object.
-    The `Uri` represents the endpoint of the Wikipedia API that
-    you'll be calling to get an article summary.
+1.  **Construa a URL da API:**
+    Dentro da sua nova função `getWikipediaArticle`,
+    crie um objeto `Uri`.
+    O `Uri` representa o endpoint da API da Wikipedia que
+    você vai chamar para obter um resumo do artigo.
 
-    Add these lines inside the `getWikipediaArticle` function:
+    Adicione estas linhas dentro da função `getWikipediaArticle`:
 
     ```dart title="cli/bin/cli.dart"
     Future<String> getWikipediaArticle(String articleTitle) async {
@@ -156,19 +155,19 @@ network requests are asynchronous operations.
     }
     ```
 
-1.  **Make the HTTP request and handle the response:**
-    Now, use the top-level `get` function from `package:http` to
-    make an HTTP `GET` request to the URL you just constructed.
-    The `await` keyword pauses the execution of `getWikipediaArticle` until
-    the `get` call completes and returns an `http.Response` object.
+1.  **Faça a requisição HTTP e trate a resposta:**
+    Agora, use a função `get` de nível superior do `package:http` para
+    fazer uma requisição HTTP `GET` para a URL que você acabou de construir.
+    A keyword `await` pausa a execução de `getWikipediaArticle` até que a
+    chamada `get` seja concluída e retorne um objeto `http.Response`.
 
-    After the request completes, check the `response.statusCode` to
-    ensure the request was successful (a status code of `200` means OK).
-    If successful, return the `response.body`, which
-    contains the fetched data (in this case, raw JSON).
-    If the request fails, return an informative error message.
+    Depois que a requisição terminar, verifique o `response.statusCode` para
+    garantir que ela foi bem-sucedida (um status code `200` significa OK).
+    Se tiver sido bem-sucedida, retorne o `response.body`, que
+    contém os dados obtidos (neste caso, JSON bruto).
+    Se a requisição falhar, retorne uma mensagem de erro informativa.
 
-    Add these lines after the `Uri` construction within `getWikipediaArticle`:
+    Adicione estas linhas depois da construção do `Uri` dentro de `getWikipediaArticle`:
 
     ```dart title="cli/bin/cli.dart"
     Future<String> getWikipediaArticle(String articleTitle) async {
@@ -187,17 +186,17 @@ network requests are asynchronous operations.
     }
     ```
 
-### Task 4: Integrate the API call into searchWikipedia
+### Tarefa 4: Integre a chamada da API em searchWikipedia {:#task-4-integrate-the-api-call-into-searchwikipedia}
 
-You'll integrate the API call into `searchWikipedia`.
-This function will house the core logic for handling the `wikipedia` command.
+Você vai integrar a chamada da API em `searchWikipedia`.
+Essa função vai conter a lógica principal para tratar o comando `wikipedia`.
 
-1.  **Update `searchWikipedia` to use `async`:**
-    Locate your `searchWikipedia` function and
-    update its signature to be `async` as it will now
-    perform asynchronous operations.
+1.  **Atualize `searchWikipedia` para usar `async`:**
+    Localize sua função `searchWikipedia` e
+    atualize a assinatura para ser `async`, já que ela agora
+    vai executar operações assíncronas.
 
-    Your `searchWikipedia` function should now look like this:
+    Sua função `searchWikipedia` deve ficar assim:
 
     ```dart title="cli/bin/cli.dart"
     // ... (your existing main function)
@@ -223,26 +222,26 @@ This function will house the core logic for handling the `wikipedia` command.
     // ... (your existing printUsage() function)
     ```
 
-    Highlights from the preceding code:
+    Destaques do código anterior:
 
     - `void searchWikipedia(List<String>? arguments) async`:
-      The function is now `async`.
-      This is essential because it will call `getWikipediaArticle`, which
-      is an `async` function itself and will need to `await` its result.
+      A função agora é `async`.
+      Isso é essencial porque ela vai chamar `getWikipediaArticle`, que
+      é uma função `async` e precisará de `await` no resultado dela.
 
-1.  **Reject `null` or empty string input:**
-    Right now, if the user runs `dart bin/cli.dart search` and
-    presses <kbd>Enter</kbd> without typing a title,
-    `stdin.readLineSync()` returns an empty string.
-    If the user presses <kbd>Control</kbd>+<kbd>D</kbd> or
-    <kbd>Control</kbd>+<kbd>Z</kbd> to send an end-of-file (EOF) signal,
-    `stdin.readLineSync()` returns `null`,
-    and `?? ''` falls back to an empty string.
-    In either case, the CLI makes a pretend request to Wikipedia
-    with an empty string as the article title.
+1.  **Rejeite entrada `null` ou string vazia:**
+    Atualmente, se o usuário executar `dart bin/cli.dart search` e
+    pressionar <kbd>Enter</kbd> sem digitar um título,
+    `stdin.readLineSync()` retorna uma string vazia.
+    Se o usuário pressionar <kbd>Control</kbd>+<kbd>D</kbd> ou
+    <kbd>Control</kbd>+<kbd>Z</kbd> para enviar um sinal de fim de arquivo (EOF),
+    `stdin.readLineSync()` retorna `null`,
+    e `?? ''` usa uma string vazia como fallback.
+    Nos dois casos, a CLI faz uma requisição simulada à Wikipedia
+    com uma string vazia como título do artigo.
 
-    Replace the `?? ''` fallback with a check that prints a message
-    and exits the function when no valid input is given.
+    Substitua o fallback `?? ''` por uma verificação que exibe uma mensagem
+    e encerra a função quando nenhuma entrada válida é fornecida.
 
     ```dart title="cli/bin/cli.dart"
     void searchWikipedia(List<String>? arguments) async {
@@ -268,9 +267,9 @@ This function will house the core logic for handling the `wikipedia` command.
     }
     ```
 
-1.  **Call `getWikipediaArticle` and print the result:**
-    Replace the two placeholder `print` lines at the end of `searchWikipedia`
-    with a call to `getWikipediaArticle` and a single `print` of the result.
+1.  **Chame `getWikipediaArticle` e exiba o resultado:**
+    Substitua as duas linhas `print` de placeholder no final de `searchWikipedia`
+    por uma chamada a `getWikipediaArticle` e um único `print` do resultado.
 
     ```dart title="cli/bin/cli.dart"
     void searchWikipedia(List<String>? arguments) async {
@@ -296,32 +295,32 @@ This function will house the core logic for handling the `wikipedia` command.
     }
     ```
 
-    Highlights from the preceding code:
+    Destaques do código anterior:
 
     - `await getWikipediaArticle(articleTitle)`:
-      Because `getWikipediaArticle` is an `async` function,
-      you need to `await` its result.
-      This pauses the `searchWikipedia` function until the
-      `Future<String>` returned by `getWikipediaArticle` resolves into
-      a `String` containing the article's contents.
+      Como `getWikipediaArticle` é uma função `async`,
+      você precisa usar `await` no resultado dela.
+      Isso pausa a função `searchWikipedia` até que o
+      `Future<String>` retornado por `getWikipediaArticle` seja resolvido em
+      uma `String` com o conteúdo do artigo.
     - `print(articleContent)`:
-      Prints the fetched article summary as a raw JSON string to the console.
+      Imprime o resumo do artigo obtido como uma string JSON bruta no console.
 
-### Task 5: Update main to call searchWikipedia
+### Tarefa 5: Atualize o main para chamar searchWikipedia {:#task-5-update-main-to-call-searchwikipedia}
 
-Finally, update your `main` function to
-call the new `searchWikipedia` function when
-the `wikipedia` command is used.
+Por fim, atualize sua função `main` para
+chamar a nova função `searchWikipedia` quando
+o comando `wikipedia` for usado.
 
-1.  Locate the `else if` block in your `main` function that
-    currently handles the `search` command.
-    Change the command name from `search` to `wikipedia` and
-    update the function call.
+1.  Localize o bloco `else if` na sua função `main` que
+    atualmente trata o comando `search`.
+    Altere o nome do comando de `search` para `wikipedia` e
+    atualize a chamada da função.
 
-    In the sample code, `main` does _not_ `await` the call to `searchWikipedia`,
-    meaning `main` itself does not need to be marked `async`.
+    No código de exemplo, `main` _não_ usa `await` na chamada a `searchWikipedia`,
+    o que significa que `main` em si não precisa ser marcada como `async`.
 
-    Your `main` function should now look like this:
+    Sua função `main` deve ficar assim:
 
     ```dart title="cli/bin/cli.dart"
     // ... (existing const version declaration and printUsage function)
@@ -342,32 +341,32 @@ the `wikipedia` command is used.
     ```
 
     - `arguments.sublist(1)`:
-      This extracts all elements from the `arguments` list,
-      starting from the second element (index 1).
-      This effectively removes the `wikipedia` command itself,
-      so `searchWikipedia` only receives the actual article title arguments.
+      Isso extrai todos os elementos da lista `arguments`,
+      começando no segundo elemento (índice 1).
+      Assim, o próprio comando `wikipedia` é removido,
+      e `searchWikipedia` recebe apenas os argumentos com o título do artigo.
     - `searchWikipedia(inputArgs)`:
-      This calls `searchWikipedia` directly.
-      Since `main` doesn't need to
-      do anything after `searchWikipedia` completes,
-      you don't need to `await` it from `main`.
-      Therefore `main` doesn't need to be `async`.
+      Essa linha chama `searchWikipedia` diretamente.
+      Como `main` não precisa
+      fazer nada depois que `searchWikipedia` termina,
+      você não precisa usar `await` nela a partir de `main`.
+      Por isso, `main` não precisa ser `async`.
 
-### Task 6: Run the application
+### Tarefa 6: Execute o aplicativo {:#task-6-run-the-application}
 
-Now that you've implemented the `http` request and
-integrated it into your application, test it out.
+Agora que você implementou a requisição `http` e
+a integrou ao seu aplicativo, teste-o.
 
-1.  Open your terminal and run the following command:
+1.  Abra seu terminal e execute o seguinte comando:
 
     ```bash
     dart run bin/cli.dart wikipedia "Dart_(programming_language)"
     ```
 
-1.  Check to make sure that the application fetched
-    the summary of the "Dart" article from the Wikipedia API and
-    print the raw JSON response to the console.
-    You might see something like:
+1.  Verifique se o aplicativo buscou
+    o resumo do artigo "Dart" na API da Wikipedia e
+    imprimiu o JSON bruto da resposta no console.
+    Você pode ver algo como:
 
     ```bash
     Looking up articles about "Dart_(programming_language)". Please wait.
@@ -384,8 +383,8 @@ integrated it into your application, test it out.
 
     }
     ```
-1.  Next, try running without arguments.
-    For example, when prompted, enter "Flutter_(software)".
+1.  Em seguida, tente executar sem argumentos.
+    Por exemplo, quando solicitado, digite "Flutter_(software)".
 
     ```bash
     dart run bin/cli.dart wikipedia
@@ -408,45 +407,45 @@ integrated it into your application, test it out.
 
     }
     ```
-    You have now successfully implemented the basic `wikipedia` command that
-    fetches real data from an external API!
+    Você implementou com sucesso o comando `wikipedia` básico, que
+    busca dados reais de uma API externa!
 
-## Review
+## Revisão {:#review}
 
 <SummaryCard>
-title: What you accomplished
-subtitle: Here's a summary of what you built and learned in this lesson.
+title: O que você concluiu
+subtitle: Aqui está um resumo do que você construiu e aprendeu nesta lição.
 completed: true
 items:
-  - title: Mastered futures, async, and await
+  - title: Dominou futures, async e await
     icon: sync
     details: >-
-      You learned that `Future` represents a value that will be available later.
-      The `async` keyword marks functions as asynchronous, and
-      `await` pauses execution until a `Future` completes.
-  - title: Added the http package as a dependency
+      Você aprendeu que `Future` representa um valor que estará disponível mais tarde.
+      A keyword `async` marca funções como assíncronas, e
+      `await` pausa a execução até que um `Future` seja concluído.
+  - title: Adicionou o pacote http como dependência
     icon: package_2
     details: >-
-      You modified `pubspec.yaml` to add the `http` package,
-      ran `dart pub get` to fetch it, and imported it with an alias (`as http`).
-      You can follow these steps to add any external package from pub.dev.
-  - title: Fetched live data from Wikipedia
+      Você modificou o `pubspec.yaml` para adicionar o pacote `http`,
+      executou `dart pub get` para baixá-lo e o importou com um alias (`as http`).
+      Você pode seguir estes passos para adicionar qualquer pacote externo do pub.dev.
+  - title: Buscou dados em tempo real da Wikipedia
     icon: cloud_download
     details: >-
-      You built `getWikipediaArticle()` to
-      make HTTP GET requests using the `get` function from `package:http`, constructed URIs,
-      checked status codes, and returned the response body.
-      Your CLI now fetches real data from the web!
+      Você criou `getWikipediaArticle()` para
+      fazer requisições HTTP GET usando a função `get` do `package:http`, construiu URIs,
+      verificou status codes e retornou o corpo da resposta.
+      Seu CLI agora busca dados reais da web!
 </SummaryCard>
 
-## Quiz
+## Quiz {:#quiz}
 
 <Quiz title="Check your understanding" id="async" />
 
-## Next lesson
+## Próxima lição {:#next-lesson}
 
-In the next chapter, you'll focus on
-organizing our code into reusable libraries and packages.
-You'll refactor your application to
-improve its structure and maintainability by
-creating a separate package for handling command-line arguments.
+No próximo capítulo, você vai focar em
+organizar nosso código em bibliotecas e pacotes reutilizáveis.
+Você vai refatorar seu aplicativo para
+melhorar sua estrutura e manutenibilidade, criando um pacote separado para
+lidar com argumentos de linha de comando.

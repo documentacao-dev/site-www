@@ -1,59 +1,60 @@
 ---
-title: Work with JSON data
-shortTitle: Data and JSON
+ia-translate: true
+title: Trabalhe com dados JSON
+shortTitle: Dados e JSON
 description: >-
-  Learn about JSON deserialization in Dart, including how to
-  use `dart:convert`, `jsonDecode`, and pattern matching to
-  work with JSON data from the Wikipedia API.
+  Aprenda sobre desserialização de JSON em Dart, incluindo como usar
+  `dart:convert`, `jsonDecode` e pattern matching para trabalhar com
+  dados JSON da API da Wikipedia.
 layout: learn
 ---
 
-In this chapter, learn how to work with
-[JSON (JavaScript Object Notation)][] data in Dart.
-Create data models to represent Wikipedia API responses,
-use `dart:convert` to decode JSON text into Dart collections, and
-use pattern matching to extract and validate data.
+Neste capítulo, você vai aprender como trabalhar com dados
+[JSON (JavaScript Object Notation)][JSON (JavaScript Object Notation)] em Dart.
+Crie modelos de dados para representar as respostas da API da Wikipedia,
+use `dart:convert` para decodificar texto JSON em coleções Dart e
+use pattern matching para extrair e validar os dados.
 
 <SummaryCard>
-title: What you'll accomplish
+title: O que você vai realizar
 items:
-  - title: Learn about JSON handling in Dart
+  - title: Aprender sobre o tratamento de JSON em Dart
     icon: convert_to_text
-  - title: Set up a multi-package workspace
+  - title: Configurar um workspace com vários pacotes
     icon: workspaces
-  - title: Create data model classes for JSON data
+  - title: Criar classes de modelo de dados para JSON
     icon: data_object
-  - title: Use pattern matching in fromJson constructors
+  - title: Usar pattern matching em construtores fromJson
     icon: bento
 </SummaryCard>
 
 [JSON (JavaScript Object Notation)]:  https://en.wikipedia.org/wiki/JSON
 [`dart:convert` library]: {{site.dart-api}}/dart-convert
 
-## Prerequisites
+## Pré-requisitos {:#prerequisites}
 
-Before you begin this chapter, ensure you:
+Antes de começar este capítulo, certifique-se de:
 
-- Have completed Chapter 9 and have a
-  working Dart development environment with the `dartpedia` project.
-- Understand basic Dart syntax, including [classes][] and data types.
+- Ter concluído o Capítulo 9 e ter um
+  ambiente de desenvolvimento Dart funcionando com o projeto `dartpedia`.
+- Entender a sintaxe básica do Dart, incluindo [classes][classes] e tipos de dados.
 
 [classes]: /language/classes
 
-## How Dart handles JSON
+## Como o Dart trata JSON {:#how-dart-handles-json}
 
-JSON is a text-based format for
-representing structured data such as objects, arrays, numbers, and strings.
-When you interact with web APIs, responses arrive as JSON strings.
+JSON é um formato baseado em texto para
+representar dados estruturados, como objetos, arrays, números e strings.
+Quando você interage com APIs web, as respostas chegam como strings JSON.
 
-In Dart, converting a JSON string into a strongly-typed data model
-involves two steps:
+No Dart, converter uma string JSON em um modelo de dados fortemente tipado
+envolve duas etapas:
 
-1.  **Decode the JSON string into Dart collections.**
-    The [`dart:convert` library][] provides the `jsonDecode()` function,
-    which parses a raw JSON string into a standard Dart collection:
-    - A JSON object (`{...}`) becomes a `Map<String, dynamic>`.
-    - A JSON array (`[...]`) becomes a `List<dynamic>`.
+1.  **Decodifique a string JSON em coleções Dart.**
+    A [biblioteca `dart:convert`][`dart:convert` library] fornece a função `jsonDecode()`,
+    que transforma uma string JSON bruta em uma coleção Dart padrão:
+    - Um objeto JSON (`{...}`) vira um `Map<String, dynamic>`.
+    - Um array JSON (`[...]`) vira uma `List<dynamic>`.
 
     ```dart
     import 'dart:convert';
@@ -65,14 +66,14 @@ involves two steps:
         jsonDecode(jsonString) as Map<String, Object?>;
     ```
 
-1.  **Convert the decoded collections into custom model objects.**
-    While you can read values directly from a `Map` (like `jsonMap['title']`),
-    using raw maps throughout your application lacks type safety,
-    invites typos, and provides no IDE autocompletion.
+1.  **Converta as coleções decodificadas em objetos de modelo personalizados.**
+    Embora você possa ler valores diretamente de um `Map` (como `jsonMap['title']`),
+    usar mapas brutos em toda a aplicação não oferece segurança de tipos,
+    favorece erros de digitação e não tem autocompletar na IDE.
 
-    To solve this, Dart applications define data model classes with
-    `factory` constructors, conventionally named `fromJson`, that
-    instantiate typed objects from decoded maps:
+    Para resolver isso, aplicações Dart definem classes de modelo de dados com
+    construtores `factory`, convencionalmente chamados de `fromJson`, que
+    instanciam objetos tipados a partir de mapas decodificados:
 
     ```dart
     class ArticleSummary {
@@ -90,50 +91,50 @@ involves two steps:
     }
     ```
 
-Dart also supports [pattern matching][] in `fromJson` constructors,
-allowing you to validate the shape of the JSON map and
-extract values in a single, concise step.
+O Dart também suporta [pattern matching][pattern matching] em construtores `fromJson`,
+permitindo validar a estrutura do mapa JSON e
+extrair valores em uma única etapa concisa.
 
-## Tasks
+## Tarefas {:#tasks}
 
-The following tasks set up a multi-package workspace and
-create the data model classes for Wikipedia API responses.
+As tarefas a seguir configuram um workspace com vários pacotes e
+criam as classes de modelo de dados para as respostas da API da Wikipedia.
 
-### Task 1: Create the Wikipedia package
+### Tarefa 1: Crie o pacote Wikipedia {:#task-1-create-the-wikipedia-package}
 
-First, create a new Dart package to house the data models.
+Primeiro, crie um novo pacote Dart para abrigar os modelos de dados.
 
-1.  Navigate to the root directory of your project (`/dartpedia`).
-1.  Run the following command in your terminal:
+1.  Navegue até o diretório raiz do seu projeto (`/dartpedia`).
+1.  Execute o seguinte comando no terminal:
 
     ```bash
     dart create wikipedia
     ```
 
-    This command creates a new directory named `wikipedia` with
-    the basic structure of a Dart package.
-    You should now see a new folder `wikipedia` in your project root,
-    alongside `cli` and `command_runner`.
+    Esse comando cria um novo diretório chamado `wikipedia` com
+    a estrutura básica de um pacote Dart.
+    Agora você deve ver uma nova pasta `wikipedia` na raiz do projeto,
+    ao lado de `cli` e `command_runner`.
 
-1.  Remove the generated `wikipedia/bin` directory by running
-    `rm -r wikipedia/bin` (on macOS or Linux) or
-    `Remove-Item -Recurse wikipedia\bin` (on Windows).
-    Because `cli` serves as your application's executable entry point,
-    `wikipedia` is used strictly as a library package and doesn't need its own
-    `bin/` folder.
+1.  Remova o diretório `wikipedia/bin` gerado executando
+    `rm -r wikipedia/bin` (no macOS ou Linux) ou
+    `Remove-Item -Recurse wikipedia\bin` (no Windows).
+    Como `cli` serve como o ponto de entrada executável da sua aplicação,
+    `wikipedia` é usado estritamente como um pacote de biblioteca e não
+    precisa da própria pasta `bin/`.
 
-### Task 2: Configure a Dart workspace
+### Tarefa 2: Configure um workspace Dart {:#task-2-configure-a-dart-workspace}
 
-Dart workspaces allow you to
-manage multiple related packages within a single project,
-simplifying dependency management and local development.
-Now that you're adding your third package,
-it's a good time to configure your project to use a Dart workspace.
+Workspaces Dart permitem
+gerenciar vários pacotes relacionados dentro de um único projeto,
+simplificando o gerenciamento de dependências e o desenvolvimento local.
+Agora que você está adicionando seu terceiro pacote,
+é um bom momento para configurar o projeto para usar um workspace Dart.
 
-1.  **Create the root `pubspec.yaml` file.**
+1.  **Crie o arquivo `pubspec.yaml` raiz.**
 
-    Navigate to the root directory of your project (`/dartpedia`) and
-    create a new file named `pubspec.yaml` with the following content:
+    Navegue até o diretório raiz do projeto (`/dartpedia`) e
+    crie um novo arquivo chamado `pubspec.yaml` com o seguinte conteúdo:
 
     ```yaml title="pubspec.yaml"
     name: _
@@ -147,14 +148,14 @@ it's a good time to configure your project to use a Dart workspace.
       - wikipedia
     ```
 
-1.  **Add workspace resolution to sub-packages.**
+1.  **Adicione a resolução de workspace aos sub-pacotes.**
 
-    For each of your sub-packages (`cli`, `command_runner`, and `wikipedia`),
-    open their respective `pubspec.yaml` files and
-    add `resolution: workspace` to `pubspec.yaml`.
-    This tells Dart to resolve dependencies within the workspace.
+    Para cada um dos seus sub-pacotes (`cli`, `command_runner` e `wikipedia`),
+    abra os respectivos arquivos `pubspec.yaml` e
+    adicione `resolution: workspace` em `pubspec.yaml`.
+    Isso diz ao Dart para resolver as dependências dentro do workspace.
 
-    -   For `cli/pubspec.yaml`:
+    -   Para `cli/pubspec.yaml`:
 
         ```yaml title="cli/pubspec.yaml" highlightLines=5
         # ... (existing content) ...
@@ -165,7 +166,7 @@ it's a good time to configure your project to use a Dart workspace.
         # ... (existing content) ...
         ```
 
-    -   For `command_runner/pubspec.yaml`:
+    -   Para `command_runner/pubspec.yaml`:
 
         ```yaml title="command_runner/pubspec.yaml" highlightLines=5
         # ... (existing content) ...
@@ -176,7 +177,7 @@ it's a good time to configure your project to use a Dart workspace.
         # ... (existing content) ...
         ```
 
-    -   For `wikipedia/pubspec.yaml`:
+    -   Para `wikipedia/pubspec.yaml`:
 
         ```yaml title="wikipedia/pubspec.yaml" highlightLines=5
         # ... (existing content) ...
@@ -187,19 +188,19 @@ it's a good time to configure your project to use a Dart workspace.
         # ... (existing content) ...
         ```
 
-1.  **Resolve workspace dependencies.**
+1.  **Resolva as dependências do workspace.**
 
-    Run `dart pub get` in your project root to
-    resolve dependencies across all packages in the workspace:
+    Execute `dart pub get` na raiz do projeto para
+    resolver as dependências de todos os pacotes do workspace:
 
     ```bash
     dart pub get
     ```
 
-### Task 3: Create the Summary class
+### Tarefa 3: Crie a classe Summary {:#task-3-create-the-summary-class}
 
-The Wikipedia API returns a JSON object containing a summary of an article.
-A typical response from the page summary endpoint looks like this:
+A API da Wikipedia retorna um objeto JSON contendo um resumo de um artigo.
+Uma resposta típica do endpoint de resumo de página tem este formato:
 
 ```json
 {
@@ -225,17 +226,17 @@ A typical response from the page summary endpoint looks like this:
 }
 ```
 
-Create a Dart class to represent this summary.
+Crie uma classe Dart para representar esse resumo.
 
-1.  Create the directory `wikipedia/lib/src/model`.
+1.  Crie o diretório `wikipedia/lib/src/model`.
 
     ```bash
     mkdir -p wikipedia/lib/src/model
     ```
 
-1.  Create the file `wikipedia/lib/src/model/summary.dart`.
+1.  Crie o arquivo `wikipedia/lib/src/model/summary.dart`.
 
-1.  Add the following code to `wikipedia/lib/src/model/summary.dart`:
+1.  Adicione o seguinte código em `wikipedia/lib/src/model/summary.dart`:
 
     ```dart title="wikipedia/lib/src/model/summary.dart"
     import 'title_set.dart';
@@ -342,35 +343,35 @@ Create a Dart class to represent this summary.
     }
     ```
 
-    This code defines a `Summary` class to represent the fields returned
-    by the Wikipedia summary endpoint:
+    Este código define uma classe `Summary` para representar os campos
+    retornados pelo endpoint de resumo da Wikipedia:
 
-    * **`fromJson` pattern matching:** While you can access map keys
-      individually with manual casting (such as `json['pageid'] as int`),
-      the `fromJson` factory constructor uses [pattern matching][] to
-      validate the structure, confirm types, and extract values in a single
-      declarative expression.
-    * **`switch` expression:** Provides two cases to handle Wikipedia's
-      optional `description` field: one that extracts it when present,
-      and a fallback case that matches when it is omitted.
-    * **`toString`:** Provides a readable string representation of
-      the `Summary` object for debugging.
+    * **Pattern matching no `fromJson`:** Embora você possa acessar as chaves do mapa
+      individualmente com cast manual (como `json['pageid'] as int`),
+      o construtor factory `fromJson` usa [pattern matching][pattern matching] para
+      validar a estrutura, confirmar os tipos e extrair os valores em uma única
+      expressão declarativa.
+    * **Expressão `switch`:** Oferece dois casos para tratar o campo opcional
+      `description` da Wikipedia: um que o extrai quando está presente
+      e um caso alternativo que corresponde quando ele é omitido.
+    * **`toString`:** Fornece uma representação em string legível do
+      objeto `Summary` para depuração.
 
     :::note
-    Your editor might flag `import 'title_set.dart'` and `TitlesSet`
-    as unresolved references until you create `TitlesSet` in Task 4.
+    Seu editor pode marcar `import 'title_set.dart'` e `TitlesSet`
+    como referências não resolvidas até que você crie `TitlesSet` na Tarefa 4.
     :::
 
 [pattern matching]: /language/patterns
 
-### Task 4: Create the TitleSet class
+### Tarefa 4: Crie a classe TitleSet {:#task-4-create-the-titleset-class}
 
-The `Summary` class uses a `TitlesSet` class to represent the title information.
-Create that class next.
+A classe `Summary` usa uma classe `TitlesSet` para representar as informações de título.
+Crie essa classe a seguir.
 
-1.  Create the file `wikipedia/lib/src/model/title_set.dart`.
+1.  Crie o arquivo `wikipedia/lib/src/model/title_set.dart`.
 
-1.  Add the following code to `wikipedia/lib/src/model/title_set.dart`:
+1.  Adicione o seguinte código em `wikipedia/lib/src/model/title_set.dart`:
 
     ```dart title="wikipedia/lib/src/model/title_set.dart"
     class TitlesSet {
@@ -418,22 +419,22 @@ Create that class next.
     }
     ```
 
-    This code defines a `TitlesSet` class to hold the title variants
-    returned by the Wikipedia API.
-    Unlike `Summary`, which uses a `switch` expression for optional fields,
-    `TitlesSet` has a fixed structure and validates all three fields at once
-    using an `if case` statement.
-    If the JSON map does not match the pattern, it throws a
+    Este código define uma classe `TitlesSet` para armazenar as variantes de título
+    retornadas pela API da Wikipedia.
+    Diferente de `Summary`, que usa uma expressão `switch` para campos opcionais,
+    `TitlesSet` tem uma estrutura fixa e valida os três campos de uma vez
+    usando uma instrução `if case`.
+    Se o mapa JSON não corresponder ao padrão, ele lança uma
     `FormatException`.
 
-### Task 5: Create the Article class
+### Tarefa 5: Crie a classe Article {:#task-5-create-the-article-class}
 
-The Wikipedia API also returns a list of articles in a search result.
-Create a Dart class to represent an article.
+A API da Wikipedia também retorna uma lista de artigos em um resultado de busca.
+Crie uma classe Dart para representar um artigo.
 
-1.  Create the file `wikipedia/lib/src/model/article.dart`.
+1.  Crie o arquivo `wikipedia/lib/src/model/article.dart`.
 
-1.  Add the following code to `wikipedia/lib/src/model/article.dart`:
+1.  Adicione o seguinte código em `wikipedia/lib/src/model/article.dart`:
 
     ```dart title="wikipedia/lib/src/model/article.dart"
     class Article {
@@ -470,26 +471,26 @@ Create a Dart class to represent an article.
     }
     ```
 
-    This code defines an `Article` class to represent an article's
-    title and extract:
+    Este código define uma classe `Article` para representar o título e
+    o extrato de um artigo:
 
-    * **`listFromJson`:** Unlike previous models that create a single instance,
-      the Wikipedia search endpoint returns multiple articles in a map.
-      Dart constructors only return a single instance, so `Article` uses
-      a `static` method named `listFromJson` to return a `List<Article>`.
-    * **Object pattern destructuring:** The `for` loop uses
-      `final MapEntry(:value)` to extract each entry's value directly
-      without manual property access.
-    * **`toJson`:** Converts an `Article` instance back into a JSON map.
-      In Dart convention, `toJson()` returns a `Map<String, Object?>`
-      that you can pass to `jsonEncode()` from `dart:convert`
-      when serializing an object to a JSON string.
+    * **`listFromJson`:** Diferente dos modelos anteriores, que criam uma única instância,
+      o endpoint de busca da Wikipedia retorna vários artigos em um mapa.
+      Construtores Dart retornam apenas uma instância, então `Article` usa
+      um método `static` chamado `listFromJson` para retornar uma `List<Article>`.
+    * **Desestruturação com object pattern:** O laço `for` usa
+      `final MapEntry(:value)` para extrair o valor de cada entrada diretamente,
+      sem acesso manual às propriedades.
+    * **`toJson`:** Converte uma instância de `Article` de volta para um mapa JSON.
+      Pela convenção do Dart, `toJson()` retorna um `Map<String, Object?>`
+      que você pode passar para `jsonEncode()`, de `dart:convert`,
+      ao serializar um objeto para uma string JSON.
 
-### Task 6: Create the SearchResults class
+### Tarefa 6: Crie a classe SearchResults {:#task-6-create-the-searchresults-class}
 
-Finally, create a class to represent search results from the Wikipedia API.
-The Wikipedia search endpoint returns an array containing the search term,
-article titles, descriptions (which are ignored), and URLs:
+Por fim, crie uma classe para representar os resultados de busca da API da Wikipedia.
+O endpoint de busca da Wikipedia retorna um array contendo o termo buscado,
+os títulos dos artigos, as descrições (que são ignoradas) e as URLs:
 
 ```json
 [
@@ -503,8 +504,8 @@ article titles, descriptions (which are ignored), and URLs:
 ]
 ```
 
-1.  Create the file `wikipedia/lib/src/model/search_results.dart`.
-1.  Add the following code to `wikipedia/lib/src/model/search_results.dart`:
+1.  Crie o arquivo `wikipedia/lib/src/model/search_results.dart`.
+1.  Adicione o seguinte código em `wikipedia/lib/src/model/search_results.dart`:
 
     ```dart title="wikipedia/lib/src/model/search_results.dart"
     class SearchResult {
@@ -548,68 +549,68 @@ article titles, descriptions (which are ignored), and URLs:
     }
     ```
 
-    This code defines two classes: `SearchResult` to hold an individual
-    article's title and URL, and `SearchResults` to hold the list of
-    results along with the search query:
+    Este código define duas classes: `SearchResult`, para armazenar o título e a URL
+    de um artigo individual, e `SearchResults`, para armazenar a lista de
+    resultados junto com a consulta de busca:
 
-    * **`fromJson` with `List<Object?>`:** The constructor accepts
-      a `List<Object?>` rather than a `Map<String, Object?>` to match
-      the top-level JSON array returned by Wikipedia's search API.
-    * **List pattern matching:** The `if case` statement uses a list pattern
-      `[...]` to match the array positionally and extract each section.
-    * **Wildcard pattern (`_`):** The `Iterable _` pattern matches and
-      discards the descriptions array, which your application does not need.
+    * **`fromJson` com `List<Object?>`:** O construtor aceita
+      uma `List<Object?>`, em vez de um `Map<String, Object?>`, para corresponder
+      ao array JSON de nível superior retornado pela API de busca da Wikipedia.
+    * **Pattern matching de lista:** A instrução `if case` usa um padrão de lista
+      `[...]` para corresponder ao array por posição e extrair cada seção.
+    * **Padrão curinga (`_`):** O padrão `Iterable _` corresponde e descarta
+      o array de descrições, que a aplicação não precisa.
 
-You now have typed data models to represent Wikipedia API responses.
-In upcoming chapters, use `package:test` to test
-how data is deserialized and use `package:http` to fetch
-live JSON data from the API.
+Agora você tem modelos de dados tipados para representar as respostas da API da Wikipedia.
+Nos próximos capítulos, você vai usar o `package:test` para testar
+como os dados são desserializados e o `package:http` para buscar
+dados JSON ao vivo da API.
 
-## Review
+## Revisão {:#review}
 
 <SummaryCard>
-title: What you accomplished
-subtitle: Here's a summary of what you built and learned in this lesson.
+title: O que você realizou
+subtitle: Veja um resumo do que você construiu e aprendeu nesta lição.
 completed: true
 items:
-  - title: Learned about JSON handling in Dart
+  - title: Aprendeu sobre o tratamento de JSON em Dart
     icon: convert_to_text
     details: >-
-      You explored how `dart:convert` and `jsonDecode()`
-      parse JSON strings into Dart collections (`Map` and `List`), and
-      why typed models with `fromJson` factory constructors are preferred
-      over raw maps.
-  - title: Set up a pub workspace
+      Você explorou como `dart:convert` e `jsonDecode()`
+      transformam strings JSON em coleções Dart (`Map` e `List`), e
+      por que modelos tipados com construtores factory `fromJson`
+      são preferidos em vez de mapas brutos.
+  - title: Configurou um workspace pub
     icon: workspaces
     details: >-
-      To simplify dependency management for your multi-package project,
-      you created a new pub workspace.
-      To do so, you created a root `pubspec.yaml` file with
-      a `workspace:` section listing your packages, then
-      added `resolution: workspace` to each sub-package.
-  - title: Created data model classes for JSON
+      Para simplificar o gerenciamento de dependências do seu projeto com vários pacotes,
+      você criou um novo workspace pub.
+      Para isso, criou um arquivo `pubspec.yaml` raiz com
+      uma seção `workspace:` listando seus pacotes e, depois,
+      adicionou `resolution: workspace` a cada sub-pacote.
+  - title: Criou classes de modelo de dados para JSON
     icon: data_object
     details: >-
-      You built `Summary`, `TitlesSet`, `Article`, and `SearchResults` classes
-      to represent Wikipedia API responses.
-      These typed models provide compile-time safety and
-      IDE support when working with API data.
-  - title: Used pattern matching in fromJson factory constructors
+      Você criou as classes `Summary`, `TitlesSet`, `Article` e `SearchResults`
+      para representar as respostas da API da Wikipedia.
+      Esses modelos tipados oferecem segurança em tempo de compilação e
+      suporte da IDE ao trabalhar com dados da API.
+  - title: Usou pattern matching em construtores factory fromJson
     icon: bento
     details: >-
-      You implemented `fromJson` factory constructors using Dart's pattern
-      matching with `switch` expressions and `if case` statements.
-      This structure validates the JSON shape and
-      extracts values in concise, readable expressions.
+      Você implementou construtores factory `fromJson` usando o pattern
+      matching do Dart, com expressões `switch` e instruções `if case`.
+      Essa estrutura valida o formato do JSON e
+      extrai valores em expressões concisas e legíveis.
 </SummaryCard>
 
-## Quiz
+## Quiz {:#quiz}
 
-<Quiz title="Check your understanding" id="data-and-json" />
+<Quiz title="Confira seu entendimento" id="data-and-json" />
 
-## Next lesson
+## Próxima lição {:#next-lesson}
 
-In the next lesson, learn how to
-test your Dart code using the `package:test` library.
-Write tests to verify that your
-JSON deserialization logic works correctly.
+Na próxima lição, você vai aprender como
+testar seu código Dart usando a biblioteca `package:test`.
+Escreva testes para verificar se a lógica de
+desserialização JSON funciona corretamente.

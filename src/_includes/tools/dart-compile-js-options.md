@@ -1,86 +1,89 @@
-#### Options {:#prod-compile-options}
+---
+ia-translate: true
+---
+#### Opções {:#prod-compile-options}
 
-The `dart compile js` command has multiple options
-to customize javascript code compilation.
+O comando `dart compile js` possui múltiplas opções
+para personalizar a compilação de código JavaScript.
 
-* [Basic options](#basic-options)
-* [Path and environment options](#path-and-environment-options)
-* [Display options](#display-options)
-* [Analysis options](#analysis-options)
+* [Opções básicas](#basic-options)
+* [Opções de caminho e ambiente](#path-and-environment-options)
+* [Opções de exibição](#display-options)
+* [Opções de análise](#analysis-options)
 
-###### Basic options
+###### Opções básicas {:#basic-options}
 
-Common options include:
+Opções comuns incluem:
 
-`-o <file>` or `--output=<file>`
-: Generates the output into `<file>`. 
-  If not specified, the output goes in a file named `out.js`.
+`-o <file>` ou `--output=<file>`
+: Gera a saída em `<file>`.
+  Se não for especificado, a saída vai para um arquivo chamado `out.js`.
 
 `--enable-asserts`
-: Enables assertion checking.
+: Habilita a verificação de assertions.
 
 `-O{0|1|2|3|4}`
-: Controls optimizations to reduce file size and
-  improve code performance.
-  To learn more about these optimizations, 
-  run `dart compile js -hv`.
+: Controla otimizações para reduzir o tamanho do arquivo e
+  melhorar o desempenho do código.
+  Para saber mais sobre essas otimizações,
+  execute `dart compile js -hv`.
 
-  * `-O0`: Disables many optimizations.
-  * `-O1`: Enables default optimizations.
-  * `-O2`: Enables `-O1` optimizations, plus additional ones
-    (such as minification) that respect the language semantics and
-    are safe for all programs.
+  * `-O0`: Desabilita muitas otimizações.
+  * `-O1`: Habilita otimizações padrão.
+  * `-O2`: Habilita as otimizações de `-O1`, além de outras
+    (como minificação) que respeitam a semântica da linguagem e
+    são seguras para todos os programas.
 
     :::note
-    With `-O2`, string representations of types are no longer the same as
-    those in the Dart VM when compiled with the development JavaScript compiler.
+    Com `-O2`, as representações de string dos tipos deixam de ser iguais às
+    da Dart VM quando compilado com o compilador JavaScript de desenvolvimento.
     :::
-  * `-O3`: Enables `-O2` optimizations, plus omits implicit type checks.
-    
+  * `-O3`: Habilita as otimizações de `-O2`, além de omitir verificações implícitas de tipo.
+
     :::warning
-    Omitting type checks can cause your app to crash due to type errors.
-    Before using `-O3`, **test using `-O2`** to ensure that your app
-    **never** throws a subtype of `Error` (such as `TypeError`).
+    Omitir verificações de tipo pode fazer sua aplicação falhar por erros de tipo.
+    Antes de usar `-O3`, **teste com `-O2`** para garantir que sua aplicação
+    **nunca** lance um subtipo de `Error` (como `TypeError`).
     :::
-  * `-O4`: Enables more aggressive optimizations than `-O3`,
-    but with the same assumptions.
-    
+  * `-O4`: Habilita otimizações mais agressivas que `-O3`,
+    mas com as mesmas premissas.
+
     :::warning
-    The `-O4` optimizations are susceptible to variations in input data.
-    Before relying on `-O4`, **test for edge cases in user input**.
+    As otimizações de `-O4` são suscetíveis a variações nos dados de entrada.
+    Antes de depender de `-O4`, **teste casos extremos na entrada do usuário**.
     :::
 
 `--no-source-maps`
-: Don't generate a source map file.
-  By default, `dart compile js` automatically outputs a `.js.map`
-  source map file alongside the generated JavaScript code.
-  Use this flag to disable source map generation.
-  For security and privacy considerations when deploying source maps,
-  see [Web deployment][manage-source-maps].
+: Não gera um arquivo source map.
+  Por padrão, o `dart compile js` gera automaticamente um arquivo de source map
+  `.js.map` ao lado do código JavaScript gerado.
+  Use esta flag para desabilitar a geração de source maps.
+  Para considerações de segurança e privacidade ao publicar source maps,
+  veja [Deploy para web][manage-source-maps].
 
-`-h` or `--help`
-: Displays help. To get information about all options, use `-hv`.
+`-h` ou `--help`
+: Exibe ajuda. Para obter informações sobre todas as opções, use `-hv`.
 
 
-###### Path and environment options
+###### Opções de caminho e ambiente {:#path-and-environment-options}
 
-Some other handy options include:
+Algumas outras opções úteis incluem:
 
 `--packages=<path>`
-: Specifies the path to the package resolution configuration file.
-  For more information, check out the
-  [Dart package configuration file][] specification.
+: Especifica o caminho para o arquivo de configuração de resolução de pacotes.
+  Para mais informações, confira a
+  especificação do [arquivo de configuração de pacotes do Dart][Dart package configuration file].
 
 `-D<flag>=<value>`
-: Defines an environment declaration and value pair
-  which can be accessed with 
-  [`String.fromEnvironment`][], [`int.fromEnvironment`][], 
-  [`bool.fromEnvironment`][], or [`bool.hasEnvironment`][].
-  To learn more about environment declarations,
-  see [Configuring apps with compilation environment declarations][].
+: Define um par de declaração de ambiente e valor
+  que pode ser acessado com
+  [`String.fromEnvironment`][], [`int.fromEnvironment`][],
+  [`bool.fromEnvironment`][] ou [`bool.hasEnvironment`][].
+  Para saber mais sobre declarações de ambiente,
+  veja [Configurando apps com declarações de ambiente de compilação][Configuring apps with compilation environment declarations].
 
 `--version`
-: Displays version information for `dart`.
+: Exibe informações de versão do `dart`.
 
 [Dart package configuration file]: {{site.repo.dart.lang}}/blob/main/accepted/2.8/language-versioning/package-config-file-v2.md
 [`String.fromEnvironment`]: {{site.dart-api}}/dart-core/String/String.fromEnvironment.html
@@ -90,62 +93,62 @@ Some other handy options include:
 [Configuring apps with compilation environment declarations]: /libraries/core/environment-declarations
 [manage-source-maps]: /web/deployment#manage-source-maps-and-unneeded-build-files
 
-###### Display options
+###### Opções de exibição {:#display-options}
 
-The following options help you control the compiler output.
+As seguintes opções ajudam você a controlar a saída do compilador.
 
 `--suppress-warnings`
-: Doesn't display warnings.
+: Não exibe avisos.
 
 `--suppress-hints`
-: Doesn't display hints.
+: Não exibe dicas.
 
 `--terse`
-: Emits diagnostics, 
-  without suggesting how to get rid of the diagnosed problems.
+: Emite diagnósticos,
+  sem sugerir como resolver os problemas diagnosticados.
 
-`-v` or `--verbose`
-: Displays lots of information.
+`-v` ou `--verbose`
+: Exibe muitas informações.
 
 
-###### Analysis options
+###### Opções de análise {:#analysis-options}
 
-The following options control the analysis performed on Dart code.
+As seguintes opções controlam a análise feita sobre o código Dart.
 
 `--fatal-warnings`
-: Treat warnings as compilation errors.
+: Trata avisos como erros de compilação.
 
 `--enable-diagnostic-colors`
-: Adds colors to diagnostic messages.
+: Adiciona cores às mensagens de diagnóstico.
 
 `--show-package-warnings`
-: Shows warnings and hints generated from packages.
+: Mostra avisos e dicas gerados por pacotes.
 
 `--csp`
-: Disables dynamic generation of code in the generated output.
-  This is necessary to satisfy CSP restrictions
-  (see [W3C Content Security Policy.](https://www.w3.org/TR/CSP/))
+: Desabilita a geração dinâmica de código na saída gerada.
+  Isso é necessário para atender às restrições de CSP
+  (veja [W3C Content Security Policy.](https://www.w3.org/TR/CSP/))
 
 `--dump-info`
-: Generates a file (with the suffix `.info.json`)
-  that contains information about the generated code.
-  You can inspect the generated file with tools in
+: Gera um arquivo (com o sufixo `.info.json`)
+  que contém informações sobre o código gerado.
+  Você pode inspecionar o arquivo gerado com as ferramentas do
   [dart2js_info]({{site.repo.dart.sdk}}/blob/main/pkg/dart2js_info/README.md).
 
 `--[no-]deprecated-js-interop`
-: Enables or disables support for the deprecated `dart:*` JS interop
-  and web libraries (`dart:html`, `dart:indexed_db`,
-  `dart:js`, `dart:js_util`, `dart:svg`, `dart:web_audio`, and
-  `dart:web_gl`), as well as packages that import them
-  (such as `package:js`).
-  Enabled by default (`--deprecated-js-interop`).
-  When you pass the `--no-deprecated-js-interop` flag,
-  importing any of these libraries results in a compile-time error
-  that reports the shortest import paths to the deprecated libraries.
-  In addition, their `dart.library.*` environment conditions
-  (such as `dart.library.html` and `dart.library.js_util`)
-  evaluate to `false` in conditional imports and [`bool.fromEnvironment`][].
-  For details, refer to
-  [Disallow deprecated JS interop libraries][disallow-legacy].
+: Habilita ou desabilita o suporte à interop JS legada com `dart:*`
+  e às bibliotecas web (`dart:html`, `dart:indexed_db`,
+  `dart:js`, `dart:js_util`, `dart:svg`, `dart:web_audio` e
+  `dart:web_gl`), além dos pacotes que as importam
+  (como `package:js`).
+  Habilitado por padrão (`--deprecated-js-interop`).
+  Quando você passa a flag `--no-deprecated-js-interop`,
+  importar qualquer uma dessas bibliotecas resulta em erro de compilação,
+  que mostra os caminhos de import mais curtos até as bibliotecas depreciadas.
+  Além disso, as condições de ambiente `dart.library.*` delas
+  (como `dart.library.html` e `dart.library.js_util`)
+  são avaliadas como `false` em imports condicionais e em [`bool.fromEnvironment`][].
+  Para detalhes, consulte
+  [Desabilitar bibliotecas de interop JS legadas][disallow-legacy].
 
 [disallow-legacy]: /interop/js-interop/past-js-interop#disallow-deprecated-js-interop

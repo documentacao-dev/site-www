@@ -1,6 +1,7 @@
 ---
-title: "Dart declaration-site variance"
-description: "A deep dive into an experimental feature"
+ia-translate: true
+title: "Variância no nível de declaração do Dart"
+description: "Um mergulho profundo em um recurso experimental"
 publishDate: 2019-12-19
 author: kallentu
 image: images/0XcEdm2vmIBW8Wovr.webp
@@ -9,20 +10,20 @@ layout: blog
 ---
 
 
-<DashImage src="images/0XcEdm2vmIBW8Wovr.webp" alt="Graphic showing Dart declaration-site variance." />
+<DashImage src="images/0XcEdm2vmIBW8Wovr.webp" alt="Gráfico mostrando a variância no nível de declaração do Dart." />
 
 
-Declaration-site variance was my internship project on the Dart team, and I’ve documented my personal experience on the team in the article [Life as a Dart intern](/blog/life-as-a-dart-intern). As the primary implementer of the [declaration-site variance feature](https://github.com/dart-lang/language/issues/524), I want to share the usages and benefits of sound variance.
+A variância no nível de declaração foi o meu projeto de estágio na equipe do Dart, e documentei minha experiência pessoal na equipe no artigo [Minha vida como estagiário do Dart](/blog/life-as-a-dart-intern). Como principal implementador do [recurso de variância no nível de declaração](https://github.com/dart-lang/language/issues/524), quero compartilhar os usos e os benefícios da variância sólida.
 
-We’ll discuss how to use variance, why we want to use the modifiers, how the feature can build on top of classes that don’t use the modifiers, and what benefits this feature provides us.
+Vamos discutir como usar a variância, por que queremos usar os modificadores, como o recurso pode se apoiar em classes que não usam os modificadores e quais benefícios ele nos traz.
 
-***Note:** The implementation of variance isn’t finished yet. Although you can play with it by enabling the experiment (instructions below), the feature might change before it’s finalized.*
+***Nota:** A implementação da variância ainda não está concluída. Embora você possa testá-la habilitando o experimento (instruções abaixo), o recurso pode mudar antes de ser finalizado.*
 
-Before diving into Dart’s declaration-site variance feature, we’ll take a quick detour to discuss what variance means and how it’s used.
+Antes de mergulhar no recurso de variância no nível de declaração do Dart, vamos fazer um breve desvio para discutir o que é variância e como ela é usada.
 
-## **What is variance?**
+## **O que é variância?** {:#what-is-variance}
 
-To briefly introduce variance, we can look at this example:
+Para introduzir rapidamente a variância, podemos olhar para este exemplo:
 
 ```dart
 main() {
@@ -30,9 +31,9 @@ main() {
 }
 ```
 
-From this, an `Iterable` of integers can be substituted as an `Iterable` of `Object`s because an integer *is* an `Object` and can be used in an `Iterable` in every place an `Object` would be. The language allows this by saying that two instantiations of the same generic type (like `Iterable<int>` and `Iterable<Object>` here) are considered subtypes if their type arguments (`int` and `Object`) are. This subtyping relation is considered **covariance**.
+Daí, um `Iterable` de inteiros pode ser substituído por um `Iterable` de `Object`s, porque um inteiro *é* um `Object` e pode ser usado em um `Iterable` em todo lugar em que um `Object` seria usado. A linguagem permite isso afirmando que duas instanciações do mesmo tipo genérico (como `Iterable<int>` e `Iterable<Object>` aqui) são consideradas subtipos se os argumentos de tipo delas (`int` e `Object`) também forem. Essa relação de subtipagem é considerada **covariância**.
 
-This is convenient and logical. It makes sense, that is, until you take a look at the variance of the parameters of a method. Say you want to make a `objectWriter` in Dart:
+Isso é conveniente e lógico. Faz sentido, isto é, até você olhar para a variância dos parâmetros de um método. Digamos que você queira criar um `objectWriter` em Dart:
 
 ```dart
 class Writer<T> {
@@ -45,7 +46,7 @@ main() {
 }
 ```
 
-Then you eagerly have your `objectWriter` write a `String` to discover that it produces a runtime error. The compiler allows this code, but when you run it, it throws an exception.
+Então, você pede avidamente que o seu `objectWriter` escreva uma `String` e descobre que isso produz um erro em tempo de execução. O compilador permite esse código, mas, quando você o executa, ele lança uma exceção.
 
 ```dart
 main() {
@@ -56,9 +57,9 @@ main() {
 }
 ```
 
-Why is this? With **contravariance,** the subtyping relation is reversed compared to covariance. We need to be able to *write* any `Object` to the `objectWriter`, but from earlier we know that the `objectWriter` is actually a disguised writer of integers.
+Por que isso acontece? Com **contravariância**, a relação de subtipagem é invertida em comparação com a covariância. Precisamos ser capazes de *escrever* qualquer `Object` no `objectWriter`, mas, pelo que vimos antes, sabemos que o `objectWriter` é na verdade um escritor disfarçado de inteiros.
 
-The final variant type you will need to know about is **invariance**. Invariant subtyping relation means no subtype relation between two invariant types unless they are the *exact same* type.
+O último tipo de variância que você precisa conhecer é a **invariância**. Uma relação de subtipagem invariante significa que não há relação de subtipo entre dois tipos invariantes, a menos que sejam exatamente o mesmo tipo.
 
 ```dart
 class ReaderWriter<T> {
@@ -79,22 +80,22 @@ main() {
 }
 ```
 
-## **What is the variance feature in Dart?**
+## **O que é o recurso de variância no Dart?** {:#what-is-the-variance-feature-in-dart}
 
-Since the Dart team proposed to add explicit variance modifiers to the language, we’ll preview some of the changes to expect.
+Como a equipe do Dart propôs adicionar modificadores de variância explícitos à linguagem, vamos mostrar uma prévia de algumas das mudanças que podem ser esperadas.
 
-Dart will have variance modifiers that can be applied to type parameters in classes and mixins. The syntax is similar to variance modifiers in C#.
+O Dart terá modificadores de variância que podem ser aplicados a parâmetros de tipo em classes e mixins. A sintaxe é semelhante aos modificadores de variância do C#.
 
-You can use the keywords `out`, `in`*,* and `inout`to declare a covariant, contravariant, and invariant type parameter respectively. This is used with generic types as such:
+Você pode usar as palavras-chave `out`, `in`*,* e `inout` para declarar, respectivamente, um parâmetro de tipo covariante, contravariante e invariante. Isso é usado com tipos genéricos assim:
 
 ```dart
 class MyContravariantClass<in T> {}
 mixin MyInvariantMixin<inout T> {}
 ```
 
-## **Why define explicit variance for generic types? Why do we want this feature?**
+## **Por que definir variância explícita para tipos genéricos? Por que queremos esse recurso?** {:#why-define-explicit-variance-for-generic-types-why-do-we-want-this-feature}
 
-Dart’s static type system currently treats all type parameters as covariant. That’s correct and convenient for generics where the type is used in a safely covariant place like a return type. But it’s wrong when the type argument should be contravariant or invariant:
+O sistema de tipos estático do Dart atualmente trata todos os parâmetros de tipo como covariantes. Isso está correto e é conveniente para genéricos em que o tipo é usado em um lugar seguramente covariante, como um tipo de retorno. Mas está errado quando o argumento de tipo deveria ser contravariante ou invariante:
 
 ```dart
 class Writer<T> {
@@ -107,9 +108,9 @@ main() {
 }
 ```
 
-When you use `objectWriter`, you *expect* to be able to write any `Object`. Unfortunately, the `objectWriter` only writes integers. The compiler doesn’t know any better and when you run the code, you receive the dreaded runtime error. To avoid unsoundness, Dart throws an error at runtime if you use a type argument in an unsafe way.
+Quando você usa `objectWriter`, você *espera* poder escrever qualquer `Object`. Infelizmente, o `objectWriter` só escreve inteiros. O compilador não sabe de nada e, quando você executa o código, recebe o temido erro em tempo de execução. Para evitar a falta de solidez, o Dart lança um erro em tempo de execução se você usar um argumento de tipo de forma insegura.
 
-Fortunately, adding a variance modifier turns this incorrect use from a runtime error into a compile-time error.
+Felizmente, adicionar um modificador de variância transforma esse uso incorreto de um erro em tempo de execução em um erro em tempo de compilação.
 
 ```dart
 // Add a contravariant variance modifier
@@ -124,15 +125,15 @@ main() {
 }
 ```
 
-This is much better. Long before you write `objectWriter.write("I'm a string!")`, the compiler will notify you that there’s something wrong.
+Isso é bem melhor. Muito antes de você escrever `objectWriter.write("I'm a string!")`, o compilador vai avisar que há algo errado.
 
-Now, let’s take a look at what adding safely typed parameters using a variance modifier provides you.
+Agora, vamos ver o que adicionar parâmetros de tipo seguros com um modificador de variância oferece a você.
 
-## **Type parameters in members**
+## **Parâmetros de tipo em membros** {:#type-parameters-in-members}
 
-If you mark a generic type parameter with `out`, the compiler emits a static error if you use that type in a method or field in a place that isn’t safely covariant like a return type. Likewise, a type parameter marked `in` can only be used in a place that is safely contravariant like a method parameter type. Type parameters marked `inout` can be used anywhere.
+Se você marcar um parâmetro de tipo genérico com `out`, o compilador emite um erro estático se você usar esse tipo em um método ou campo em um lugar que não seja seguramente covariante, como um tipo de retorno. Da mesma forma, um parâmetro de tipo marcado com `in` só pode ser usado em um lugar que seja seguramente contravariante, como o tipo de um parâmetro de método. Parâmetros de tipo marcados com `inout` podem ser usados em qualquer lugar.
 
-Here are some method variance position errors and correct usages that you may find helpful. The same error checking also occurs for mixins.
+Aqui estão alguns erros de posição de variância em métodos e usos corretos que podem ser úteis para você. A mesma verificação de erros também ocorre para mixins.
 
 ```dart
 class Reader<out T> {
@@ -159,7 +160,7 @@ class ReaderWriter<inout T> {
 }
 ```
 
-Errors can be emitted in fields as well.
+Erros também podem ser emitidos em campos.
 
 ```dart
 class Reader<out T> {
@@ -185,11 +186,11 @@ class ReaderWriter<inout T> {
 }
 ```
 
-## **Assignment and subtyping**
+## **Atribuição e subtipagem** {:#assignment-and-subtyping}
 
-The errors the compiler reports for misusing type parameters help the generic class author **write** correct code. The other half is the set of errors that help others **use** the class correctly. One of the changes that come with sound variance modifiers is the subtyping change that we can see through assignment.
+Os erros que o compilador reporta por mau uso de parâmetros de tipo ajudam o autor da classe genérica a **escrever** código correto. A outra metade é o conjunto de erros que ajudam os demais a **usar** a classe corretamente. Uma das mudanças que acompanham os modificadores de variância sólida é a mudança de subtipagem que podemos ver na atribuição.
 
-If a generic type parameter is covariant, then you can assign it when its type argument is a subtype of the expected type’s type argument. For example, you can assign a `Reader<int>` to something that expects a `Reader<Object>`.
+Se um parâmetro de tipo genérico é covariante, então você pode atribuí-lo quando o argumento de tipo dele é um subtipo do argumento de tipo esperado. Por exemplo, você pode atribuir um `Reader<int>` a algo que espera um `Reader<Object>`.
 
 ```dart
 class Reader<out T> { /* ... */ }
@@ -198,7 +199,7 @@ main() {
 }
 ```
 
-Likewise, if a generic type parameter is contravariant, assignment is allowed when its type argument is a supertype of the expected type’s type argument. You can assign a `Writer<Object>` to something that expects a `Writer<int>`, as such:
+Da mesma forma, se um parâmetro de tipo genérico é contravariante, a atribuição é permitida quando o argumento de tipo dele é um supertipo do argumento de tipo esperado. Você pode atribuir um `Writer<Object>` a algo que espera um `Writer<int>`, assim:
 
 ```dart
 class Writer<in T> { /* ... */ }
@@ -207,7 +208,7 @@ main() {
 }
 ```
 
-For invariant parameters, the type argument must be the same type.
+Para parâmetros invariantes, o argumento de tipo precisa ser exatamente o mesmo tipo.
 
 ```dart
 class ReaderWriter<inout T> { /* ... */ }
@@ -216,13 +217,13 @@ main() {
 }
 ```
 
-## **Interface inheritance**
+## **Herança de interfaces** {:#interface-inheritance}
 
-So you might be asking, “*Can we opt into stronger compile time checking with variance even when extending older classes?”* The good news is that you can; however, there are a few restrictions.
+Então você pode estar se perguntando: “*Podemos optar por uma verificação em tempo de compilação mais rigorosa com variância, mesmo ao estender classes antigas?”* A boa notícia é que sim; no entanto, há algumas restrições.
 
-`out` parameters can only extend parameter positions that are covariant or have default Dart type variance.
+Parâmetros `out` só podem estender posições de parâmetro que sejam covariantes ou que tenham a variância padrão do Dart.
 
-Keep in mind that any methods inherited from legacy classes could still be unsoundly variant, and hence may still cause runtime errors. Otherwise, all new methods in a subclass with type parameters that have variance modifiers will emit errors if the types are in unsound positions.
+Tenha em mente que quaisquer métodos herdados de classes legadas ainda podem ser variantes de forma insegura e, portanto, ainda podem causar erros em tempo de execução. Caso contrário, todos os novos métodos de uma subclasse com parâmetros de tipo que tenham modificadores de variância emitirão erros se os tipos estiverem em posições inseguras.
 
 ```dart
 class LegacyReader<T> {}
@@ -232,14 +233,14 @@ class Reader<out T> {}
 class IntegerReader<out T> extends Reader<T> {} // OK
 ```
 
-`in` parameters can only extend parameter positions that are contravariant.
+Parâmetros `in` só podem estender posições de parâmetro que sejam contravariantes.
 
 ```dart
 class Writer<in T> {}
 class StringWriter<in T> extends Writer<T> {} // OK
 ```
 
-`inout` parameters can extend all parameter positions. However, a parameter that is defined as `inout` can only be inherited by other invariant positions.
+Parâmetros `inout` podem estender todas as posições de parâmetro. No entanto, um parâmetro definido como `inout` só pode ser herdado por outras posições invariantes.
 
 ```dart
 class ReaderWriter<inout T> {}
@@ -248,9 +249,9 @@ class IntegerReaderWriter<inout T> extends Reader<T> {} // OK
 class StringReaderWriter<inout T> extends Writer<T> {} // OK
 ```
 
-## How can I give feedback on the variance feature?
+## Como posso dar feedback sobre o recurso de variância? {:#how-can-i-give-feedback-on-the-variance-feature}
 
-We recommend trying the variance feature using the [latest dev channel](https://dart.dev/get-dart#about-release-channels-and-version-strings). Play around with this example to get a grasp on how variance works and what it can do for you.
+Recomendamos testar o recurso de variância usando o [canal dev mais recente](https://dart.dev/get-dart#about-release-channels-and-version-strings). Brinque com este exemplo para entender como a variância funciona e o que ela pode fazer por você.
 
 ```dart
 class Writer<in T> {
@@ -273,31 +274,31 @@ main() {
 }
 ```
 
-Because the variance feature is still being implemented, you need to set an experimental flag to enable it:
+Como o recurso de variância ainda está sendo implementado, você precisa definir uma flag experimental para habilitá-lo:
 
 ```
 dart --enable-experiment=variance variance_example.dart
 ```
 
 
-We appreciate any and all feedback! You can let us know what you think in [this GitHub issue](https://github.com/dart-lang/language/issues/524).
+Agradecemos qualquer feedback! Você pode nos contar o que acha [nesta issue do GitHub](https://github.com/dart-lang/language/issues/524).
 
-## **Summary**
+## **Resumo** {:#summary}
 
-Existing Dart generics are covariant by default, which makes it easy to start writing new classes and to get started. This means, however, that more errors appear at runtime rather than at compile time. The user is also paying for the cost of additional runtime checks. The main idea behind variance is to provide users with more informative error checking at compile time.
+Os genéricos atuais do Dart são covariantes por padrão, o que facilita começar a escrever novas classes e dar os primeiros passos. Isso significa, porém, que mais erros aparecem em tempo de execução em vez de em tempo de compilação. O usuário também paga o custo de verificações adicionais em tempo de execução. A ideia principal por trás da variância é oferecer aos usuários verificações de erro mais informativas em tempo de compilação.
 
-Variance is defined only for the parameters of generic classes and mixins. Users can use the variance feature by adding one of the `in`, `out` or `inout` keywords before a type parameter.
+A variância é definida apenas para os parâmetros de classes genéricas e mixins. Os usuários podem usar o recurso de variância adicionando uma das palavras-chave `in`, `out` ou `inout` antes de um parâmetro de tipo.
 
-Additionally, new generic interfaces with these modifiers can extend legacy interfaces with no variance modifiers.
+Além disso, novas interfaces genéricas com esses modificadores podem estender interfaces legadas sem modificadores de variância.
 
-Declaration-site variance allows you to reap a bunch of new benefits, including:
+A variância no nível de declaração permite que você colha vários benefícios novos, incluindo:
 
-* Compile-time variant position checking within members of the interface
+* Verificação, em tempo de compilação, de posições de variância dentro dos membros da interface
 
-* Removal of pesky runtime errors that occur with down and up casting
+* Remoção dos chatos erros em tempo de execução que ocorrem com conversões para baixo e para cima (downcast e upcast)
 
-* Additional subtyping changes based on the variance declared
+* Mudanças adicionais de subtipagem baseadas na variância declarada
 
-* More informative and accessible error checking
+* Verificação de erros mais informativa e acessível
 
-Now you won’t have to worry if that `objectWriter` is *truly* a writer of any object. You *know* it is.
+Agora você não precisa mais se preocupar se esse `objectWriter` é *de verdade* um escritor de qualquer objeto. Você *sabe* que é.

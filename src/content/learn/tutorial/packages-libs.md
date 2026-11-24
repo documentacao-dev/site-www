@@ -1,83 +1,83 @@
 ---
-title: Organize Dart code with packages and libraries
-shortTitle: Packages and libraries
+ia-translate: true
+title: Organize o código Dart com pacotes e bibliotecas
+shortTitle: Pacotes e bibliotecas
 description: >-
-  Learn how to organize your Dart code into reusable libraries and packages.
+  Aprenda a organizar seu código Dart em bibliotecas e pacotes reutilizáveis.
 layout: learn
 ---
 
 <YoutubeEmbed id="En5lVTdmZIY" title="The Dart platform" fullWidth="true"></YoutubeEmbed>
 
-In this chapter, you'll level up from basic Dart syntax to
-building command-line applications "the Dart way," embracing best practices.
-You'll learn to refactor your code into reusable components by
-creating a dedicated package for handling command-line arguments.
+Neste capítulo, você vai evoluir da sintaxe básica do Dart para
+criar aplicações de linha de comando "do jeito Dart", seguindo boas práticas.
+Você vai aprender a refatorar seu código em componentes reutilizáveis
+criando um pacote dedicado para tratar os argumentos de linha de comando.
 
-This step sets you up for building a more advanced
-command-line application in future chapters,
-which will integrate specialized packages for
-Wikipedia logic and a robust `command_runner` framework.
-This chapter helps you understand Dart libraries, export statements, and
-how to structure your project for better organization and maintainability.
+Este passo prepara você para construir uma aplicação de linha de comando
+mais avançada nos próximos capítulos,
+que vão integrar pacotes especializados para a lógica da Wikipédia e
+um framework `command_runner` robusto.
+Este capítulo ajuda você a entender bibliotecas do Dart, instruções `export` e
+como estruturar seu projeto para melhor organização e manutenibilidade.
 
 <SummaryCard>
-title: What you'll accomplish
+title: O que você vai realizar
 items:
-  - title: Create a reusable Dart package
+  - title: Crie um pacote Dart reutilizável
     icon: package_2
-  - title: Use exports to define a public API
+  - title: Use exports para definir uma API pública
     icon: export_notes
-  - title: Add local path dependencies
+  - title: Adicione dependências de caminho local
     icon: folder_code
 </SummaryCard>
 
-## Prerequisites
+## Pré-requisitos {:#prerequisites}
 
-- Completion of Chapter 3, which covered
-  asynchronous programming and HTTP requests.
+- Conclusão do Capítulo 3, que abordou programação assíncrona e
+  requisições HTTP.
 
-## Tasks
+## Tarefas {:#tasks}
 
-In this chapter, you'll be
-refactoring the existing `dartpedia` CLI application by
-extracting the command-line argument parsing logic into
-a separate package called `command_runner`.
-This will improve the structure of your project,
-making it more modular and maintainable.
+Neste capítulo, você vai refatorar a aplicação de linha de comando
+`dartpedia` existente, extraindo a lógica de análise de argumentos
+para um pacote separado chamado `command_runner`.
+Isso vai melhorar a estrutura do projeto,
+tornando-o mais modular e fácil de manter.
 
 :::note
-There is a `command_runner` class that is
-part of the officially maintained [`args` package]({{site.pub-pkg}}/args).
-For this tutorial we're building our own `command_runner` class,
-but in a real project you would likely use the class from `args`.
+Existe uma classe `command_runner` que faz parte do pacote
+[`args`]({{site.pub-pkg}}/args), mantido oficialmente.
+Neste tutorial, estamos construindo nossa própria classe `command_runner`,
+mas em um projeto real você provavelmente usaria a classe do pacote `args`.
 :::
 
-### Task 1: Create the command_runner package
+### Tarefa 1: Crie o pacote command_runner {:#task-1-create-the-command_runner-package}
 
-First, create a new Dart package to
-house the command-line argument parsing logic.
+Primeiro, crie um novo pacote Dart para abrigar
+a lógica de análise de argumentos de linha de comando.
 
-1.  Navigate to the root directory of your project (`/dartpedia`).
+1.  Acesse o diretório raiz do seu projeto (`/dartpedia`).
 
-1.  Run the following command in your terminal:
+1.  Execute o comando a seguir no seu terminal:
 
     ```bash
     dart create -t package command_runner
     ```
 
-    This command creates a new directory named `command_runner` with
-    the basic structure of a Dart package.
-    You should now see a new folder `command_runner` in
-    your project root, alongside your `cli` package.
+    Esse comando cria um novo diretório chamado `command_runner` com
+    a estrutura básica de um pacote Dart.
+    Agora você deve ver uma nova pasta `command_runner` na raiz do projeto,
+    ao lado do seu pacote `cli`.
 
-### Task 2: Implement the CommandRunner class
+### Tarefa 2: Implemente a classe CommandRunner {:#task-2-implement-the-commandrunner-class}
 
-Now that you have created the `command_runner` package,
-add a placeholder class that will eventually
-handle the command-line argument parsing logic.
+Agora que você criou o pacote `command_runner`,
+adicione uma classe provisória que, no futuro,
+vai tratar a lógica de análise de argumentos de linha de comando.
 
-1.  Open the `command_runner/lib/command_runner.dart` file.
-    Remove any existing placeholder code and add the following:
+1.  Abra o arquivo `command_runner/lib/command_runner.dart`.
+    Remova qualquer código provisório existente e adicione o seguinte:
 
     ```dart title="command_runner/lib/command_runner.dart"
     /// A simple command runner to handle command-line arguments.
@@ -89,23 +89,23 @@ handle the command-line argument parsing logic.
     // TODO: Export any other libraries intended for clients of this package.
     ```
 
-    Highlights from the preceding code:
+    Destaques do código anterior:
 
-    - `library;` declares this file as a library,
-      which defines the boundaries and public interface of
-      a reusable unit of Dart code.
-    - `export 'src/command_runner_base.dart';` is a crucial line that
-      makes declarations from `command_runner_base.dart` available to
-      other packages that import the `command_runner` package.
-      Without this `export` statement, the classes and functions
-      within `command_runner_base.dart` would be private to
-      the `command_runner` package, and you wouldn't be able to
-      use them in your `dartpedia` application.
+    - `library;` declara este arquivo como uma biblioteca,
+      que define os limites e a interface pública de
+      uma unidade reutilizável de código Dart.
+    - `export 'src/command_runner_base.dart';` é uma linha crucial que
+      torna as declarações de `command_runner_base.dart` disponíveis para
+      outros pacotes que importam o pacote `command_runner`.
+      Sem essa instrução `export`, as classes e funções
+      dentro de `command_runner_base.dart` seriam privadas ao
+      pacote `command_runner`, e você não conseguiria
+      usá-las na sua aplicação `dartpedia`.
 
-1.  Open the file `command_runner/lib/src/command_runner_base.dart`.
+1.  Abra o arquivo `command_runner/lib/src/command_runner_base.dart`.
 
-1.  Remove any existing placeholder code and
-    add the following `CommandRunner` class to
+1.  Remova qualquer código provisório existente e
+    adicione a seguinte classe `CommandRunner` em
     `command_runner/lib/src/command_runner_base.dart`:
 
     ```dart title="command_runner/lib/src/command_runner_base.dart"
@@ -117,19 +117,20 @@ handle the command-line argument parsing logic.
     }
     ```
 
-    Highlights from the preceding code:
+    Destaques do código anterior:
 
-    - `CommandRunner` is a class that serves as a simplified stand-in for now.
-      Its `run` method currently just prints the arguments it receives.
-      In later chapters, you'll expand this class to
-      handle complex and configurable command parsing.
-    - `Future<void>` is a return type that indicates that
-      this method might perform asynchronous operations,
-      but doesn't return a value.
+    - `CommandRunner` é uma classe que, por enquanto,
+      serve como uma versão simplificada.
+      Seu método `run` apenas imprime os argumentos que recebe.
+      Nos próximos capítulos, você vai expandir essa classe para
+      tratar análises de comandos complexas e configuráveis.
+    - `Future<void>` é um tipo de retorno que indica que
+      este método pode executar operações assíncronas,
+      mas não retorna um valor.
 
-1.  Update the generated `command_runner/example/command_runner_example.dart`
-    file to use `CommandRunner` instead of the starter `Awesome` class you
-    just removed:
+1.  Atualize o arquivo gerado `command_runner/example/command_runner_example.dart`
+    para usar `CommandRunner` em vez da classe inicial `Awesome`, que você
+    acabou de remover:
 
     ```dart title="command_runner/example/command_runner_example.dart"
     import 'package:command_runner/command_runner.dart';
@@ -140,34 +141,34 @@ handle the command-line argument parsing logic.
     }
     ```
 
-1.  Remove the generated `command_runner/test/command_runner_test.dart` file
-    by running `rm command_runner/test/command_runner_test.dart`
-    (on macOS or Linux) or `del command_runner\test\command_runner_test.dart`
-    (on Windows).
-    `dart create` generated this file to test the placeholder `Awesome` class,
-    so your project no longer needs it.
+1.  Remova o arquivo gerado `command_runner/test/command_runner_test.dart`
+    executando `rm command_runner/test/command_runner_test.dart`
+    (no macOS ou Linux) ou `del command_runner\test\command_runner_test.dart`
+    (no Windows).
+    `dart create` gerou esse arquivo para testar a classe provisória `Awesome`,
+    então seu projeto não precisa mais dele.
 
-### Task 3: Add `command_runner` as a dependency
+### Tarefa 3: Adicione command_runner como dependência {:#task-3-add-command_runner-as-a-dependency}
 
-Now that you've created the `command_runner` package and
-added a placeholder `CommandRunner` class, you need to
-tell your `cli` application that it depends on `command_runner`.
-Because the `command_runner` package is located locally within your project,
-you can use a [path dependency][].
+Agora que você criou o pacote `command_runner` e
+adicionou a classe provisória `CommandRunner`,
+precisa informar à sua aplicação `cli` que ela depende do `command_runner`.
+Como o pacote `command_runner` está localizado localmente no seu projeto,
+você pode usar uma [dependência de caminho][path dependency].
 
-1.  Open the `cli/pubspec.yaml` file.
+1.  Abra o arquivo `cli/pubspec.yaml`.
 
     :::note
-    Make sure you open the correct `/dartpedia/cli/pubspec.yaml` file.
-    When you created the `command_runner` package, it also came with a
-    `/dartpedia/command_runner/pubspec.yaml` file.
+    Certifique-se de abrir o arquivo correto, `/dartpedia/cli/pubspec.yaml`.
+    Ao criar o pacote `command_runner`, ele também veio com um arquivo
+    `/dartpedia/command_runner/pubspec.yaml`.
     :::
 
-1.  Because the `cli` package is an application package and
-    isn't intended to be published to pub.dev,
-    add `publish_to: none` after the `name` field.
-    This helps avoid accidental publishing and
-    prevents analyzer warnings about adding path dependencies.
+1.  Como o pacote `cli` é um pacote de aplicação e
+    não deve ser publicado no pub.dev,
+    adicione `publish_to: none` logo após o campo `name`.
+    Isso ajuda a evitar publicações acidentais e
+    impede avisos do analisador sobre a adição de dependências de caminho.
 
     ```yaml title="cli/pubspec.yaml" highlightLines=2
     name: cli
@@ -175,7 +176,7 @@ you can use a [path dependency][].
     # ...
     ```
 
-1.  Locate the `dependencies` section. Add the following lines:
+1.  Localize a seção `dependencies`. Adicione as linhas a seguir:
 
     ```yaml title="cli/pubspec.yaml" highlightLines=3-4
     dependencies:
@@ -184,43 +185,42 @@ you can use a [path dependency][].
         path: ../command_runner # Points to your local command_runner package
     ```
 
-    This section tells the `cli` application to
-    depend on the `command_runner` package, and specifies that
-    the package is located in the `../command_runner` directory
-    (relative to the `cli` directory).
+    Esta seção informa à aplicação `cli` que ela depende do pacote
+    `command_runner` e especifica que o pacote está no diretório
+    `../command_runner` (relativo ao diretório `cli`).
 
-1.  Run `dart pub get` in the `/dartpedia/cli` directory of your terminal to
-    fetch the new dependency.
+1.  Execute `dart pub get` no diretório `/dartpedia/cli` do seu terminal
+    para baixar a nova dependência.
 
 [path dependency]: /tools/pub/dependencies#path-packages
 
-### Task 4: Import and use the `command_runner` package
+### Tarefa 4: Importe e use o pacote command_runner {:#task-4-import-and-use-the-command_runner-package}
 
-Now that you've added `command_runner` as a dependency,
-you can import it into your `cli` application and
-replace your existing argument-handling logic with
-the new `CommandRunner` class.
+Agora que você adicionou `command_runner` como dependência,
+pode importá-lo na sua aplicação `cli` e
+substituir a lógica atual de tratamento de argumentos
+pela nova classe `CommandRunner`.
 
-1.  Open the `cli/bin/cli.dart` file.
+1.  Abra o arquivo `cli/bin/cli.dart`.
 
-1.  Add the following import statement at the top of the file, alongside
-    your other imports:
+1.  Adicione a instrução de importação a seguir no topo do arquivo,
+    junto com as outras importações:
 
     ```dart title="cli/bin/cli.dart"
     import 'package:command_runner/command_runner.dart';
     ```
 
-    This statement imports the `command_runner` package,
-    making the `CommandRunner` class available for use.
+    Esta instrução importa o pacote `command_runner`,
+    tornando a classe `CommandRunner` disponível para uso.
 
-1.  **Refactor the `main` function and remove old logic:**
-    Currently, your `main` function from Chapter 3 directly handles commands
-    like `version`, `help`, and `wikipedia`, and then calls `searchWikipedia`.
-    You'll now replace all of this custom command-handling logic with
-    a single call to the new `CommandRunner` class.
+1.  **Refatore a função `main` e remova a lógica antiga:**
+    Atualmente, sua função `main` do Capítulo 3 trata diretamente
+    comandos como `version`, `help` e `wikipedia`, e depois chama `searchWikipedia`.
+    Agora você vai substituir toda essa lógica de tratamento de comandos
+    por uma única chamada à nova classe `CommandRunner`.
 
-    **Your `cli/bin/cli.dart` file (from Chapter 3) should
-    currently look like this:**
+    **O seu arquivo `cli/bin/cli.dart` (do Capítulo 3) deve estar
+    assim neste momento:**
 
     ```dart title="cli/bin/cli.dart"
     import 'dart:io';
@@ -247,8 +247,8 @@ the new `CommandRunner` class.
     Future<String> getWikipediaArticle(String articleTitle) async { /* ... existing logic ... */ }
     ```
 
-    **Now, replace the entire contents of `cli/bin/cli.dart`
-    with the following updated version:**
+    **Agora, substitua todo o conteúdo de `cli/bin/cli.dart`
+    pela versão atualizada a seguir:**
 
     ```dart title="cli/bin/cli.dart"
     import 'package:command_runner/command_runner.dart';
@@ -260,106 +260,104 @@ the new `CommandRunner` class.
     }
     ```
 
-    Highlights from the preceding code:
+    Destaques do código anterior:
 
-    - Declaring `main` as `async` lets it use `await`.
-      Because `runner.run()` returns a `Future`,
-      awaiting it makes `main` explicitly wait for the runner's completion,
-      ensuring clear logic order and improving error propagation.
-    - `var runner = CommandRunner();` creates an instance of the
-      `CommandRunner` class from your new `command_runner` package.
-    - `await runner.run(arguments);` calls the `run` method on the
-      `CommandRunner` instance, passing in the command-line arguments.
+    - Declarar `main` como `async` permite usar `await`.
+      Como `runner.run()` retorna um `Future`,
+      aguardá-lo faz com que `main` espere explicitamente a conclusão do runner,
+      garantindo uma ordem lógica clara e melhorando a propagação de erros.
+    - `var runner = CommandRunner();` cria uma instância da classe
+      `CommandRunner` do seu novo pacote `command_runner`.
+    - `await runner.run(arguments);` chama o método `run` da instância
+      de `CommandRunner`, passando os argumentos de linha de comando.
 
-    Removed functions:
+    Funções removidas:
 
-    - The `printUsage`, `searchWikipedia`, and `getWikipediaArticle` functions
-      are now completely removed from `cli/bin/cli.dart`.
-      Their logic will be redesigned and moved into
-      the `command_runner` package in future chapters,
-      as part of building the full command-line framework.
+    - As funções `printUsage`, `searchWikipedia` e `getWikipediaArticle`
+      agora foram completamente removidas de `cli/bin/cli.dart`.
+      A lógica delas será redesenhada e movida para o pacote `command_runner`
+      nos próximos capítulos, como parte da construção do framework
+      completo de linha de comando.
 
-### Task 5: Run the application
+### Tarefa 5: Execute a aplicação {:#task-5-run-the-application}
 
-Now that you've refactored the code and
-updated the `cli` application to use the `command_runner` package,
-run the application to verify that everything
-is working correctly at this stage.
+Agora que você refatorou o código e
+atualizou a aplicação `cli` para usar o pacote `command_runner`,
+execute a aplicação para verificar se tudo está funcionando corretamente nesta etapa.
 
-1.  Open your terminal and navigate to the `cli` directory.
+1.  Abra o terminal e acesse o diretório `cli`.
 
-1.  Run the `wikipedia` command:
+1.  Execute o comando `wikipedia`:
 
     ```bash
     dart run bin/cli.dart wikipedia Computer_programming
     ```
 
-1.  Ensure that the application now
-    executes without errors and print the arguments to the console,
-    demonstrating that the control has
-    successfully transferred to your new `command_runner` package.
+1.  Confirme que a aplicação agora executa sem erros e imprime
+    os argumentos no console, demonstrando que o controle
+    foi transferido com sucesso para o seu novo pacote `command_runner`.
 
     ```bash
     CommandRunner received arguments: [wikipedia, Computer_programming]
     ```
 
-    :::tip Troubleshooting
-    If Dart reports a `Method not found: 'CommandRunner'` error
-    when running `cli.dart`, ensure
-    `command_runner/lib/src/command_runner_base.dart` was updated with
-    the `CommandRunner` class from [Task 2][].
+    :::tip Solução de problemas
+    Se o Dart reportar um erro `Method not found: 'CommandRunner'` ao
+    executar `cli.dart`, certifique-se de que
+    `command_runner/lib/src/command_runner_base.dart` foi atualizado com
+    a classe `CommandRunner` da [Tarefa 2][Task 2].
     :::
 
-:::important Important note on functionality
-You'll notice that the article-fetching functionality (from Chapter 3) is
-no longer active. This is expected!
-In this chapter, you've refactored the project structure by
-moving the command-handling responsibility.
-The next chapters will focus on rebuilding and
-enhancing that core application logic within the `command_runner` package.
+:::important Observação importante sobre a funcionalidade
+Você vai notar que a funcionalidade de busca de artigos (do Capítulo 3)
+não está mais ativa. Isso é esperado!
+Neste capítulo, você refatorou a estrutura do projeto ao
+mover a responsabilidade de tratamento de comandos.
+Os próximos capítulos vão se concentrar em reconstruir e
+aprimorar essa lógica central dentro do pacote `command_runner`.
 :::
 
 [Task 2]: #task-2-implement-the-commandrunner-class
 
-## Review
+## Revisão {:#review}
 
 <SummaryCard>
-title: What you accomplished
-subtitle: Here's a summary of what you built and learned in this lesson.
+title: O que você realizou
+subtitle: Aqui está um resumo do que você construiu e aprendeu nesta lição.
 completed: true
 items:
-  - title: Created a reusable Dart package
+  - title: Criou um pacote Dart reutilizável
     icon: package_2
     details: >-
-      You used `dart create -t package command_runner` to
-      scaffold a new library package intended to be used in other packages.
-      Library packages are the standard way to
-      organize and share reusable Dart libraries,
-      both within a project workspace or published to pub.dev.
-  - title: Used exports to define a public API
+      Você usou `dart create -t package command_runner` para criar a estrutura
+      de um novo pacote de biblioteca, feito para ser usado em outros pacotes.
+      Pacotes de biblioteca são a forma padrão de organizar e compartilhar
+      bibliotecas Dart reutilizáveis, tanto dentro de um workspace de projeto
+      quanto publicadas no pub.dev.
+  - title: Usou exports para definir uma API pública
     icon: export_notes
     details: >-
-      You added `export` statements in your library file to expose specific
-      libraries and their definitions to consumers.
-      If not exported from files in the `lib` root directory,
-      code in `lib/src/` remains private to the package.
-      This allows you to carefully craft a public API for others,
-      while still having full control over the implementation details.
-  - title: Added local path dependencies
+      Você adicionou instruções `export` no arquivo da biblioteca para expor
+      bibliotecas específicas e suas definições aos consumidores.
+      Se não forem exportados a partir dos arquivos na raiz `lib`,
+      os códigos em `lib/src/` continuam privados ao pacote.
+      Isso permite criar cuidadosamente uma API pública para outros,
+      mantendo controle total sobre os detalhes de implementação.
+  - title: Adicionou dependências de caminho local
     icon: folder_code
     details: >-
-      You configured `pubspec.yaml` to
-      depend on a local package using a path dependency.
-      This enables multi-package projects where packages can
-      evolve together before being published separately.
+      Você configurou o `pubspec.yaml` para depender de um pacote local
+      usando uma dependência de caminho.
+      Isso possibilita projetos com múltiplos pacotes que podem evoluir juntos
+      antes de serem publicados separadamente.
 </SummaryCard>
 
-## Quiz
+## Quiz {:#quiz}
 
 <Quiz title="Check your understanding" id="packages-libs" />
 
-## Next lesson
+## Próxima lição {:#next-lesson}
 
-The next chapter covers object-oriented programming (OOP) concepts in Dart.
-Create classes, constructors, and getters, and
-use enums to model command-line arguments within the `command_runner` package.
+O próximo capítulo aborda os conceitos de programação orientada a objetos (POO) em Dart.
+Crie classes, construtores e getters, e
+use enums para modelar os argumentos de linha de comando dentro do pacote `command_runner`.

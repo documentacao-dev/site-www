@@ -1,90 +1,91 @@
 ---
-title: Handle errors gracefully
-shortTitle: Error handling
+ia-translate: true
+title: Trate erros com elegância
+shortTitle: Tratamento de erros
 description: >-
-  Improve app robustness by handling errors.
-  Learn about exceptions, errors, `try/catch`, `throw`, and `rethrow`.
+  Torne o app mais robusto tratando erros.
+  Aprenda sobre exceções, erros, `try/catch`, `throw` e `rethrow`.
 layout: learn
 ---
 
-In this chapter, make your application more robust
-by handling errors gracefully.
-Explore exceptions, `try/catch` blocks, and how to
-create custom exceptions to manage errors in a structured way.
+Neste capítulo, você vai tornar sua aplicação mais robusta
+tratando erros com elegância.
+Explore exceções, blocos `try/catch` e como
+criar exceções personalizadas para gerenciar erros de forma estruturada.
 
 <SummaryCard>
-title: What you'll accomplish
+title: O que você vai realizar
 items:
-  - title: Distinguish errors and exceptions
+  - title: Diferenciar erros de exceções
     icon: error
-  - title: Use try/catch to handle failures
+  - title: Usar try/catch para tratar falhas
     icon: shield
-  - title: Create and throw custom exceptions
+  - title: Criar e lançar exceções personalizadas
     icon: deployed_code_alert
 </SummaryCard>
 
-## Prerequisites
+## Pré-requisitos {:#prerequisites}
 
-Before you begin this chapter, ensure you:
+Antes de começar este capítulo, certifique-se de:
 
-- Have completed Chapter 6 and have a
-  working Dart development environment with the `dartpedia` project.
-- Understand basic programming concepts like functions and classes.
+- Ter concluído o Capítulo 6 e ter um
+  ambiente de desenvolvimento Dart funcionando com o projeto `dartpedia`.
+- Entender conceitos básicos de programação, como funções e classes.
 
-## Errors versus exceptions
+## Erros versus exceções {:#errors-versus-exceptions}
 
-Dart distinguishes between two main types of failures:
-**errors** and **exceptions**.
+O Dart distingue dois tipos principais de falhas:
+**erros** e **exceções**.
 
-| Concept | `Exception` | `Error` |
+| Conceito | `Exception` | `Error` |
 | :--- | :--- | :--- |
-| **What it indicates** | An expected runtime failure that code can recover from. | A programming bug or flaw in the code. |
-| **Common examples** | `FormatException`, `HttpException`, `SocketException`. | `RangeError`, `TypeError`, `StateError`. |
-| **Typical causes** | Invalid user input, network failure, missing file. | Off-by-one index, calling a method on `null`. |
-| **How to handle** | Catch and handle gracefully (for example, with `try/catch`). | Do not catch; fix the bug in your code. |
+| **O que indica** | Uma falha esperada em tempo de execução, da qual o código pode se recuperar. | Um bug de programação ou uma falha no código. |
+| **Exemplos comuns** | `FormatException`, `HttpException`, `SocketException`. | `RangeError`, `TypeError`, `StateError`. |
+| **Causas típicas** | Entrada inválida do usuário, falha de rede, arquivo ausente. | Índice fora por um, chamada de método em `null`. |
+| **Como tratar** | Capturar e tratar com elegância (por exemplo, com `try/catch`). | Não capturar; corrija o bug no seu código. |
 
-### Exceptions
+### Exceções {:#exceptions}
 
-Exceptions represent conditions that you can anticipate and recover from.
-For example, when a user enters an unrecognized command-line argument,
-your application shouldn't crash with a raw stack trace.
-Instead, your code catches the exception,
-displays a friendly error message, and
-prompts the user with proper usage instructions.
+Exceções representam condições que você pode prever e das quais pode se recuperar.
+Por exemplo, quando o usuário digita um argumento de linha de comando não reconhecido,
+seu aplicativo não deve travar com um stack trace bruto.
+Em vez disso, seu código captura a exceção,
+exibe uma mensagem de erro amigável e
+mostra ao usuário as instruções de uso corretas.
 
-In Dart, custom exceptions typically implement the `Exception` class or
-extend an existing exception type like `FormatException`.
+No Dart, exceções personalizadas normalmente implementam a classe `Exception` ou
+estendem um tipo de exceção existente, como `FormatException`.
 
-### Errors
+### Erros {:#errors}
 
-Errors represent bugs in your logic that
-should be fixed during development rather than handled at runtime.
-For example, accessing an element beyond the bounds of a list throws a
+Erros representam bugs na sua lógica que
+devem ser corrigidos durante o desenvolvimento, e não tratados em tempo de execução.
+Por exemplo, acessar um elemento além dos limites de uma lista lança um
 `RangeError`.
-Attempting to catch and suppress a `RangeError` hides the bug and
-can leave your application in an unpredictable state.
-Instead, let errors propagate so you can inspect the stack trace and
-fix the underlying mistake.
+Tentar capturar e suprimir um `RangeError` esconde o bug e
+pode deixar seu aplicativo em um estado imprevisível.
+Em vez disso, deixe o erro se propagar para que você possa inspecionar o stack trace e
+corrigir o erro original.
 
-In Dart, classes that represent bugs extend or implement `Error`.
+No Dart, classes que representam bugs estendem ou implementam `Error`.
 
-## Tasks
+## Tarefas {:#tasks}
 
-The following tasks apply these principles to the `command_runner` package.
-You define a custom exception class for invalid user arguments,
-use `try/catch` blocks to intercept failures, and
-configure `CommandRunner` to handle exceptions gracefully
-while letting unexpected errors propagate.
+As tarefas a seguir aplicam esses princípios ao pacote `command_runner`.
+Você vai definir uma classe de exceção personalizada para argumentos inválidos do usuário,
+usar blocos `try/catch` para interceptar falhas e
+configurar o `CommandRunner` para tratar exceções com elegância
+enquanto deixa erros inesperados se propagarem.
 
-### Task 1: Create a custom ArgumentException
+### Tarefa 1: Crie uma ArgumentException personalizada {:#task-1-create-a-custom-argumentexception}
 
-First, define a custom exception class called `ArgumentException` to
-represent errors related to command-line arguments.
+Primeiro, defina uma classe de exceção personalizada chamada `ArgumentException` para
+representar erros relacionados a argumentos de linha de comando.
 
-1.  Create the file `command_runner/lib/src/exceptions.dart`.
-    This file contains the definition for your `ArgumentException` class.
+1.  Crie o arquivo `command_runner/lib/src/exceptions.dart`.
+    Esse arquivo contém a definição da sua classe `ArgumentException`.
 
-1.  Define a class called `ArgumentException` that `extends` `FormatException`.
+1.  Defina uma classe chamada `ArgumentException` que `extends` `FormatException`.
 
     ```dart title="command_runner/lib/src/exceptions.dart"
     class ArgumentException extends FormatException {
@@ -112,34 +113,34 @@ represent errors related to command-line arguments.
     }
     ```
 
-    This class extends `FormatException`, which
-    is a built-in Dart class that implements `Exception`.
-    Invalid command-line arguments are an expected condition
-    that callers can anticipate and handle gracefully, so
-    `ArgumentException` is designed as an exception rather than an `Error`.
-    It includes additional properties to store the
-    command and argument name associated with the error.
-    This provides more context when handling the exception.
+    Essa classe estende `FormatException`, que
+    é uma classe integrada do Dart que implementa `Exception`.
+    Argumentos de linha de comando inválidos são uma condição esperada
+    que quem chama pode prever e tratar com elegância, por isso
+    `ArgumentException` é projetada como uma exceção, e não como um `Error`.
+    Ela inclui propriedades adicionais para armazenar o
+    comando e o nome do argumento associados ao erro.
+    Isso fornece mais contexto ao tratar a exceção.
 
     - `command`:
-      The command that was being processed when the exception occurred.
+      O comando que estava sendo processado quando a exceção ocorreu.
     - `argumentName`:
-      The name of the argument that caused the exception.
+      O nome do argumento que causou a exceção.
 
 
-### Task 2: Implement error handling in CommandRunner
+### Tarefa 2: Implemente o tratamento de erros no CommandRunner {:#task-2-implement-error-handling-in-commandrunner}
 
-Next, update the `CommandRunner` class to
-handle potential errors gracefully.
-This involves adding an error-handling callback,
-using `try/catch` to manage exceptions, and
-throwing your new `ArgumentException` when the user provides bad input.
+Em seguida, atualize a classe `CommandRunner` para
+tratar possíveis erros com elegância.
+Isso envolve adicionar um callback de tratamento de erros,
+usar `try/catch` para gerenciar exceções e
+lançar sua nova `ArgumentException` quando o usuário fornecer uma entrada inválida.
 
-1.  Add the necessary imports.
+1.  Adicione os imports necessários.
 
-    In `command_runner/lib/src/command_runner_base.dart`,
-    add imports for `dart:async` (to use `FutureOr`) and
-    your new `exceptions.dart` file.
+    Em `command_runner/lib/src/command_runner_base.dart`,
+    adicione imports para `dart:async` (para usar `FutureOr`) e
+    para o seu novo arquivo `exceptions.dart`.
 
     ```dart title="command_runner/lib/src/command_runner_base.dart"
     import 'dart:async'; // Add this line
@@ -150,12 +151,12 @@ throwing your new `ArgumentException` when the user provides bad input.
     import 'exceptions.dart'; // Add this line
     ```
 
-1.  Add an `onError` callback to the `CommandRunner`.
+1.  Adicione um callback `onError` ao `CommandRunner`.
 
-    Modify the CommandRunner to
-    accept an optional `onError` function in its constructor.
-    This allows users of your package to
-    define their own error-handling logic.
+    Modifique o CommandRunner para
+    aceitar uma função `onError` opcional em seu construtor.
+    Isso permite que quem usa seu pacote
+    defina a própria lógica de tratamento de erros.
 
     ```dart title="command_runner/lib/src/command_runner_base.dart"
     class CommandRunner {
@@ -174,16 +175,16 @@ throwing your new `ArgumentException` when the user provides bad input.
     }
     ```
 
-    This change introduces a nullable `onError` property.
-    The `FutureOr<void> Function(Object)?` type means it's a function that
-    takes an `Object` and returns a `Future` or nothing, and it might be null.
+    Essa mudança introduz a propriedade `onError`, que pode ser nula.
+    O tipo `FutureOr<void> Function(Object)?` significa que é uma função que
+    recebe um `Object` e retorna um `Future` ou nada, e pode ser nula.
 
-1.  Update the run method to use `try`/`catch`.
+1.  Atualize o método run para usar `try`/`catch`.
 
-    Wrap the logic inside the run method in a `try`/`catch` block.
-    If an exception occurs, this block catches it and either
-    passes it to the `onError` callback or rethrows it if no callback is provided.
-    `rethrow` preserves the original error and stack trace.
+    Envolva a lógica dentro do método run em um bloco `try`/`catch`.
+    Se ocorrer uma exceção, esse bloco a captura e a envia para o
+    callback `onError` ou a relança caso nenhum callback seja fornecido.
+    O `rethrow` preserva o erro original e o stack trace.
 
     ```dart title="command_runner/lib/src/command_runner_base.dart"
     Future<void> run(List<String> input) async {
@@ -204,27 +205,27 @@ throwing your new `ArgumentException` when the user provides bad input.
     }
     ```
 
-    Notice two key details in this error-handling block:
+    Observe dois detalhes importantes neste bloco de tratamento de erros.
 
     - **`on Exception catch (exception)`:**
-      In Dart, a bare `catch (e)` intercepts all thrown objects,
-      including `Error` instances.
-      Adding an `on` clause filters by type—for example, `on Exception`
-      catches only `Exception` subtypes while letting `Error` instances
-      propagate uncaught (and a narrower filter like `on FormatException`
-      lets unrelated exceptions like `HttpException` propagate up as well).
+      No Dart, um `catch (e)` sem tipo intercepta todos os objetos lançados,
+      incluindo instâncias de `Error`.
+      Adicionar uma cláusula `on` filtra por tipo: por exemplo, `on Exception`
+      captura apenas subtipos de `Exception` e deixa instâncias de `Error`
+      se propagarem sem serem capturadas. Um filtro mais específico, como
+      `on FormatException`, também deixa exceções não relacionadas, como
+      `HttpException`, se propagarem.
     - **`rethrow` versus `throw`:**
-      Using `rethrow` propagates the caught exception while keeping its
-      original stack trace intact for debugging, whereas calling
-      `throw exception;` inside a `catch` block creates a new stack trace
-      starting from that line.
+      Usar `rethrow` propaga a exceção capturada e mantém intacto o stack
+      trace original para depuração, enquanto chamar `throw exception;` dentro
+      de um bloco `catch` cria um novo stack trace, começando nessa linha.
 
-1.  Add validation to the `parse` method.
+1.  Adicione validação ao método `parse`.
 
-    Finally, replace the existing `parse` method in `command_runner_base.dart`
-    with the following updated version.
-    It includes checks that throw your custom `ArgumentException`
-    whenever it detects invalid user input.
+    Por fim, substitua o método `parse` existente em `command_runner_base.dart`
+    pela versão atualizada a seguir.
+    Ela inclui verificações que lançam sua `ArgumentException` personalizada
+    sempre que detectam uma entrada inválida do usuário.
 
     ```dart title="command_runner/lib/src/command_runner_base.dart"
     // [Step 6 update] This method is replaced entirely.
@@ -328,34 +329,34 @@ throwing your new `ArgumentException` when the user provides bad input.
     }
     ```
 
-    This updated parse method now actively defends against bad input.
-    Specifically, the new throw statements handle several common error cases:
+    Este método `parse` atualizado agora se protege ativamente contra entradas inválidas.
+    Especificamente, os novos statements `throw` tratam vários casos comuns de erro:
 
-    -   **Unknown commands:**
-        The first `if`/`else` block ensures the
-        first argument is a valid command.
-    -   **Multiple commands:**
-        It checks that the user hasn't tried to
-        run more than one command at a time.
-    -   **Unknown options:**
-        The `orElse` parameter within `firstWhere` now throws an
-        exception if a user provides a flag or option (like `--foo`) that
-        hasn't been defined for that command.
-    -   **Missing option values:**
-        It ensures that an option (like `--output`) is followed by a value and
-        not another option or the end of the input.
-    -   **Too many arguments:**
-        It enforces a rule that commands can
-        only have one positional argument.
+    -   **Comandos desconhecidos:**
+        O primeiro bloco `if`/`else` garante que o
+        primeiro argumento seja um comando válido.
+    -   **Vários comandos:**
+        Ele verifica se o usuário não tentou
+        executar mais de um comando por vez.
+    -   **Opções desconhecidas:**
+        O parâmetro `orElse` dentro de `firstWhere` agora lança uma
+        exceção se o usuário fornecer uma flag ou opção (como `--foo`) que
+        não foi definida para aquele comando.
+    -   **Valores de opção ausentes:**
+        Ele garante que uma opção (como `--output`) seja seguida de um valor, e
+        não de outra opção ou do fim da entrada.
+    -   **Argumentos demais:**
+        Ele aplica a regra de que comandos
+        podem ter apenas um argumento posicional.
 
-### Task 3: Update cli.dart to use the new error handling
+### Tarefa 3: Atualize o cli.dart para usar o novo tratamento de erros {:#task-3-update-cli-dart-to-use-the-new-error-handling}
 
-Modify `cli/bin/cli.dart` to use the new error handling in `CommandRunner`.
+Modifique `cli/bin/cli.dart` para usar o novo tratamento de erros no `CommandRunner`.
 
-1.  Open the `cli/bin/cli.dart` file.
+1.  Abra o arquivo `cli/bin/cli.dart`.
 
-1.  Update the `main` function to pass in
-    an `onError` function to the `CommandRunner`:
+1.  Atualize a função `main` para passar uma
+    função `onError` ao `CommandRunner`:
 
     ```dart title="cli/bin/cli.dart"
     import 'package:command_runner/command_runner.dart';
@@ -378,17 +379,17 @@ Modify `cli/bin/cli.dart` to use the new error handling in `CommandRunner`.
     }
     ```
 
-    This code passes an `onError` callback to `CommandRunner`.
-    The callback rethrows any `Error` so the application crashes,
-    while printing any `Exception` to the console so the user sees
-    the error message.
+    Este código passa um callback `onError` para o `CommandRunner`.
+    O callback relança qualquer `Error`, fazendo o aplicativo travar,
+    enquanto imprime qualquer `Exception` no console para que o usuário veja
+    a mensagem de erro.
 
-### Task 4: Update command_runner library exports
+### Tarefa 4: Atualize as exportações da biblioteca command_runner {:#task-4-update-command_runner-library-exports}
 
-Make `ArgumentException` available to the `command_runner` library.
+Torne `ArgumentException` disponível para a biblioteca `command_runner`.
 
-1.  Open `command_runner/lib/command_runner.dart`, and
-    add the following exports:
+1.  Abra `command_runner/lib/command_runner.dart` e
+    adicione as seguintes exportações:
 
     ```dart title="command_runner/lib/command_runner.dart"
     /// Support for doing something awesome.
@@ -404,64 +405,64 @@ Make `ArgumentException` available to the `command_runner` library.
     // TODO: Export any libraries intended for clients of this package.
     ```
 
-    In Dart packages, files inside `lib/src/` are private implementation details.
-    Exporting `src/exceptions.dart` from `lib/command_runner.dart` exposes
-    `ArgumentException` as part of the package's public API so callers
-    (like `cli.dart`) can import and use it.
+    Em pacotes Dart, os arquivos dentro de `lib/src/` são detalhes de implementação privados.
+    Exportar `src/exceptions.dart` a partir de `lib/command_runner.dart` expõe
+    `ArgumentException` como parte da API pública do pacote, para que quem o usa
+    (como o `cli.dart`) possa importá-la e usá-la.
 
-### Task 5: Test the new error handling
+### Tarefa 5: Teste o novo tratamento de erros {:#task-5-test-the-new-error-handling}
 
-Test the new error handling by running the application with invalid arguments.
+Teste o novo tratamento de erros executando o aplicativo com argumentos inválidos.
 
-1.  Open your terminal and navigate to the `cli` directory.
+1.  Abra o terminal e navegue até o diretório `cli`.
 
-1.  Run the command `dart run bin/cli.dart invalid_command`.
+1.  Execute o comando `dart run bin/cli.dart invalid_command`.
 
-    You should see the following output:
+    Você deve ver a seguinte saída:
 
     ```bash
     ArgumentException: The first word of input must be a command.
     ```
 
-    This confirms that the `ArgumentException` is
-    being thrown and caught correctly.
+    Isso confirma que a `ArgumentException` está
+    sendo lançada e capturada corretamente.
 
-## Review
+## Revisão {:#review}
 
 <SummaryCard>
-title: What you accomplished
-subtitle: Here's a summary of what you built and learned in this lesson.
+title: O que você realizou
+subtitle: Veja um resumo do que você construiu e aprendeu nesta lição.
 completed: true
 items:
-  - title: Distinguished errors from exceptions
+  - title: Diferenciou erros de exceções
     icon: error
     details: >-
-      You learned that subtypes of `Error` indicate
-      programming bugs and aren't intended to be caught,
-      while subtypes of `Exception` represent
-      recoverable failures that your code can handle gracefully.
-  - title: Used try-catch blocks to handle failures
+      Você aprendeu que subtipos de `Error` indicam
+      bugs de programação e não devem ser capturados,
+      enquanto subtipos de `Exception` representam
+      falhas recuperáveis que o seu código pode tratar com elegância.
+  - title: Usou blocos try-catch para tratar falhas
     icon: shield
     details: >-
-      You wrapped risky code in `try`-`catch` blocks to intercept exceptions.
-      You used `on ExceptionType catch (e)` to handle specific types and
-      `rethrow` to repropagate exceptions while preserving the stack trace.
-  - title: Created and threw custom exceptions
+      Você envolveu código arriscado em blocos `try`-`catch` para interceptar exceções.
+      Você usou `on ExceptionType catch (e)` para tratar tipos específicos e
+      `rethrow` para relançar exceções preservando o stack trace.
+  - title: Criou e lançou exceções personalizadas
     icon: deployed_code_alert
     details: >-
-      You built a `ArgumentException` class that extends `FormatException` to
-      provide context-rich error information.
-      Then you used `throw` to signal validation failures with
-      meaningful messages for better debugging and user feedback.
+      Você criou uma classe `ArgumentException` que estende `FormatException` para
+      fornecer informações de erro ricas em contexto.
+      Depois, usou `throw` para sinalizar falhas de validação com
+      mensagens significativas, para facilitar a depuração e o retorno ao usuário.
 </SummaryCard>
 
-## Quiz
+## Quiz {:#quiz}
 
-<Quiz title="Check your understanding" id="error-handling" />
+<Quiz title="Confira seu entendimento" id="error-handling" />
 
-## Next lesson
+## Próxima lição {:#next-lesson}
 
-In the next lesson, learn about
-advanced object-oriented features in Dart,
-including enhanced enums and extensions.
-Improve the output formatting and add color to your CLI application.
+Na próxima lição, você vai aprender sobre
+recursos avançados de orientação a objetos no Dart,
+incluindo enums aprimorados e extensões.
+Você também vai melhorar a formatação da saída e adicionar cor ao seu aplicativo CLI.
