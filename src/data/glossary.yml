@@ -478,10 +478,10 @@
   long_description: |-
     O intervalo de versões do Dart SDK que o próprio pacote declara suportar.
     Uma SDK constraint é especificada usando a sintaxe normal de [version constraint][],
-    mas em uma seção especial `environment` [no pubspec][].
+    mas em uma seção especial `environment` [no pubspec][in the pubspec].
 
     [version constraint]: #version-constraint
-    [no pubspec]: /tools/pub/pubspec#sdk-constraints
+    [in the pubspec]: /tools/pub/pubspec#sdk-constraints
   related_links:
     - text: "SDK constraints no pubspec"
       link: "/tools/pub/pubspec#sdk-constraints"
@@ -1797,9 +1797,9 @@
     Um _refutable pattern_ (padrão refutável) é um padrão que pode ser testado contra um valor para
     determinar se o padrão casa com o valor.
     Se não casar, o padrão _refuta_, ou nega, a correspondência.
-    Padrões refutáveis aparecem em [_matching contexts_][matching contexts] (contextos de correspondência).
+    Padrões refutáveis aparecem em [_matching contexts_ (contextos de correspondência)][_matching contexts_].
 
-    [matching contexts]: /language/patterns#matching
+    [_matching contexts_]: /language/patterns#matching
   related_links:
     - text: "Onde os padrões podem aparecer"
       link: "/language/patterns#places-patterns-can-appear"
@@ -2636,13 +2636,13 @@
 
     [Pacotes de biblioteca][packages] devem sempre especificar version constraints
     para cada uma de suas dependências que não são de desenvolvimento.
-    [Application packages][application packages], por outro lado,
+    [Application packages][], por outro lado,
     podem aceitar qualquer versão de suas dependências,
     já que usam o [lockfile][lockfile] para gerenciar as versões das dependências.
 
     [dependency]: #dependency
     [packages]: #package
-    [application packages]: #application-package
+    [Application packages]: #application-package
     [lockfile]: #lockfile
   related_links:
     - text: "Version constraints"
