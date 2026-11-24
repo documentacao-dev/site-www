@@ -162,9 +162,10 @@ criar um novo arquivo para o logger e configurar os imports necessários.
     que acrescenta registros com data e hora em um arquivo no diretório `logs/`:
 
     - **`hierarchicalLoggingEnabled = true`**:
-      By default, `package:logging` routes all configuration through a single
-      root logger. Enabling hierarchical logging allows a named logger like
-      `Logger('errors')` to configure its own `level` and listeners.
+      Por padrão, o `package:logging` direciona toda a configuração por um
+      único logger raiz. Ativar o logging hierárquico permite que um logger
+      nomeado, como `Logger('errors')`, configure seu próprio `level` e seus
+      próprios listeners.
     - **`logger.level = Level.ALL`**:
       Captura todas as mensagens, independentemente da severidade, durante o desenvolvimento.
       Aplicações em produção normalmente usam limites mais altos, como
@@ -639,7 +640,7 @@ items:
       tanto no desenvolvimento quanto em produção.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="logging" />
 

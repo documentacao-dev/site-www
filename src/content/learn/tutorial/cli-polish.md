@@ -262,7 +262,7 @@ items:
       possibilitando impressão atrasada, logging ou redirecionamento da saída.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="cli-polish" />
 

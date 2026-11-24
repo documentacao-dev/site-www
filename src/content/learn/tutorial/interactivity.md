@@ -495,7 +495,7 @@ items:
       como alternativa ou complemento aos argumentos de linha de comando.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="interactivity" />
 

@@ -340,7 +340,7 @@ também.
 Usar essa convenção garante que os usuários tenham a versão correta de
 ambos os pacotes, mesmo que um deles não seja uma dependência direta.
 
-## Lockfiles {:#lockfiles}
+## Lockfiles
 
 Então, depois que o pub resolve as restrições de versão do seu app, o que acontece? O resultado final
 é uma lista completa de todos os pacotes dos quais o seu app depende, direta ou

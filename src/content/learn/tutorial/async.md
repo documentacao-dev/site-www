@@ -438,7 +438,7 @@ items:
       Seu CLI agora busca dados reais da web!
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="async" />
 

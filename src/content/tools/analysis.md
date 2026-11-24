@@ -667,14 +667,14 @@ seção `formatter` ao arquivo de opções de análise.
 
 ### Opções configuráveis {:#configurable-options}
 
-#### `page_width` {:#page_width}
+#### `page_width`
 
 Você pode especificar o `page_width` (comprimento de linha) desejado.
 O padrão é 80 caracteres.
 
 Para mais informações, leia [Configurando a largura de página do formatador][Configuring formatter page width].
 
-#### `trailing_commas` {:#trailing_commas}
+#### `trailing_commas`
 
 Você pode configurar como o formatador trata as vírgulas finais
 nas listas de argumentos e de parâmetros

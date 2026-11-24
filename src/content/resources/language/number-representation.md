@@ -42,7 +42,7 @@ e existem dois tipos numéricos concretos e visíveis ao usuário:
   src="/assets/img/number-class-hierarchy.svg" 
   width="283"
   height="224"
-  alt="Object is the parent of num, which is the parent of int and double">
+  alt="Object é o pai de num, que é o pai de int e double">
 
 Dependendo da plataforma,
 esses tipos numéricos têm implementações diferentes e ocultas.
@@ -107,7 +107,7 @@ tanto `int` quanto `double`.
   src="/assets/img/number-platform-specific.svg" 
   width="644"
   height="324"
-  alt="Implementation classes vary by platform; for JavaScript, the class that implements int also implements double">
+  alt="As classes de implementação variam por plataforma; no JavaScript, a classe que implementa int também implementa double">
 
 
 :::note

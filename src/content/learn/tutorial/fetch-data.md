@@ -317,7 +317,7 @@ items:
       pacote `cli` pode importar e usar diretamente.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="fetch-data" />
 

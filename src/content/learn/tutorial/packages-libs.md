@@ -352,7 +352,7 @@ items:
       antes de serem publicados separadamente.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="packages-libs" />
 

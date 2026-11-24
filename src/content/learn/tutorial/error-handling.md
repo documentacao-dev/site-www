@@ -456,7 +456,7 @@ items:
       mensagens significativas, para facilitar a depuração e o retorno ao usuário.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="error-handling" />
 

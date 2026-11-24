@@ -402,7 +402,7 @@ items:
       Isso garante que os seus modelos lidem corretamente com respostas reais da API.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="testing" />
 

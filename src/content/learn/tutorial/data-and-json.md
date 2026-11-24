@@ -604,7 +604,7 @@ items:
       extrai valores em expressões concisas e legíveis.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Confira seu entendimento" id="data-and-json" />
 

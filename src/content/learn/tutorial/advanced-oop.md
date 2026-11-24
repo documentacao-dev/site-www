@@ -362,7 +362,7 @@ items:
       exibir erros em vermelho, títulos em azul e instruções em amarelo.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
 <Quiz title="Check your understanding" id="advanced-oop" />
 
