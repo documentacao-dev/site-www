@@ -1,6 +1,6 @@
 ---
 ia-translate: true
-title: Custom package repositories
+title: Repositórios de pacotes customizados
 description: >-
   Como a ferramenta de gerenciamento de pacotes do Dart, o pub,
   funciona com repositórios de pacotes customizados.

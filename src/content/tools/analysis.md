@@ -468,7 +468,7 @@ Para habilitar um plugin legado:
     $ dart pub add --dev <your_favorite_analyzer_plugin_package>
     ```
 
- 2. Edit your `analysis_options.yaml` file to enable the plugin.
+ 2. Edite o arquivo `analysis_options.yaml` para habilitar o plugin.
 
     ```yaml
     analyzer:
