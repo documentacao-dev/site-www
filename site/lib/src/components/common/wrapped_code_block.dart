@@ -6,8 +6,8 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
 import '../../util.dart';
+import 'client/code_block_copy_button.dart';
 import 'client/collapse_button.dart';
-import 'client/copy_button.dart';
 import 'material_icon.dart';
 
 /// A rendered code block with support for syntax highlighting,
@@ -134,7 +134,7 @@ final class WrappedCodeBlock extends StatelessComponent {
             if (!languagesToHide.contains(language))
               span(
                 classes: 'code-block-language',
-                attributes: {'title': 'Linguagem $language'},
+                attributes: {'title': 'Language $language'},
                 [.text(language)],
               ),
             pre(
@@ -150,10 +150,7 @@ final class WrappedCodeBlock extends StatelessComponent {
                 ]),
               ],
             ),
-            if (showCopyButton)
-              const CopyButton(
-                title: 'Copiar código para a área de transferência',
-              ),
+            if (showCopyButton) const CodeBlockCopyButton(),
           ],
         ),
       ],
@@ -163,12 +160,12 @@ final class WrappedCodeBlock extends StatelessComponent {
 
 /// A tag that can be applied to a code block.
 enum CodeBlockTag {
-  good('bom', parentClass: 'tag-good'),
-  bad('ruim', parentClass: 'tag-bad'),
-  passesStaticAnalysis('análise estática: sucesso', parentClass: 'passes-sa'),
-  failsStaticAnalysis('análise estática: falha', parentClass: 'fails-sa'),
-  runtimeSuccess('runtime: sucesso', parentClass: 'runtime-success'),
-  runtimeFailure('runtime: falha', parentClass: 'runtime-fail');
+  good('good', parentClass: 'tag-good'),
+  bad('bad', parentClass: 'tag-bad'),
+  passesStaticAnalysis('static analysis: success', parentClass: 'passes-sa'),
+  failsStaticAnalysis('static analysis: failure', parentClass: 'fails-sa'),
+  runtimeSuccess('runtime: success', parentClass: 'runtime-success'),
+  runtimeFailure('runtime: failure', parentClass: 'runtime-fail');
 
   const CodeBlockTag(this.spanContent, {required this.parentClass});
 

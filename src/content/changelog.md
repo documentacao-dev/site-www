@@ -4,6 +4,7 @@ title: Changelog do Dart
 description: Um changelog completo do Dart.
 bodyClass: changelog-page
 showBreadcrumbs: false
+alternateJson: /changelog/index.json
 ---
 
 Esta página lista o histórico completo de mudanças do

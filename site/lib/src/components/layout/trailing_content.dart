@@ -21,7 +21,9 @@ class TrailingContent extends StatelessComponent {
     final siteData = page.data.site;
     final pageDate = pageData['date'] as String?;
 
-    final currentSdkVersion = siteData['sdkVersion'] as String? ?? '';
+    final documentedDartVersion = _parseDocumentedDartVersion(
+      siteData['documentedDartVersion'],
+    );
 
     final sourceInfo = page.sourceInfo;
     final issueUrl = sourceInfo.issueUrl;
@@ -36,61 +38,49 @@ class TrailingContent extends StatelessComponent {
         p(id: 'page-github-links', [
           span([
             .text(
-              'Salvo indicação em contrário, a documentação neste site '
-              'reflete Dart $currentSdkVersion. ',
+              'Unless stated otherwise, the documentation on '
+              'this site reflects Dart $documentedDartVersion. ',
             ),
             if (pageDate != null)
               .text(
-                'Página atualizada pela última vez em $pageDate. ',
+                'Page last updated on $pageDate. ',
               ),
           ]),
           if (pageSource != null) ...[
             a(
               href: pageSource,
               attributes: {'target': '_blank', 'rel': 'noopener'},
-              [const .text('Ver código-fonte')],
+              [const .text('View source')],
             ),
-            const span([.text(' ou ')]),
+            const span([.text(' or ')]),
           ],
           a(
             href: issueUrl,
             attributes: {
-              'title': 'Relatar um problema com esta página',
+              'title': 'Report an issue with this page',
               'target': '_blank',
               'rel': 'noopener',
             },
-            [
-              .text(
-                pageSource == null
-                    ? 'Relatar um problema'
-                    : 'relatar um problema',
-              ),
-            ],
+            [.text(pageSource == null ? 'Report an issue' : 'report an issue')],
           ),
           const .text('.'),
         ]),
-
-        div(classes: 'trailing-translation-feedback', [
-          p([
-            const .text(
-              'Encontrou essa página sem tradução ou que precisa de correção? ',
-            ),
-            a(
-              href: sourceInfo.translationIssueUrl,
-              attributes: {
-                'title': 'Abrir issue no GitHub',
-                'target': '_blank',
-                'rel': 'noopener',
-              },
-              [const .text('Abra uma issue')],
-            ),
-            const .text(
-              ' e nos ajude a manter esse site em PT-BR para ajudar '
-              'pessoas como você.',
-            ),
-          ]),
-        ]),
       ],
     );
+  }
+
+  static final _documentedDartVersionPattern = RegExp(
+    r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$',
+  );
+
+  static String _parseDocumentedDartVersion(Object? value) {
+    if (value is! String || !_documentedDartVersionPattern.hasMatch(value)) {
+      throw FormatException(
+        'documentedDartVersion in src/data/site.yaml must be a quoted string '
+        'in "major.minor" format, such as "3.14". '
+        'Received: $value (${value.runtimeType}).',
+      );
+    }
+    return value;
   }
 }

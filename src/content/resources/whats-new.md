@@ -736,8 +736,8 @@ fizemos as seguintes mudanças neste site:
 [Renames]: /interop/js-interop/package-web/#renames
 [enabling type promotion]: /effective-dart/usage/#consider-type-promotion-or-null-check-patterns-for-using-nullable-types
 [linter rules]: /tools/linter-rules/
-[diagnostic messages]: /tools/diagnostic-messages/
-[`@mustBeConst`]: /tools/diagnostic-messages/#non_const_argument_for_const_parameter
+[diagnostic messages]: /tools/diagnostics
+[`@mustBeConst`]: /tools/diagnostics/non_const_argument_for_const_parameter
 [Web libraries and packages]: /web/libraries/
 [Records]: /language/records/#multiple-returns
 [Patterns]: /language/patterns/#destructuring-multiple-returns
@@ -874,7 +874,7 @@ fizemos as seguintes mudanças neste site:
 [C interop]: /interop/c-interop#native-assets
 [Breaking changes]: /resources/breaking-changes
 [lints]: /tools/linter-rules
-[diagnostics]: /tools/diagnostic-messages
+[diagnostics]: /tools/diagnostics
 [`pub upgrade`]: /tools/pub/cmd/pub-upgrade#tighten
 [Language overview]: /language
 [guard clauses and patterns]: /language/patterns#switch-statements-and-expressions
@@ -1129,7 +1129,7 @@ fizemos as seguintes mudanças neste site:
 [pub's transition to pub.dev]: /tools/pub/troubleshoot#pub-get-socket-error
 [package screenshots]: /tools/pub/pubspec#screenshots
 [explicit downcast section]: /language/type-system#generic-type-assignment
-[analyzer]: /tools/diagnostic-messages
+[analyzer]: /tools/diagnostics
 [lint]: /tools/linter-rules
 
 ### Artigos adicionados ao blog do Dart {:.no_toc #articles-added-to-the-dart-blog}
@@ -1290,7 +1290,7 @@ fizemos as seguintes mudanças neste site:
 [`dart compile js`]: /tools/dart-compile#js
 
 [strict language modes]: /tools/analysis#enabling-additional-type-checks
-[diagnostic messages]: /tools/diagnostic-messages
+[diagnostic messages]: /tools/diagnostics
 [linter rules]: /tools/linter-rules
 
 [`webdev`]: /tools/webdev
@@ -1361,7 +1361,7 @@ fizemos as seguintes mudanças neste site:
 [`dart doc`]: /tools/dart-doc
 [`platform` entry]: /tools/pub/pubspec#platforms
 [ignore all linter rules]: /tools/analysis#suppressing-rules-for-a-file
-[diagnostic messages]: /tools/diagnostic-messages
+[diagnostic messages]: /tools/diagnostics
 [linter rules]: /tools/linter-rules
 [Dart SDK overview]: /tools/sdk
 [PREFER using interpolation to compose strings and values]: /effective-dart/usage#prefer-using-interpolation-to-compose-strings-and-values
@@ -1410,7 +1410,7 @@ fizemos as seguintes mudanças neste site:
 [dart pub token]: /tools/pub/cmd/pub-token
 [Dart runtime]: /overview#runtime
 [DartPad troubleshooting tips]: /tools/dartpad/troubleshoot
-[diagnostic messages]: /tools/diagnostic-messages
+[diagnostic messages]: /tools/diagnostics
 [false_secrets]: /tools/pub/pubspec#false_secrets
 [hosted dependencies]: /tools/pub/dependencies#hosted-packages
 [linter rules]: /tools/linter-rules
@@ -1460,7 +1460,7 @@ fizemos as seguintes mudanças neste site:
 [recommended linter rules]: /tools/analysis#lints
 [core libraries]: /libraries
 [commonly used packages]: /resources/useful-packages
-[dart.dev/jobs]: /jobs
+[dart.dev/jobs]: {{site.flutter-docs}}/jobs
 [no-promo]: /tools/non-promotion-reasons
 [`dart create`]: /tools/dart-create
 [`dart test`]: /tools/dart-test
@@ -1681,7 +1681,7 @@ fizemos as seguintes mudanças neste site:
     escrito pelo engenheiro do Dart Bob Nystrom.
 
 [dart-tool]: /tools/dart-tool
-[diagnostics]: /tools/diagnostic-messages
+[diagnostics]: /tools/diagnostics
 [dynamic]: /effective-dart/design#avoid-using-dynamic-unless-you-want-to-disable-static-checking
 [Effective Dart]: /effective-dart
 [evolution]: /resources/language/evolution
@@ -1689,7 +1689,7 @@ fizemos as seguintes mudanças neste site:
 [ns-enable]: /null-safety#enable-null-safety
 [Understanding null safety]: /null-safety/understanding-null-safety
 [sound null safety]: /null-safety
-[diagnostics]: /tools/diagnostic-messages
+[diagnostics]: /tools/diagnostics
 [changelog-docs]: /tools/pub/package-layout#changelog
 [spec]: /resources/language/spec
 

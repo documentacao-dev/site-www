@@ -1,97 +1,97 @@
 - question: >-
-    Qual comando gera um novo projeto Dart
-    com os arquivos necessários e a estrutura de diretórios?
+    Which command generates a new Dart project
+    with the necessary files and directory structure?
   options:
     - text: >-
         `dart create`
       correct: true
       explanation: >-
-        `dart create` cria e gera a estrutura inicial de um novo projeto.
-        Você também pode usar `-t` para especificar um template,
-        como em `dart create -t console nome_do_projeto`.
+        `dart create` creates and scaffolds a new project.
+        You can also use `-t` to specify a template,
+        like `dart create -t console project_name`.
     - text: >-
         `dart new`
       correct: false
       explanation: >-
-        Não existe um comando `dart new` no Dart.
-        Pense em qual ação você quer executar
-        ao começar um projeto do zero.
+        There is no `dart new` command in Dart.
+        Think about what action you want to perform
+        when starting a fresh project.
     - text: >-
         `dart init`
       correct: false
       explanation: >-
-        Algumas outras ferramentas usam `init` para isso,
-        mas o Dart usa outro comando.
-        Revise a lição para ver qual comando foi usado.
+        While some other tools use `init` for this purpose,
+        Dart uses a different command.
+        Review the lesson to see which command was used.
     - text: >-
         `dart build`
       correct: false
       explanation: >-
-        `dart build` serve para compilar aplicativos Dart existentes para implantação,
-        não para gerar a estrutura de novos projetos.
+        `dart build` is used to build existing Dart applications for deployment,
+        not for scaffolding new projects.
 - question: >-
-    Todo programa Dart começa a execução a partir de uma função específica.
-    Como se chama essa função e por que ela é importante?
+    Every Dart program starts executing from a specific function.
+    What is this function called and why is it important?
   options:
     - text: >-
-        A função `main`.
-        É o ponto de entrada em que a execução do programa começa.
+        The `main` function.
+        It's the entry point where program execution begins.
       correct: true
       explanation: >-
-        A função `main` é obrigatória em programas Dart executáveis.
-        Sem ela, o Dart não saberia por onde começar a executar seu código.
+        The `main` function is required in executable Dart programs.
+        Without it, Dart wouldn't know where to begin running your code.
     - text: >-
-        A função `start`.
-        Ela inicializa o ambiente de runtime.
+        The `start` function.
+        It initializes the runtime environment.
       correct: false
       explanation: >-
-        O Dart não tem uma função `start`.
-        O runtime do Dart é inicializado automaticamente antes de o seu código rodar.
+        Dart doesn't have a `start` function.
+        The Dart runtime is automatically initialized before your code runs.
     - text: >-
-        A função `run`.
-        Ela é chamada pelo comando `dart run`.
+        The `run` function.
+        It's called by the `dart run` command.
       correct: false
       explanation: >-
-        Não existe uma função `run` obrigatória.
-        O comando `dart run` procura e
-        executa a função de entrada padrão.
+        There's no required `run` function.
+        The `dart run` command looks for and
+        executes the standard entrypoint function.
     - text: >-
-        A função `init`.
-        Ela configura as variáveis antes de o programa começar.
+        The `init` function.
+        It sets up variables before the program starts.
       correct: false
       explanation: >-
-        O Dart não exige uma função `init`.
-        Variáveis podem ser definidas e inicializadas em qualquer função.
+        Dart doesn't require an `init` function.
+        Variables can be defined and initialized in any function.
 - question: >-
-    Em um projeto CLI em Dart,
-    onde você deve colocar o arquivo que contém a função `main`?
+    In a Dart CLI project,
+    where should you place the file containing your `main` function?
   options:
     - text: >-
-        No diretório `bin/`,
-        porque é o local padrão dos pontos de entrada de CLIs em Dart.
+        In the `bin/` directory,
+        because that's the standard location for Dart CLI entry points.
       correct: true
       explanation: >-
-        O diretório `bin/` contém os pontos de entrada em Dart de um programa.
-        Ao executar `dart run`, o Dart procura aqui o ponto de entrada do seu pacote.
+        The `bin/` directory contains a program's Dart entry points.
+        When you run `dart run`, Dart looks here for your package's entry point.
     - text: >-
-        No diretório `lib/`, porque é onde todo código Dart deve ficar.
+        In the `lib/` directory, because that's where all Dart code belongs.
       correct: false
       explanation: >-
-        O diretório `lib/` é para código de biblioteca
-        que pode ser importado por outros pacotes.
-        Observe que, enquanto aplicativos Flutter usam `lib/main.dart`
-        como ponto de entrada, aplicativos CLI padrão em Dart
-        usam o diretório `bin/`.
+        The `lib/` directory is for library code
+        that can be imported by other packages.
+        Note that while Flutter applications use `lib/main.dart`
+        as their entry point, standard Dart CLI applications
+        use the `bin/` directory.
     - text: >-
-        No diretório `src/`, porque é a pasta de código-fonte padrão.
+        In the `src/` directory, because that's the standard source folder.
       correct: false
       explanation: >-
-        Projetos Dart geralmente usam `lib/src/` para detalhes de implementação,
-        e não para pontos de entrada executáveis.
+        Dart projects typically use `lib/src/` for implementation details,
+        not for executable entry points.
     - text: >-
-        Na raiz do projeto, ao lado do `pubspec.yaml`.
+        In the project root, next to `pubspec.yaml`.
       correct: false
       explanation: >-
-        Embora seja tecnicamente possível,
-        projetos Dart têm um diretório convencional para executáveis.
-        Veja onde o `dart create` colocou o arquivo de entrada.
+        While technically possible,
+        Dart projects have a conventional directory for executables.
+        Check where `dart create` placed the entry point file.

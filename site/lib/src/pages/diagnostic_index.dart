@@ -8,9 +8,9 @@ import 'package:jaspr_content/jaspr_content.dart';
 
 import '../components/common/button.dart';
 import '../components/common/card.dart';
-import '../components/common/client/copy_button.dart';
 import '../components/common/fragment_target.dart';
 import '../components/common/material_icon.dart';
+import '../components/common/static_copy_button.dart';
 import '../markdown/markdown_parser.dart';
 import '../models/diagnostic_model.dart';
 import '../util.dart';
@@ -25,7 +25,6 @@ class DiagnosticIndex extends StatelessComponent {
         .map(DiagnosticInfo.fromJson)
         .toList(growable: false);
     return div(
-      id: 'diagnostic-index',
       classes: 'card-list',
       [
         for (final diagnostic in diagnostics) _DiagnosticCard(diagnostic),
@@ -51,7 +50,15 @@ class _DiagnosticCard extends StatelessComponent {
         header(
           id: diagnosticId,
           classes: 'card-title',
-          splitByUnderscore(diagnosticId),
+          [
+            if (diagnostic.hasDocumentation)
+              a(
+                href: '/tools/diagnostics/$diagnosticId',
+                splitByUnderscore(diagnosticId),
+              )
+            else
+              ...splitByUnderscore(diagnosticId),
+          ],
         ),
       ],
       content: [
@@ -62,7 +69,7 @@ class _DiagnosticCard extends StatelessComponent {
           if (diagnostic.fromLint)
             const MaterialIcon(
               'toggle_on',
-              title: 'O diagnóstico vem de uma regra de lint.',
+              title: 'Diagnostic is from a lint rule.',
             ),
         ],
         trailing: [
@@ -70,10 +77,10 @@ class _DiagnosticCard extends StatelessComponent {
             Button(
               href: '/tools/diagnostics/$diagnosticId',
               style: ButtonStyle.outlined,
-              title: 'Saiba mais sobre este diagnóstico e como resolvê-lo.',
-              content: 'Saiba mais',
+              title: 'Learn more about this diagnostic and how to resolve it.',
+              content: 'Learn more',
             ),
-          CopyButton(toCopy: diagnosticId, buttonText: 'Copiar nome'),
+          StaticCopyButton(toCopy: diagnosticId, buttonText: 'Copy name'),
         ],
       ),
     );

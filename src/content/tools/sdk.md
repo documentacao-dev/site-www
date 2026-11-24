@@ -1,85 +1,84 @@
 ---
-ia-translate: true
-title: Visão geral do Dart SDK
-shortTitle: Visão geral do SDK
+title: Dart SDK overview
+shortTitle: SDK overview
 breadcrumb: SDK
-description: Bibliotecas Dart e ferramentas de linha de comando.
+description: Dart libraries and command-line tools.
 ---
 
-O Dart SDK possui as bibliotecas e as ferramentas de linha de comando que você precisa para desenvolver
-aplicativos Dart para web, linha de comando e servidor.
-Para instalar o Dart SDK, consulte [Get Dart](/get-dart).
-Se você está desenvolvendo aplicativos Flutter, [instale o Flutter SDK][flutter].
-O Flutter SDK inclui o Dart SDK.
+The Dart SDK has the libraries and command-line tools that you need to develop
+Dart web, command-line, and server apps.
+To install the Dart SDK, see [Get Dart](/get-dart).
+If you're developing Flutter apps, [install the Flutter SDK][flutter].
+The Flutter SDK includes the Dart SDK.
 
-Para conhecer outras ferramentas que você pode usar no desenvolvimento Dart,
-confira a página [Ferramentas Dart](/tools).
+To learn about other tools you can use for Dart development,
+check out the [Dart tools](/tools) page.
 
 :::version-note
-A menos que indicado o contrário,
-a documentação e os exemplos deste site assumem
-a versão `{{site.sdkVersion}}` do **Dart SDK**.
+Unless stated otherwise,
+this site's documentation and examples assume
+version `{{site.documentedDartVersion}}` of the **Dart SDK**.
 :::
 
 {% comment %}
-  IMPORTANT: After each release, EDIT src/_data/pkg-vers.json
-  to update the SDK version number.
+  When updating the docs for a new major or minor Dart release,
+  update documentedDartVersion in src/data/site.yaml.
   More info: https://github.com/dart-lang/site-www/wiki/Updating-to-new-SDK-releases
 {% endcomment %}
 
-## O que tem no Dart SDK {:#whats-in-the-dart-sdk}
+## What's in the Dart SDK
 
-O Dart SDK inclui dois diretórios:
+The Dart SDK includes two directories:
 
-* `lib` contém as [bibliotecas Dart][Dart libraries].
-* `bin` contém as seguintes ferramentas de linha de comando.
+* `lib` contains the [Dart libraries][].
+* `bin` contains the following command-line tools.
 
 [`dart`](/tools/dart-tool)
-: A interface de linha de comando para criar, formatar, analisar, testar,
-  documentar, compilar e executar código Dart.
-
+: The command-line interface to create, format, analyze, test,
+  document, compile, and run Dart code.
+  
 [`dartaotruntime`](/tools/dartaotruntime)
-: Um runtime Dart para snapshots compilados com AOT.
+: A Dart runtime for AOT-compiled snapshots.
 
-Para saber mais sobre o SDK, confira o [arquivo README][sdk-readme].
+To learn more about the SDK, check out its [README file][sdk-readme].
 
 :::note
-A linguagem Dart espera que o código Dart seja codificado em [UTF-8][utf8].
+The Dart language expects Dart code to be encoded using [UTF-8][utf8].
 :::
 
 [sdk-readme]: {{site.repo.dart.sdk}}/blob/main/README.dart-sdk
 [utf8]: https://www.utf8.com/
 
-## Política de suporte {:#support-policy}
+## Support policy
 
-A equipe Dart oferece suporte apenas à versão estável mais recente do Dart SDK.
-Quando uma nova versão principal ou secundária é lançada,
-as versões mais antigas deixam de ser suportadas.
-Por exemplo, se `3.7.x` é a versão mais recente lançada,
-ela é suportada até que `3.8.0` ou `4.0.0` seja lançada,
-o que acontecer primeiro.
+The Dart team supports only the latest, stable version of the Dart SDK.
+When a new major or minor version is released,
+older versions are no longer supported.
+For example, if `3.7.x` is the latest release,
+it is supported until `3.8.0` or `4.0.0` is released,
+whichever comes first.
 
-A equipe Dart fornece correções para problemas críticos e de segurança conforme necessário,
-por meio de patch releases, mas apenas para a versão atualmente suportada.
-Por exemplo, se `3.7.0` é a versão estável mais recente,
-uma correção para uma vulnerabilidade pode ser lançada em um patch release `3.7.1`.
+The Dart team provides fixes to critical issues and security problems as needed
+through patch releases but only for the currently supported version.
+For example, if `3.7.0` is the latest stable release,
+a fix to a vulnerability might be issued in a `3.7.1` patch release.
 
-Em média, a equipe Dart lança uma nova versão estável a cada 3 meses.
-Patch releases para a versão atualmente suportada são lançados conforme necessário.
+On average, the Dart team ships a new stable release every 3 months.
+Patch releases to the currently supported version are shipped as needed.
 
-Essa política ajuda a garantir que os desenvolvedores Dart tenham acesso a
-uma plataforma estável e confiável, que continua a
-evoluir com novos recursos e melhorias.
+This policy helps ensure Dart developers have access to
+a stable and reliable platform that continues to
+evolve with new features and improvements.
 
 {% comment %}
 TODO(parlough): Add a section discussing the breaking change policy
 and link out to the breaking change index.
 {% endcomment %}
 
-## Reportar bugs e solicitar recursos {:#filing-bugs-and-feature-requests}
+## Filing bugs and feature requests
 
-Para ver problemas existentes ou criar um novo,
-acesse [o rastreador de problemas do SDK][sdk-issues].
+To see existing issues or create a new one,
+go to [the SDK issue tracker][sdk-issues].
 
 [Dart libraries]: /libraries
 [flutter]: {{site.flutter-docs}}/get-started/install

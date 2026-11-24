@@ -14,7 +14,9 @@ import '../components/common/tags.dart';
 import '../markdown/markdown_parser.dart';
 import '../models/diagnostic_model.dart';
 import '../models/lints.dart';
+import '../utils/last_modified.dart';
 import '../utils/server_only_utils.dart';
+import 'changelog_slices.dart';
 import 'glossary.dart';
 
 /// All pages that should be loaded from memory rather than
@@ -25,18 +27,19 @@ List<MemoryPage> get allMemoryPages => [
   _allLinterRulesJson,
   ..._lintMemoryPages,
   ..._diagnosticMemoryPages,
+  ...changelogSliceMemoryPages,
 ];
 
 /// The `/resources/glossary` page which hosts the [GlossaryIndex].
 MemoryPage get _glossaryPage => MemoryPage.builder(
-  path: 'resources/glossary.md',
+  path: 'resources/glossary.html',
   initialData: {
     'page': <String, Object?>{
-      'title': 'Glossário',
+      'title': 'Glossary',
       'showBreadcrumbs': false,
       'description':
-          'Um glossário de referência para a terminologia '
-          'usada em todo o dartbrasil.dev.',
+          'A glossary reference for terminology '
+          'used across dart.dev.',
       'showToc': false,
       'bodyClass': 'glossary-page',
     },
@@ -46,9 +49,17 @@ MemoryPage get _glossaryPage => MemoryPage.builder(
   },
 );
 
-/// The date the diagnostic and lint docs were last extracted from the SDK.
-/// Should be in `yyyy-mm-dd` format.
-const String _diagnosticsLastUpdated = '2025-12-07';
+/// The date `src/data/diagnostics.json` was last updated in git history,
+/// in `yyyy-mm-dd` format.
+final String? _diagnosticsLastUpdated = lastModifiedDateForPath(
+  'src/data/diagnostics.json',
+);
+
+/// The date `src/data/linter_rules.json` was last updated in git history,
+/// in `yyyy-mm-dd` format.
+final String? _lintsLastUpdated = lastModifiedDateForPath(
+  'src/data/linter_rules.json',
+);
 
 /// The individual diagnostic message pages,
 /// rendered at `/tools/diagnostics/<name>`.
@@ -61,15 +72,16 @@ List<MemoryPage> get _diagnosticMemoryPages {
         path: path.posix.join(
           'tools',
           'diagnostics',
-          '${diagnostic.id}.md',
+          '${diagnostic.id}.html',
         ),
         initialData: {
           'page': <String, Object?>{
             'title': diagnostic.id,
+            'titleBase': 'Dart diagnostic',
             'underscore_breaker_titles': true,
             'description':
-                'Detalhes sobre o diagnóstico \'${diagnostic.id}\' '
-                'produzido pelo analisador do Dart.',
+                'Details about the \'${diagnostic.id}\' diagnostic '
+                'produced by the Dart analyzer.',
             'bodyClass': 'highlight-diagnostics',
             'sitemap': {
               'lastmod': _diagnosticsLastUpdated,
@@ -82,19 +94,19 @@ List<MemoryPage> get _diagnosticMemoryPages {
               if (diagnostic.fromLint)
                 Tags([
                   Tag(
-                    'Regra de lint',
+                    'Lint rule',
                     icon: 'toggle_on',
                     title:
-                        'Saiba mais sobre a regra de lint que '
-                        'ativa este diagnóstico.',
-                    link: '/tools/linter-rules/${diagnostic.id}',
+                        'Learn about the lint rule that '
+                        'enables this diagnostic.',
+                    link: lintRuleUrl(diagnostic.id),
                   ),
                 ]),
               DashMarkdown(
                 content: [
                   if (diagnostic.previousNames.isNotEmpty)
                     diagnostic.previousNames
-                        .map((oldName) => '_(Antes chamado de `$oldName`._)')
+                        .map((oldName) => '_(Previously known as `$oldName`._)')
                         .join('\n\n'),
                   diagnostic.description,
                   ?diagnostic.documentation,
@@ -109,25 +121,24 @@ List<MemoryPage> get _diagnosticMemoryPages {
           path: path.posix.join(
             'tools',
             'diagnostics',
-            '$previousDiagnosticName.md',
+            '$previousDiagnosticName.html',
           ),
           initialData: {
             'page': <String, Object?>{
               'title': previousDiagnosticName,
               'underscore_breaker_titles': true,
               'description':
-                  'Detalhes sobre o diagnóstico \'$previousDiagnosticName\' '
-                  'produzido pelo analisador do Dart.',
+                  'Details about the \'$previousDiagnosticName\' diagnostic '
+                  'produced by the Dart analyzer.',
               'canonical':
-                  'https://dartbrasil.dev/tools/diagnostics/${diagnostic.id}',
+                  'https://dart.dev/tools/diagnostics/${diagnostic.id}',
               'redirectTo': '/tools/diagnostics/${diagnostic.id}',
-              'noindex': true,
               'sitemap': false,
             },
           },
           builder: (context) {
             return p([
-              const span([.text('Diagnóstico renomeado para: ')]),
+              const span([.text('Diagnostic renamed to: ')]),
               a(href: '/tools/diagnostics/${diagnostic.id}', [
                 .text(diagnostic.id),
               ]),
@@ -142,48 +153,42 @@ List<MemoryPage> get _diagnosticMemoryPages {
 List<MemoryPage> get _lintMemoryPages {
   final lintRules = readAndLoadLints();
 
-  return [
-    for (final lint in lintRules)
-      for (final lintId in {lint.id, lint.id.toLowerCase()})
-        MemoryPage.builder(
+  return lintRules
+      .map(
+        (lint) => MemoryPage.builder(
           path: path.posix.join(
             'tools',
             'linter-rules',
-            '$lintId.md',
+            '${lint.id.toLowerCase()}.html',
           ),
           initialData: {
             'page': <String, Object?>{
               'title': lint.name,
+              'titleBase': 'Dart linter',
               'underscore_breaker_titles': true,
-              'description': 'Saiba mais sobre a regra de lint ${lint.name}.',
+              'description': 'Learn about the ${lint.name} linter rule.',
               'bodyClass': 'highlight-diagnostics',
-              // If this lint has a version not fully lower case,
-              // specify that version as the canonical destination.
-              if (lintId != lint.id)
-                'canonical': 'https://dartbrasil.dev/tools/linter-rules/${lint.id}',
               if (lint.state == 'removed') ...const {
                 'noindex': true,
                 'sitemap': false,
               } else
                 'sitemap': {
-                  'lastmod': _diagnosticsLastUpdated,
+                  'lastmod': _lintsLastUpdated,
                 },
             },
           },
           builder: (context) {
             final incompatibleLintsText = StringBuffer();
             if (lint.incompatibleLints.isNotEmpty) {
+              incompatibleLintsText.writeln('## Incompatible rules\n');
               incompatibleLintsText.writeln(
-                '## Regras incompatíveis {:#incompatible-rules}\n',
-              );
-              incompatibleLintsText.writeln(
-                'O lint `${lint.id}` é incompatível com '
-                'as seguintes regras:',
+                'The `${lint.id}` lint is incompatible with '
+                'the following rules:',
               );
               incompatibleLintsText.writeln();
               for (final incompatibleLint in lint.incompatibleLints) {
                 incompatibleLintsText.writeln(
-                  '- [`$incompatibleLint`](/tools/linter-rules/$incompatibleLint)',
+                  '- [`$incompatibleLint`](${lintRuleUrl(incompatibleLint)})',
                 );
               }
             }
@@ -200,78 +205,76 @@ List<MemoryPage> get _lintMemoryPages {
                 Tags([
                   if (unreleasedLint)
                     const Tag(
-                      'Não lançado',
+                      'Unreleased',
                       icon: 'pending',
                       color: TagColor.orange,
-                      title: 'Lint ainda não lançado ou em desenvolvimento.',
+                      title: 'Lint is unreleased or work in progress.',
                     )
                   else if (lint.state == 'experimental')
                     const Tag(
                       'Experimental',
                       icon: 'science',
                       color: TagColor.orange,
-                      title: 'Lint experimental.',
+                      title: 'Lint is experimental.',
                     )
                   else if (lint.state == 'deprecated')
                     const Tag(
-                      'Descontinuado',
+                      'Deprecated',
                       icon: 'report',
                       color: TagColor.orange,
-                      title: 'Lint descontinuado.',
+                      title: 'Lint is deprecated.',
                     )
                   else if (lint.state == 'removed')
                     const Tag(
-                      'Removido',
+                      'Removed',
                       icon: 'error',
                       color: TagColor.red,
-                      title: 'Lint removido.',
+                      title: 'Lint has been removed.',
                     )
                   else
                     const Tag(
-                      'Estável',
+                      'Stable',
                       icon: 'verified_user',
                       color: TagColor.green,
-                      title: 'Lint estável.',
+                      title: 'Lint is stable.',
                     ),
 
                   if (lint.lintSets.contains('core'))
                     const Tag(
                       'Core',
                       icon: 'circles',
-                      title: 'Lint incluído no conjunto core de regras.',
+                      title: 'Lint is included in the core set of rules.',
                     )
                   else if (lint.lintSets.contains('recommended'))
                     const Tag(
-                      'Recomendado',
+                      'Recommended',
                       icon: 'thumb_up',
                       title:
-                          'Lint incluído no conjunto recommended de regras.',
+                          'Lint is included in the recommended set of rules.',
                     )
                   else if (lint.lintSets.contains('flutter'))
                     const Tag(
                       'Flutter',
                       icon: 'flutter',
-                      title: 'Lint incluído no conjunto de regras do Flutter.',
+                      title: 'Lint is included in the Flutter set of rules.',
                     ),
 
                   if (lint.fixStatus == 'hasFix')
                     const Tag(
-                      'Correção disponível',
+                      'Fix available',
                       icon: 'build',
-                      title:
-                          'Lint tem uma ou mais correções rápidas '
-                          '(quick fixes) disponíveis.',
+                      title: 'Lint has one or more quick fixes available.',
                     ),
                   if (lint.sinceDartSdk != '2.0')
                     Tag(
-                      'Lançado no Dart ${lint.sinceDartSdk}',
+                      'Released in Dart ${lint.sinceDartSdk}',
                       icon: 'merge_type',
                       color: TagColor.grey,
                       title: unreleasedLint
-                          ? 'Este lint ficará '
-                                'disponível no Dart ${lint.sinceDartSdk}'
-                          : 'Este lint ficou disponível '
-                                'originalmente no Dart ${lint.sinceDartSdk}.',
+                          ? 'This lint is set to be '
+                                'available in Dart ${lint.sinceDartSdk}'
+                          : 'This lint was originally '
+                                'available in Dart ${lint.sinceDartSdk}.',
                     ),
                 ]),
                 DashMarkdown(
@@ -279,7 +282,7 @@ List<MemoryPage> get _lintMemoryPages {
                       '''
 ${lint.description}
 
-## Detalhes {:#details}
+## Details
 
 ${lint.docs}
 
@@ -290,10 +293,10 @@ $incompatibleLintsText
                   content:
                       '''
 <a id="usage" aria-hidden="true"></a>
-## Ativar {:#enable}
+## Enable
 
-Para ativar a regra `${lint.id}`, adicione `${lint.id}` em
-**linter > rules** no seu arquivo [`analysis_options.yaml`](/tools/analysis):
+To enable the `${lint.id}` rule, add `${lint.id}` under
+**linter > rules** in your [`analysis_options.yaml`](/tools/analysis) file:
 
 ```yaml title="analysis_options.yaml"
 linter:
@@ -301,8 +304,8 @@ linter:
     - ${lint.id}
 ```
 
-Se você usa a sintaxe de mapa YAML para configurar as regras de lint,
-adicione `${lint.id}: true` em **linter > rules**:
+If you're instead using the YAML map syntax to configure linter rules,
+add `${lint.id}: true` under **linter > rules**:
 
 ```yaml title="analysis_options.yaml"
 linter:
@@ -315,7 +318,8 @@ linter:
             );
           },
         ),
-  ];
+      )
+      .toList(growable: false);
 }
 
 final List<LintDetails> linterRulesToShow = readAndLoadLints()
@@ -339,24 +343,23 @@ MemoryPage get _allLinterRulesPage {
 
   return MemoryPage(
     path: 'tools/linter-rules/all.md',
-    initialData: const {
+    initialData: {
       'page': <String, Object?>{
-        'title': 'Todas as regras de lint',
+        'title': 'All linter rules',
         'description':
-            'Configuração gerada automaticamente que '
-            'ativa todas as regras de lint.',
+            'Auto-generated configuration enabling all linter rules.',
         'sitemap': {
-          'lastmod': _diagnosticsLastUpdated,
+          'lastmod': _lintsLastUpdated,
         },
       },
     },
     content:
         '''
-A seguir está uma lista gerada automaticamente de todas as regras de lint
-disponíveis no Dart SDK a partir da versão `{{site.sdkVersion}}`.
-Adicione-as ao seu arquivo
-[`analysis_options.yaml`](/tools/analysis)
-e ajuste como achar melhor.
+The following is an auto-generated list of all linter rules
+available in the Dart SDK as of version `{{site.documentedDartVersion}}`.
+Add them to your
+[`analysis_options.yaml`](/tools/analysis) file
+and adjust as you see fit.
 
 ```yaml title="analysis_options.yaml"
 linter:
@@ -373,10 +376,10 @@ MemoryPage get _allLinterRulesJson => MemoryPage(
   keepSuffix: true,
   initialData: const {
     'page': <String, Object?>{
-      'title': 'Todas as regras de lint do Dart em formato JSON',
+      'title': 'All of Dart\'s linter rules in JSON format',
       'description':
-          'Todas as regras de lint lançadas suportadas pelo '
-          'analisador do Dart, em formato JSON.',
+          'All released linter rules supported by '
+          'the Dart analyzer in JSON format.',
       'sitemap': false,
     },
   },

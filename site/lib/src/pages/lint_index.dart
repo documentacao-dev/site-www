@@ -8,8 +8,8 @@ import 'package:jaspr/server.dart';
 
 import '../components/common/button.dart';
 import '../components/common/card.dart';
-import '../components/common/client/copy_button.dart';
 import '../components/common/material_icon.dart';
+import '../components/common/static_copy_button.dart';
 import '../components/pages/lint_filter_search_section.dart';
 import '../markdown/markdown_parser.dart';
 import '../models/lints.dart';
@@ -55,7 +55,7 @@ class _LintRuleCard extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    final lintId = lint.name.toLowerCase();
+    final lintId = lint.id.toLowerCase();
 
     final attributes = <String, String>{
       if (lint.state == 'stable' && !lint.sinceDartSdk.contains('wip'))
@@ -72,9 +72,13 @@ class _LintRuleCard extends StatelessComponent {
       attributes: attributes,
       header: [
         header(
-          id: lintId,
           classes: 'card-title',
-          splitByUnderscore(lintId),
+          [
+            a(
+              href: lintRuleUrl(lint.id),
+              splitByUnderscore(lint.name),
+            ),
+          ],
         ),
       ],
       content: [
@@ -90,12 +94,12 @@ class _LintRuleCard extends StatelessComponent {
         leading: _statusIcons,
         trailing: [
           Button(
-            href: '/tools/linter-rules/${lint.name}',
+            href: lintRuleUrl(lint.id),
             style: ButtonStyle.outlined,
-            title: 'Saiba mais sobre este lint e quando ativá-lo.',
-            content: 'Saiba mais',
+            title: 'Learn more about this lint and when to enable it.',
+            content: 'Learn more',
           ),
-          CopyButton(toCopy: lint.name, buttonText: 'Copiar nome'),
+          StaticCopyButton(toCopy: lint.name, buttonText: 'Copy name'),
         ],
       ),
     );
@@ -105,22 +109,22 @@ class _LintRuleCard extends StatelessComponent {
     ?switch (lint.state) {
       'removed' => const MaterialIcon(
         'error',
-        title: 'Lint removido.',
+        title: 'Lint has been removed.',
         classes: ['removed-lints'],
       ),
       'deprecated' => const MaterialIcon(
         'report',
-        title: 'Lint descontinuado.',
+        title: 'Lint is deprecated.',
         classes: ['deprecated-lints'],
       ),
       'experimental' => const MaterialIcon(
         'science',
-        title: 'Lint experimental.',
+        title: 'Lint is experimental.',
         classes: ['experimental-lints'],
       ),
       _ when lint.sinceDartSdk.contains('wip') => const MaterialIcon(
         'pending',
-        title: 'Lint ainda não lançado.',
+        title: 'Lint is unreleased.',
         classes: ['wip-lints'],
       ),
       _ => null,
@@ -129,26 +133,26 @@ class _LintRuleCard extends StatelessComponent {
     if (lint.fixStatus == 'hasFix')
       const MaterialIcon(
         'build',
-        title: 'Lint tem uma correção rápida (quick fix).',
+        title: 'Lint has a quick fix.',
         classes: ['has-fix'],
       ),
 
     if (lint.lintSets.contains('core'))
       const MaterialIcon(
         'circles',
-        title: 'Lint incluído no conjunto core de regras.',
+        title: 'Lint is included in the core lint set.',
       ),
 
     if (lint.lintSets.contains('recommended'))
       const MaterialIcon(
         'thumb_up',
-        title: 'Lint incluído no conjunto recommended de regras.',
+        title: 'Lint is included in the recommended lint set.',
       ),
 
     if (lint.lintSets.contains('flutter'))
       const MaterialIcon(
         'flutter',
-        title: 'Lint incluído no conjunto de regras do Flutter.',
+        title: 'Lint is included in the Flutter lint set.',
       ),
   ];
 }

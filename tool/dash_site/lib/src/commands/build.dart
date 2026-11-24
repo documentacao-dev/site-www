@@ -40,9 +40,9 @@ final class BuildSiteCommand extends Command<int> {
         // Use build_web_compiler options specified in build.yaml instead of
         // those specified by jaspr_cli.
         '--no-managed-build-options',
-        '--sitemap-domain=https://dartbrasil.dev',
-        // Exclude secondary Markdown output files from sitemap.
-        r'--sitemap-exclude=\.html\.md$',
+        '--sitemap-domain=https://dart.dev',
+        // Exclude secondary Markdown, plain-text, XML, and JSON outputs.
+        r'--sitemap-exclude=\.(md|txt|xml|json)$',
         '--dart-define=PRODUCTION=$productionRelease',
       ],
       workingDirectory: 'site',

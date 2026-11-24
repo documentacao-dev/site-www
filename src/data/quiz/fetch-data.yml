@@ -1,87 +1,99 @@
 - question: >-
-    Como você monta uma URL com parâmetros de consulta usando `Uri.https`?
+    How do you construct a URL with query parameters using `Uri.https`?
   options:
     - text: >-
-        Passe-os como um terceiro argumento, um map:
+        Pass them as a third argument map:
         `Uri.https('api.com', '/search', {'q': 'dart'})`
       correct: true
       explanation: >-
-        O terceiro parâmetro aceita um `Map<String, dynamic>`
-        com os parâmetros de consulta. O Dart faz a codificação da URL automaticamente.
+        The third parameter accepts a `Map<String, dynamic>`
+        of query parameters. Dart handles URL encoding automatically.
     - text: >-
-        Acrescente-os à string do caminho: `Uri.https('api.com', '/search?q=dart')`
+        Append them to the path string: `Uri.https('api.com', '/search?q=dart')`
       correct: false
       explanation: >-
-        Parâmetros de consulta na string do caminho funcionam, mas
-        não são a abordagem mais limpa.
+        Query parameters in the path string work but
+        aren't the cleanest approach.
     - text: >-
-        Use concatenação de strings: `Uri.https('api.com', '/search') + '?q=dart'`
+        Use string concatenation: `Uri.https('api.com', '/search') + '?q=dart'`
       correct: false
       explanation: >-
-        Não é possível concatenar strings a objetos `Uri` com `+`.
-        `Uri` oferece outro mecanismo para adicionar parâmetros de consulta.
+        You can't concatenate strings to `Uri` objects using `+`.
+        `Uri` provides a different mechanism for adding query parameters.
     - text: >-
-        Chame `.addQueryParam('q', 'dart')` no objeto `Uri`.
+        Call `.addQueryParam('q', 'dart')` on the `Uri` object.
       correct: false
       explanation: >-
-        Objetos `Uri` são imutáveis e não têm um método `addQueryParam`.
-        Os parâmetros de consulta devem ser especificados de outra forma.
+        `Uri` objects are immutable and don't have an `addQueryParam` method.
+        Query parameters must be specified differently.
 - question: >-
-    Depois de chamar `client.get(url)`,
-    como você deve verificar se a requisição foi bem-sucedida?
+    After calling `http.get(url)`,
+    how should you check if the request was successful?
   options:
     - text: >-
-        Verificar se `response.statusCode == 200` (ou outro código de sucesso).
+        Check if `response.statusCode == 200` (or another success code).
       correct: true
       explanation: >-
-        Os códigos de status HTTP indicam sucesso (200-299)
-        ou diversas falhas (400 e 500).
-        Sempre verifique antes de processar o corpo da resposta.
+        HTTP status codes indicate success (200-299)
+        or various failures (400s, 500s).
+        Always check before processing the response body.
     - text: >-
-        Verificar se `response.body` não está vazio.
+        Check if `response.body` is not empty.
       correct: false
       explanation: >-
-        Um corpo vazio pode ser válido (como um 204 No Content).
-        O conteúdo do corpo, por si só, não diz se a requisição deu certo.
+        An empty body could be valid (like a 204 No Content).
+        The body content alone doesn't tell you if the request succeeded.
     - text: >-
-        Envolver a chamada em try/catch, já que requisições bem-sucedidas não lançam exceções.
+        Wrap the call in try/catch as successful requests don't throw.
       correct: false
       explanation: >-
-        Erros HTTP (como 404 e 500) não lançam exceções por padrão.
-        A requisição termina normalmente mesmo quando o servidor retorna um erro.
+        HTTP errors (such as 404 and 500) don't throw exceptions by default.
+        The request completes normally even when the server returns an error.
     - text: >-
-        Verificar se `response.isSuccess` retorna true.
+        Check if `response.isSuccess` returns true.
       correct: false
       explanation: >-
-        Não existe uma propriedade `isSuccess` em `Response`.
-        Você precisa consultar outra propriedade do objeto de resposta.
+        There's no `isSuccess` property on `Response`.
+        You need to examine a different property of the response object.
 - question: >-
-    As funções de API da lição usam um bloco `finally` para chamar `client.close()`.
-    Por que isso é importante?
+    When the Wikipedia API returns a non-200 status code,
+    the lesson's API functions throw an `HttpException`
+    instead of returning an error message string.
+    Why is this a better practice for an API package?
   options:
     - text: >-
-        Para garantir que os recursos de rede sejam liberados mesmo se ocorrer uma exceção.
+        It separates failure handling from valid data,
+        letting functions return typed models (like `Summary`)
+        while callers handle errors with `try`/`catch`.
       correct: true
       explanation: >-
-        O `finally` roda tanto se o bloco try for bem-sucedido quanto se lançar uma exceção.
-        Isso garante que as conexões do client sejam fechadas corretamente,
-        evitando vazamento de recursos.
+        Returning an error string doesn't fit a return type like
+        `Future<Summary>` and risks treating error text as article data.
+        Throwing an `HttpException` signals failure explicitly so
+        calling code can catch and handle it.
     - text: >-
-        Para salvar os dados da resposta em disco antes de a função retornar.
+        Because `http.get` crashes the Dart runtime
+        if you don't throw an exception on non-200 status codes.
       correct: false
       explanation: >-
-        `close()` não salva dados em lugar nenhum.
-        Salvar dados exigiria operações explícitas com arquivos.
+        `http.get` completes normally with a `Response` object
+        even for 404 or 500 status codes.
+        Throwing `HttpException` is a deliberate design choice,
+        not a runtime requirement.
     - text: >-
-        Para enviar uma mensagem de 'conexão fechada' ao servidor.
+        Throwing `HttpException` automatically retries
+        the failed network request up to three times.
       correct: false
       explanation: >-
-        Embora fechar afete a conexão,
-        o principal objetivo é a limpeza do lado do cliente,
-        não a comunicação com o servidor.
+        Throwing an exception stops execution of the function
+        and propagates the failure to the caller;
+        it doesn't retry the request.
     - text: >-
-        Para limpar a resposta da memória e acionar o garbage collector.
+        Functions marked `async` aren't allowed to return
+        error strings when a network request fails.
       correct: false
       explanation: >-
-        O garbage collector do Dart cuida da memória automaticamente.
-        `close()` libera outro tipo de recurso.
+        An `async` function can return any declared type
+        (such as `Future<String>`, as in Chapter 3).
+        Throwing an exception is preferred for type safety
+        and structured error handling, not syntax rules.

@@ -1,63 +1,62 @@
 ---
-ia-translate: true
-title: Adicione interatividade ao seu app
-shortTitle: Interatividade
+title: Add interactivity to your app
+shortTitle: Interactivity
 description: >-
-  Adicione comandos simples à sua aplicação CLI.
-  Aprenda os fundamentos da sintaxe do Dart, incluindo
-  controle de fluxo, coleções, variáveis, funções e muito mais.
+  Add simple commands to your cli application.
+  Learn the fundamentals of Dart syntax including
+  control flow, collections, variables, functions, and more.
 layout: learn
 ---
 
-Neste capítulo, você vai praticar a sintaxe do Dart na prática.
-Você vai aprender a ler a entrada do usuário, exibir informações de uso e
-criar uma interação básica pela linha de comando.
+In this chapter, you'll get hands-on practice with Dart syntax.
+You'll learn how to read user input, print usage information, and
+create a basic command-line interaction.
 
 <SummaryCard>
-title: O que você vai realizar
+title: What you'll accomplish
 items:
-  - title: Criar manipuladores de comandos com instruções if
+  - title: Build command handlers with if statements
     icon: account_tree
-  - title: Trabalhar com listas e variáveis
+  - title: Work with lists and variables
     icon: data_array
-  - title: Lidar com nulabilidade no seu código
+  - title: Account for nullability in your code
     icon: help_outline
-  - title: Definir e chamar funções
+  - title: Define and call functions
     icon: function
-  - title: Ler e tratar a entrada do usuário
+  - title: Read and handle user input
     icon: keyboard
 </SummaryCard>
 
-## Pré-requisitos {:#prerequisites}
+## Prerequisites
 
-Antes de começar este capítulo, certifique-se de:
+Before you begin this chapter, ensure you have:
 
-- Ter concluído o Capítulo 1 e ter um ambiente de desenvolvimento Dart funcionando.
-- Ter familiaridade com conceitos básicos de programação
-  (variáveis, tipos de dados, controle de fluxo).
+- Completed Chapter 1 and have a working Dart development environment.
+- Familiarity with basic programming concepts
+  (variables, data types, control flow).
 
-## Tarefas {:#tasks}
+## Tasks
 
-Adicione algumas funcionalidades básicas à sua aplicação de linha de comando **Dartpedia** e
-depois explore a sintaxe do Dart para isso.
+Add some basic functionality to your **Dartpedia** command-line application and
+then explore the Dart syntax for it.
 
-### Tarefa 1: Implemente os comandos version e help {:#task-1-implement-version-and-help-commands}
+### Task 1: Implement version and help commands
 
-1.  **Implemente o comando `version` em `cli/bin/cli.dart`:**
-    Adicione a lógica para tratar um comando `version`,
-    que exibe a versão atual da CLI.
-    Use uma instrução `if` para verificar se o primeiro argumento fornecido é `version`.
-    Você também vai precisar de uma constante `version`.
+1.  **Implement the `version` command in `cli/bin/cli.dart`:**
+    Add logic to handle a `version` command,
+    which prints the current version of the CLI.
+    Use an `if` statement to check if the first argument provided is `version`.
+    You'll also need a `version` constant.
 
-    Primeiro, acima da sua função `main`,
-    declare uma variável `const` para a versão.
-    O valor de uma variável `const` nunca pode ser alterado depois de definido:
+    First, above your `main` function,
+    declare a `const` variable for the version.
+    The value of a `const` variable can never be changed after it's been set:
 
     ```dart title="cli/bin/cli.dart"
     const version = '0.0.1'; // Add this line
     ```
 
-    Em seguida, modifique sua função `main` para verificar o argumento `version`:
+    Next, modify your `main` function to check for the `version` argument:
 
     ```dart title="cli/bin/cli.dart"
     void main(List<String> arguments) {
@@ -68,29 +67,29 @@ depois explore a sintaxe do Dart para isso.
       }
     }
     ```
-    A sintaxe `$version` é chamada de interpolação de strings.
-    Ela permite incorporar o valor da variável diretamente em
-    uma string, prefixando o nome da variável com o sinal `$`.
+    The `$version` syntax is called string interpolation.
+    It lets you embed the value of the variable directly into
+    a string by prefixing the variable name with a `$` sign.
 
-1.  **Teste o comando `version`:**
-    Execute sua aplicação com o argumento version:
+1.  **Test the `version` command:**
+    Run your application with the version argument:
 
     ```bash
     dart bin/cli.dart version
     ```
 
-    Agora você deve ver:
+    You should now see:
 
     ```bash
     Dartpedia CLI version 0.0.1
     ```
 
-    Se você executar seu app sem argumentos, ainda verá "Hello, Dart!".
+    If you run your app without arguments, you'll still see "Hello, Dart!".
 
-1.  **Adicione uma função `printUsage`:**
-    Para deixar a saída mais amigável,
-    crie uma função separada para exibir as informações de uso.
-    Coloque essa função fora e abaixo da sua função `main`.
+1.  **Add a `printUsage` function:**
+    To make the output more user-friendly,
+    create a separate function to display usage information.
+    Place this function outside and below your `main` function.
 
     ```dart title="cli/bin/cli.dart"
     void printUsage() { // Add this new function
@@ -100,13 +99,13 @@ depois explore a sintaxe do Dart para isso.
     }
     ```
 
-    `search` é o comando que, no futuro, vai pesquisar na Wikipedia.
+    `search` is the command that will eventually search from Wikipedia.
 
-1.  **Implemente o comando `help` e refine o `main`:**
-    Agora, integre o comando `help` usando uma instrução `else if`,
-    e simplifique o comportamento padrão para chamar a função `printUsage`.
+1.  **Implement the `help` command and refine `main`:**
+    Now, integrate the `help` command using an `else if` statement,
+    and clean up the default behavior to call the `printUsage` function.
 
-    Modifique sua função `main` para que fique assim:
+    Modify your `main` function to look like this:
 
     ```dart title="cli/bin/cli.dart"
     void main(List<String> arguments) {
@@ -120,46 +119,46 @@ depois explore a sintaxe do Dart para isso.
     }
     ```
 
-1.  **Entenda a estrutura `if/else` e as variáveis:**
-    Agora que você implementou o controle de fluxo na função `main`,
-    revise o código adicionado para isso.
+1.  **Understand the `if/else` structure and variables:**
+    Now that you've implemented control flow in the `main` function,
+    review the code that was added for it.
 
-    - `arguments.isEmpty` verifica se nenhum argumento de linha de comando foi fornecido.
-    - `arguments.first` acessa o primeiro argumento,
-      que você está usando como comando.
-    - `version` é declarada como `const`.
-      Isso significa que o valor é conhecido em tempo de compilação, e
-      você não pode alterá-lo durante a execução.
-    - `arguments` é uma variável comum (não constante), porque
-      seu conteúdo pode mudar em tempo de execução, de acordo com a entrada do usuário.
+    - `arguments.isEmpty` checks if no command-line arguments were provided.
+    - `arguments.first` accesses the very first argument,
+      which you're using as our command.
+    - `version` is declared as a `const`.
+      This means its value is known at compile time, and
+      you can't change it during runtime.
+    - `arguments` is a regular (non-constant) variable because
+      its content can change during runtime based on user input.
 
-    Execute sua aplicação com o argumento help.
-    Você deve ver as informações de uso impressas:
+    Run your application with the help argument.
+    You should see the usage information printed:
 
     ```bash
     dart bin/cli.dart help
     ```
 
-    Também tente executá-la sem nenhum argumento:
+    Also, try running it without any arguments:
 
     ```bash
     dart bin/cli.dart
     ```
 
-    Repare que ela continua exibindo as informações de uso.
-    Por enquanto, qualquer comando que você ainda não definiu
-    também vai imprimir as informações de uso. Esse é o comportamento esperado por enquanto.
+    Notice that it continues to display usage information.
+    At this point, any command you haven't defined will
+    also print usage information. This is expected behavior for now.
 
-### Tarefa 2: Implemente o comando search {:#task-2-implement-the-search-command}
+### Task 2: Implement the search command
 
-Em seguida, implemente um comando `search` básico que recebe o título de um artigo como entrada.
-Ao construir essa funcionalidade, você vai trabalhar com
-manipulação de `List`, verificações de nulabilidade e interpolação de strings.
+Next, implement a basic `search` command that takes an article title as input.
+As you build this functionality, you'll work with
+`List` manipulation, null checks, and string interpolation.
 
-1.  **Integre o comando `search` ao `main`:**
-    Primeiro, modifique a função `main` em `cli/bin/cli.dart` para
-    incluir um ramo `else if` que trate o comando `search`.
-    Por enquanto, apenas imprima uma mensagem provisória.
+1.  **Integrate the `search` command into `main`:**
+    First, modify the `main` function in `cli/bin/cli.dart` to
+    include an `else if` branch that handles the `search` command.
+    For now, just print a placeholder message.
 
     ```dart title="cli/bin/cli.dart"
     void main(List<String> arguments) {
@@ -176,25 +175,25 @@ manipulação de `List`, verificações de nulabilidade e interpolação de stri
     }
     ```
 
-1.  **Teste o novo comando:**
-    Execute sua aplicação com o comando `search`:
+1.  **Test the new command:**
+    Run your application with the `search` command:
 
     ```bash
     dart bin/cli.dart search
     ```
 
-    Você deve ver:
+    You should see:
 
     ```bash
     Search command recognized!
     ```
 
-1.  **Defina a função `searchWikipedia`:**
-    O comando `search` vai, no futuro, executar a lógica principal da aplicação
-    chamando uma função chamada `searchWikipedia`.
-    Por enquanto, faça `searchWikipedia` imprimir os
-    argumentos recebidos com o comando `search`.
-    Coloque essa nova função abaixo de `main`.
+1.  **Define the `searchWikipedia` function:**
+    The `search` command will eventually run the core logic of your application
+    by calling a function called `searchWikipedia`.
+    For now, have `searchWikipedia` print the
+    arguments passed into it with the `search` command.
+    Place this new function below `main`.
 
     ```dart title="cli/bin/cli.dart"
     // ... (your existing main function)
@@ -206,34 +205,34 @@ manipulação de `List`, verificações de nulabilidade e interpolação de stri
     // ... (your existing printUsage() function)
     ```
 
-    Destaques do código anterior:
+    Highlights from the preceding code:
 
-    -  `List<String>? arguments` significa que a própria lista `arguments`
-       pode ser `null`.
+    -  `List<String>? arguments` means that the `arguments` list itself
+       can be `null`.
 
        :::note
-       O Dart impõe o [*sound null safety*][sound null safety], o que significa que você
-       precisa declarar explicitamente quando uma variável pode ser nula.
-       Qualquer variável que não esteja marcada como anulável é
-       _garantida_ como nunca nula, inclusive em produção.
+       Dart enforces [sound null safety][], which means you
+       have to explicitly state when a variable can be null.
+       Any variable that isn't marked as nullable is
+       _guaranteed_ to never be null, even in production.
 
-       O objetivo do null safety não é
-       impedir que você use null no seu código, porque
-       representar a ausência de um valor pode ser útil.
-       A ideia é obrigar você a considerar a nulabilidade e,
-       por isso, ter mais cuidado com ela.
-       Junto com o analyzer, isso ajuda a evitar
-       um dos erros de tempo de execução mais comuns da programação:
-       os erros de ponteiro nulo.
+       The purpose of null safety isn't to
+       stop you from ever using null in your code, because
+       representing the absence of a value can be valuable.
+       Rather, it's to force you to consider nullability and
+       therefore be more careful about it.
+       Along with the analyzer, this helps prevent
+       one of the most common runtime crashes in programming:
+       null-pointer errors.
        :::
 
-1.  **Chame a função `searchWikipedia` a partir da função `main`:**
-    Agora, modifique o bloco do comando `search` no `main` para
-    chamar `searchWikipedia` e passar os argumentos que
-    vêm depois do próprio comando `search`.
-    Use `arguments.sublist(1)` para obter todos os argumentos
-    a partir do segundo. Se nenhum argumento for fornecido após `search`,
-    passe `null` para `searchWikipedia`.
+1.  **Call the `searchWikipedia` function from the `main` function:**
+    Now, modify the `search` command block in `main` to
+    call `searchWikipedia` and pass it any arguments that
+    come after the `search` command itself.
+    Use `arguments.sublist(1)` to get all arguments
+    starting from the second one. If no arguments are provided after `search`,
+    pass `null` to `searchWikipedia`.
 
     ```dart title="cli/bin/cli.dart"
     void main(List<String> arguments) {
@@ -251,59 +250,61 @@ manipulação de `List`, verificações de nulabilidade e interpolação de stri
     }
     ```
 
-    Destaques do código anterior:
+    Highlights from the preceding code:
 
-    - Variáveis `final` só podem ser definidas uma vez e são usadas quando
-      você não pretende mais alterar a variável no código.
-    - `arguments.sublist(1)` cria uma nova lista com todos os elementos da
-      lista `arguments` _depois_ do primeiro elemento (que era `search`).
-    - `arguments.length > 1 ? ... : null;` é um operador condicional (ternário).
-      Ele garante que, se nenhum argumento for fornecido após o comando `search`,
-      `inputArgs` se torne `null`, o que corresponde ao comportamento do código de exemplo
-      para o parâmetro `arguments` de `searchWikipedia`, do tipo `List<String>?`.
+    - `final` variables can only be set once and are used when
+      you never intend to reassign the variable—even when its value is
+      determined at runtime (such as command-line input), unlike `const`
+      which requires a compile-time constant.
+    - `arguments.sublist(1)` creates a new list containing all elements of
+      the `arguments` list _after_ the first element (which was `search`).
+    - `arguments.length > 1 ? ... : null;` is a conditional (ternary) operator.
+      It ensures that if no arguments are provided after the `search` command,
+      `inputArgs` becomes `null`, matching the sample code's behavior for
+      `searchWikipedia`'s `arguments` parameter of `List<String>?`.
 
-1.  **Teste o `searchWikipedia` com argumentos:**
-    Usando a linha de comando, execute a aplicação com um título de artigo de teste:
+1.  **Test `searchWikipedia` with arguments:**
+    Using the command line, run the application with a test article title:
 
     ```bash
     dart bin/cli.dart search Dart Programming
     ```
 
-    Você deve ver:
+    You should see:
 
     ```bash
     searchWikipedia received arguments: [Dart, Programming]
     ```
 
-    Em seguida, execute o mesmo comando sem os argumentos extras:
+    Next, run the same command without the extra arguments:
 
     ```bash
     dart bin/cli.dart search
     ```
 
-    Você deve ver:
+    You should see:
 
     ```bash
     searchWikipedia received arguments: null
     ```
 
-1.  **Trate o título de artigo ausente e
-    a entrada do usuário com o comando `stdin`:**
-    É mais amigável pedir ao usuário que informe o título se ele não o fornecer
-    na linha de comando.
-    Use `stdin.readLineSync()` para isso.
+1.  **Handle the missing article title and
+    user input with the `stdin` command:**
+    It's more user-friendly to prompt the user if
+    they don't provide an article title on the command line.
+    Use `stdin.readLineSync()` for this.
 
-    Primeiro, adicione o import necessário no topo do arquivo `cli/bin/cli.dart`:
+    First, add the necessary import at the top of your `cli/bin/cli.dart` file:
 
     ```dart title="cli/bin/cli.dart"
     import 'dart:io'; // Add this line at the top
     ```
 
-    `dart:io` é uma biblioteca principal do Dart SDK e
-    oferece APIs para lidar com arquivos, diretórios, sockets, clientes e
-    servidores HTTP, entre outros recursos.
+    `dart:io` is a core library in the Dart SDK, and
+    provides APIs to deal with files, directories, sockets, and
+    HTTP clients and servers, and more.
 
-    Agora, atualize sua função `searchWikipedia` abaixo de `main`.
+    Now, update your `searchWikipedia` function below `main`.
 
     ```dart title="cli/bin/cli.dart"
     // ... (your existing main function)
@@ -327,47 +328,47 @@ manipulação de `List`, verificações de nulabilidade e interpolação de stri
     // ... (your existing printUsage() function)
     ```
 
-    Este bloco de código introduz alguns conceitos importantes:
+    This preceding code block introduces a few key concepts:
 
-    - Ele declara a variável `final String articleTitle`.
-      Isso permite que a análise estática detecte que
-      `articleTitle` será uma `String` e não será nula.
-    - Em seguida, uma instrução `if/else` verifica se os argumentos de linha de comando
-      para a busca foram fornecidos.
-    - Se os argumentos estiverem ausentes, ele pede a entrada ao usuário,
-      lê o texto com `stdin.readLineSync()` e
-      trata com segurança os casos em que nenhuma entrada é informada.
-    - Se os argumentos _estiverem_ presentes, ele usa `arguments.join(' ')` para
-      combiná-los em uma única string de busca.
+    - It declares a `final String articleTitle` variable.
+      This allows static analysis to detect that
+      `articleTitle` will be a `String` and won't be null.
+    - An `if/else` statement then checks if command-line arguments for
+      the search were provided.
+    - If arguments are missing, it prompts the user,
+      reads input using `stdin.readLineSync()`, and
+      safely handles cases where no input is given.
+    - If arguments _are_ present, it uses `arguments.join(' ')` to
+      combine them into a single search string.
 
-    Destaques do código anterior:
+    Highlights from the preceding code:
 
-    - `stdin.readLineSync() ?? ''` lê a entrada do usuário.
-      Embora `stdin.readLineSync()` possa retornar null,
-      o operador de coalescência nula (`??`) fornece
-      uma string vazia (`''`) como alternativa caso a entrada seja null.
-      Essa é uma forma concisa de garantir que a variável seja uma string não nula.
-    - `arguments.join(' ')` concatena todos os elementos da lista `arguments`
-      em uma única string, usando um espaço como separador.
-      Por exemplo, `['Dart', 'Programming']` se torna `"Dart Programming"`.
-      Isso é essencial para tratar entradas de linha de comando com várias palavras
-      como uma única frase de busca.
-    - A análise estática do Dart consegue detectar que `articleTitle` é
-      garantidamente inicializada quando a instrução print é executada.
-      Não importa por qual caminho o corpo da função seja percorrido,
-      a variável é não anulável.
+    - `stdin.readLineSync() ?? ''` reads the input from the user.
+      While `stdin.readLineSync()` can return null,
+      the null-coalescing operator (`??`) is used to provide
+      an empty string (`''`) as a fallback if the input is null.
+      This is a concise way to ensure that the variable is a non-null string.
+    - `arguments.join(' ')` concatenates all elements of the `arguments` list
+      into a single string, using a space as the separator.
+      For example, `['Dart', 'Programming']` becomes `"Dart Programming"`.
+      This is crucial for treating multi-word
+      command-line inputs as a single search phrase.
+    - Dart static analysis can detect that `articleTitle` is
+      guaranteed to be initialized when the print statement is executed.
+      No matter which path is taken through this function body,
+      the variable is non-nullable.
 
-1.  **Finalize o `searchWikipedia` para imprimir resultados de busca simulados:**
-    Atualize o `searchWikipedia` para exibir mensagens que
-    deem a impressão de que o programa encontrou algo.
-    Isso ajuda você a ver o que o programa final vai fazer, sem
-    precisar construir tudo agora.
+1.  **Finish `searchWikipedia` to print mock search results:**
+    Update `searchWikipedia` to display messages that
+    look like the program found something.
+    This helps you see what the finished program will do without
+    actually building everything right now.
 
-    Quando você executa o comando `search`, o `main` passa os argumentos após
-    `search` para `searchWikipedia`, que então imprime essas mensagens usando
-    a consulta da linha de comando ou a entrada solicitada.
+    When you run the `search` command, `main` passes any arguments after
+    `search` to `searchWikipedia`, which then prints these messages using
+    either the command-line query or the prompted input.
 
-    Seu arquivo `cli/bin/cli.dart` completo agora deve ficar assim:
+    Your complete `cli/bin/cli.dart` file should now look like this:
 
     ```dart title="cli/bin/cli.dart" highlightLines=31-33
     import 'dart:io';
@@ -412,16 +413,16 @@ manipulação de `List`, verificações de nulabilidade e interpolação de stri
     }
     ```
 
-1.  **Execução final de teste com os dois cenários:**
+1.  **Final Test Run with both scenarios:**
 
-    Agora que a simulação de artigo está configurada,
-    teste a função `searchWikipedia` de algumas maneiras diferentes:
+    Now that the article simulation is set up,
+    test the `searchWikipedia` function in a few different ways:
 
     ```bash
     dart bin/cli.dart search Dart Programming
     ```
 
-    Você deve ver:
+    You should see:
 
     ```bash
     Looking up articles about "Dart Programming". Please wait.
@@ -429,8 +430,8 @@ manipulação de `List`, verificações de nulabilidade e interpolação de stri
     (Pretend this is an article about "Dart Programming")
     ```
 
-    Em seguida, execute o comando `search` sem argumentos extras
-    (digite "Flutter Framework" quando for solicitado):
+    Next, run the `search` command without extra arguments
+    (type "Flutter Framework" when prompted):
 
     ```bash
     dart bin/cli.dart search
@@ -444,63 +445,63 @@ manipulação de `List`, verificações de nulabilidade e interpolação de stri
     (Pretend this is an article about "Flutter Framework")
     ```
 
-    Agora você construiu com sucesso o comando `search` básico com
-    tratamento de entrada do usuário, tratando corretamente entradas de linha de comando
-    com várias palavras como uma única frase de busca na saída.
+    You have now successfully built the basic `search` command with
+    user input handling, correctly treating multi-word command-line inputs as
+    a single search phrase in the output.
 
 [sound null safety]: /null-safety
 
-## Revisão {:#review}
+## Review
 
 <SummaryCard>
-title: O que você realizou
-subtitle: Veja um resumo do que você construiu e aprendeu nesta lição.
+title: What you accomplished
+subtitle: Here's a summary of what you built and learned in this lesson.
 completed: true
 items:
-  - title: Criou manipuladores de comandos com instruções if e else
+  - title: Built command handlers with if and else statements
     icon: account_tree
     details: >-
-      Você usou instruções `if` e `else` para direcionar comandos diferentes,
-      como `help`, `version` e `search`.
-      Esse padrão de controle de fluxo é fundamental para
-      construir aplicações CLI interativas que respondem à entrada do usuário.
-  - title: Trabalhou com listas e variáveis
+      You used `if` and `else` statements to
+      route different commands like `help`, `version`, and `search`.
+      This control flow pattern is fundamental to
+      building interactive CLI applications that respond to user input.
+  - title: Worked with Lists and variables
     icon: data_array
     details: >-
-      Você aprendeu a declarar variáveis com `final` e `const` e
-      trabalhou com listas usando `.isEmpty`, `.first`, `.sublist()` e `.join()`.
-      Você também usou interpolação de strings (`$variable`) para
-      incorporar valores em literais de string.
-  - title: Lidou com nulabilidade no seu código
+      You learned to declare variables with `final` and `const`, and
+      worked with lists using `.isEmpty`, `.first`, `.sublist()`, and `.join()`.
+      You also used string interpolation (`$variable`) to
+      embed values in string literals.
+  - title: Accounted for nullability in your code
     icon: help_outline
     details: >-
-      Você adotou o sound null safety do Dart usando tipos anuláveis (`?`),
-      verificações de null e o operador de coalescência nula (`??`) para
-      fornecer valores padrão quando expressões podem ser `null`.
-  - title: Definiu e chamou funções
+      You embraced Dart's sound null safety by using nullable types (`?`),
+      null checks, and the null-coalescing operator (`??`) to
+      provide default values when expressions might be `null`.
+  - title: Defined and called functions
     icon: function
     details: >-
-      Você criou as funções `printUsage()` e `searchWikipedia()` para
-      organizar seu código em unidades reutilizáveis.
-      Separar a lógica reutilizável em funções ajuda a manter a função `main`
-      limpa e facilita a leitura e a manutenção do código.
-  - title: Leu e tratou a entrada do usuário
+      You created the `printUsage()` and `searchWikipedia()` functions to
+      organize your code into reusable units.
+      Separating reusable logic into functions, helps keep the `main` function
+      clean and make your code easier to read and maintain.
+  - title: Read and handled user input
     icon: keyboard
     details: >-
-      Você usou `stdin.readLineSync()` de `dart:io` para
-      ler a entrada do terminal.
-      Isso permite prompts interativos
-      como alternativa ou complemento aos argumentos de linha de comando.
+      You used `stdin.readLineSync()` from `dart:io` to
+      read input from the terminal.
+      This enables interactive prompts
+      as an alternative or in addition to command-line arguments.
 </SummaryCard>
 
-## Quiz {:#quiz}
+## Quiz
 
-<Quiz title="Confira seu entendimento" id="interactivity" />
+<Quiz title="Check your understanding" id="interactivity" />
 
-## Próxima lição {:#next-lesson}
+## Next lesson
 
-No próximo capítulo, você vai mergulhar na
-programação assíncrona e aprender como
-buscar dados da API da Wikipedia usando o pacote `http`.
-Isso vai permitir que sua aplicação
-obtenha dados reais e os exiba para o usuário.
+In the next chapter, you'll dive into
+asynchronous programming and learn how to
+fetch data from the Wikipedia API using the `http` package.
+This will allow your application to
+retrieve real data and display it to the user.

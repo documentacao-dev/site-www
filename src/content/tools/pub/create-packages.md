@@ -32,6 +32,8 @@ O diagrama a seguir mostra o layout mais simples de um pacote:
 <img
   src="/assets/img/libraries/simple-lib2.png"
   class="diagram-wrap"
+  width="284"
+  height="72"
   alt="root directory contains pubspec.yaml and lib/file.dart">
 
 Os requisitos mínimos para uma biblioteca são:
@@ -89,6 +91,8 @@ e é organizado em uma estrutura que é comumente usada para pacotes Dart:
 <img
   src="/assets/img/libraries/shelf.png"
   class="diagram-wrap"
+  width="658"
+  height="207"
   alt="shelf root directory contains example, lib, test, and tool subdirectories">
 
 Diretamente sob lib, o arquivo de biblioteca principal,
@@ -146,6 +150,8 @@ importar `lib/foo/a.dart` tanto de lib quanto de web.
 <img
   src="/assets/img/libraries/import-lib-rules.png"
   class="diagram-wrap"
+  width="615"
+  height="292"
   alt="lib/bar/b.dart uses a relative import; web/main.dart uses a package import">
 
 

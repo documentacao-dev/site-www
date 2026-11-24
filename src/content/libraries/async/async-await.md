@@ -1,78 +1,77 @@
 ---
-ia-translate: true
-title: "Programação assíncrona: futures, async, await"
-shortTitle: Futures, async e await
-description: Aprenda e pratique a escrita de código assíncrono no DartPad!
+title: "Asynchronous programming: futures, async, await"
+shortTitle: Futures, async, and await
+description: Learn about and practice writing asynchronous code in DartPad!
 ---
 <?code-excerpt replace="/ *\/\/\s+ignore_for_file:[^\n]+\n//g; /(^|\n) *\/\/\s+ignore:[^\n]+\n/$1/g; /(\n[^\n]+) *\/\/\s+ignore:[^\n]+\n/$1\n/g"?>
 <?code-excerpt plaster="none"?>
 
-Este tutorial ensina como escrever código assíncrono usando
-futures e as keywords `async` e `await`.
-Usando editores DartPad incorporados,
-você pode testar seu conhecimento executando códigos de exemplo
-e completando exercícios.
+This tutorial teaches you how to write asynchronous code using
+futures and the `async` and `await` keywords. 
+Using embedded DartPad editors, 
+you can test your knowledge by running example code
+and completing exercises.
 
-Para aproveitar ao máximo este tutorial, você deve ter o seguinte:
+To get the most out of this tutorial, you should have the following:
 
-* Conhecimento da [sintaxe básica do Dart](/language).
-* Alguma experiência escrevendo código assíncrono em outra linguagem.
-* Os lints [`discarded_futures`][] e [`unawaited_futures`][] habilitados.
+* Knowledge of [basic Dart syntax](/language).
+* Some experience writing asynchronous code in another language.
+* The [`discarded_futures`][] and [`unawaited_futures`][] lints enabled.
 
 [`discarded_futures`]: /tools/linter-rules/discarded_futures
 [`unawaited_futures`]: /tools/linter-rules/unawaited_futures
 
-Este tutorial cobre o seguinte material:
+This tutorial covers the following material:
 
-* Como e quando usar as keywords `async` e `await`.
-* Como o uso de `async` e `await` afeta a ordem de execução.
-* Como lidar com erros de uma chamada assíncrona
-  usando expressões `try-catch` em funções `async`.
+* How and when to use the `async` and `await` keywords.
+* How using `async` and `await` affects execution order.
+* How to handle errors from an asynchronous call
+  using `try-catch` expressions in `async` functions.
 
-Tempo estimado para completar este tutorial: 40-60 minutos.
+Estimated time to complete this tutorial: 40-60 minutes.
 
 :::note
-Esta página usa DartPads incorporados para exibir exemplos e exercícios.
+This page uses embedded DartPads to display examples and exercises.
 {% render 'dartpads-embedded-troubleshooting.md' %}
 :::
 
-Os exercícios neste tutorial têm trechos de código parcialmente completos.
-Você pode usar o DartPad para testar seu conhecimento completando o código e
-clicando no botão **Run**.
-**Não edite o código de teste na função `main` ou abaixo**.
+The exercises in this tutorial have partially completed code snippets.
+You can use DartPad to test your knowledge by completing the code and
+clicking the **Run** button.
+**Don't edit the test code in the `main` function or below**.
 
-Se você precisar de ajuda, expanda o menu **Dica** ou **Solução**
-após cada exercício.
+If you need help, expand the **Hint** or **Solution** dropdown
+after each exercise.
 
-## Por que código assíncrono importa {:#why-asynchronous-code-matters}
+## Why asynchronous code matters
 
-Operações assíncronas permitem que seu programa complete um trabalho
-enquanto aguarda a conclusão de outra operação.
-Aqui estão algumas operações assíncronas comuns:
+Asynchronous operations let your program complete work
+while waiting for another operation to finish. 
+Here are some common asynchronous operations:
 
-* Buscar dados através de uma rede.
-* Escrever em um banco de dados.
-* Ler dados de um arquivo.
+* Fetching data over a network.
+* Writing to a database.
+* Reading data from a file.
 
-Tais computações assíncronas geralmente fornecem seu resultado como um `Future`
-ou, se o resultado tiver múltiplas partes, como um `Stream`.
-Essas computações introduzem assincronia em um programa.
-Para acomodar essa assincronia inicial,
-outras funções Dart simples também precisam se tornar assíncronas.
+Such asynchronous computations usually provide their result as a `Future`
+or, if the result has multiple parts, as a `Stream`.
+These computations introduce asynchrony into a program.
+To accommodate that initial asynchrony, 
+other plain Dart functions also need to become asynchronous.
 
-Para interagir com esses resultados assíncronos,
-você pode usar as keywords `async` e `await`.
-A maioria das funções assíncronas são apenas funções Dart async
-que dependem, possivelmente de forma profunda,
-de uma computação inerentemente assíncrona.
+To interact with these asynchronous results,
+you can use the `async` and `await` keywords.
+Most asynchronous functions are just async Dart functions
+that depend, possibly deep down, 
+on an inherently asynchronous computation.
 
-### Exemplo: uso incorreto de uma função assíncrona {:#example-incorrectly-using-an-asynchronous-function}
+### Example: Incorrectly using an asynchronous function
 
-O exemplo a seguir mostra a maneira errada
-de usar uma função assíncrona (`fetchUserOrder()`).
-Mais tarde você corrigirá o exemplo usando `async` e `await`.
-Antes de executar este exemplo, tente identificar o problema --
-qual você acha que será a saída?
+The following example shows the wrong way
+to use an asynchronous function (`fetchUserOrder()`). 
+Later you'll fix the example using `async` and `await`.
+Before running this example, try to spot the issue -- 
+what do you think the output will be?
 
 <?code-excerpt "async_await/bin/get_order_sync_bad.dart" remove="Fetching"?>
 ```dartpad
@@ -92,83 +91,84 @@ void main() {
 }
 ```
 
-Aqui está o motivo pelo qual o exemplo falha ao imprimir o valor
-que `fetchUserOrder()` eventualmente produz:
+Here's why the example fails to print the value
+that `fetchUserOrder()` eventually produces:
 
-* `fetchUserOrder()` é uma função assíncrona que, após um atraso,
-  fornece uma string que descreve o pedido do usuário: um "Large Latte".
-* Para obter o pedido do usuário, `createOrderMessage()` deve chamar `fetchUserOrder()`
-  e aguardar sua conclusão. Como `createOrderMessage()` *não* aguarda
-  a conclusão de `fetchUserOrder()`, `createOrderMessage()` falha em
-  obter o valor da string que `fetchUserOrder()` eventualmente fornece.
-* Em vez disso, `createOrderMessage()` obtém uma representação do trabalho pendente
-  a ser feito: um future incompleto.
-  Você vai aprender mais sobre futures na próxima seção.
-* Como `createOrderMessage()` falha em obter o valor que descreve o pedido do
-  usuário, o exemplo falha ao imprimir "Large Latte" no console e, em vez disso,
-  imprime "Your order is: Instance of '_Future\<String\>'".
+* `fetchUserOrder()` is an asynchronous function that, after a delay,
+  provides a string that describes the user's order: a "Large Latte".
+* To get the user's order, `createOrderMessage()` should call `fetchUserOrder()`
+  and wait for it to finish. Because `createOrderMessage()` does *not* wait
+  for `fetchUserOrder()` to finish, `createOrderMessage()` fails to
+  get the string value that `fetchUserOrder()` eventually provides.
+* Instead, `createOrderMessage()` gets a representation of pending work to be
+  done: an uncompleted future. 
+  You'll learn more about futures in the next section.
+* Because `createOrderMessage()` fails to get the value describing the user's
+  order, the example fails to print "Large Latte" to the console, and instead
+  prints "Your order is: Instance of '_Future\<String\>'".
 
-Nas próximas seções você vai aprender sobre futures e sobre trabalhar com futures
-(usando `async` e `await`)
-para que você seja capaz de escrever o código necessário para fazer `fetchUserOrder()`
-imprimir o valor desejado ("Large Latte") no console.
+In the next sections you'll learn about futures and about working with futures
+(using `async` and `await`)
+so that you'll be able to write the code necessary to make `fetchUserOrder()`
+print the desired value ("Large Latte") to the console.
 
-:::secondary Termos-chave
-* **synchronous operation**: Uma operação síncrona bloqueia outras operações
-  de executarem até que ela seja concluída.
-* **synchronous function**: Uma função síncrona executa apenas operações síncronas.
-* **asynchronous operation**: Uma vez iniciada, uma operação assíncrona permite
-  que outras operações executem antes de sua conclusão.
-* **asynchronous function**: Uma função assíncrona executa pelo menos uma
-  operação assíncrona e também pode executar operações _síncronas_.
+:::secondary Key terms
+* **synchronous operation**: A synchronous operation blocks other operations
+  from executing until it completes.
+* **synchronous function**: A synchronous function only performs synchronous
+  operations.
+* **asynchronous operation**: Once initiated, an asynchronous operation allows
+  other operations to execute before it completes.
+* **asynchronous function**: An asynchronous function performs at least one
+  asynchronous operation and can also perform _synchronous_ operations.
 :::
 
 
-## O que é um future? {:#what-is-a-future}
+## What is a future?
 
-Um future (letra minúscula "f") é uma instância
-da classe [Future][Future] (letra maiúscula "F").
-Um future representa o resultado de uma operação assíncrona,
-e pode ter dois estados: incompleto ou completo.
+A future (lower case "f") is an instance
+of the [Future][] (capitalized "F") class. 
+A future represents the result of an asynchronous operation, 
+and can have two states: uncompleted or completed.
 
 :::note
-_Uncompleted_ é um termo do Dart que se refere ao estado de um future
-antes de ele ter produzido um valor.
+_Uncompleted_ is a Dart term referring to the state of a future
+before it has produced a value.
 :::
 
-### Incompleto {:#uncompleted}
+### Uncompleted
 
-Quando você chama uma função assíncrona, ela retorna um future incompleto.
-Esse future está aguardando a operação assíncrona da função
-terminar ou lançar um erro.
+When you call an asynchronous function, it returns an uncompleted future.
+That future is waiting for the function's asynchronous operation
+to finish or to throw an error.
 
-### Completo {:#completed}
+### Completed
 
-Se a operação assíncrona for bem-sucedida,
-o future completa com um valor.
-Caso contrário, ele completa com um erro.
+If the asynchronous operation succeeds, 
+the future completes with a value. 
+Otherwise, it completes with an error.
 
-#### Completando com um valor {:#completing-with-a-value}
+#### Completing with a value
 
-Um future do tipo `Future<T>` completa com um valor do tipo `T`.
-Por exemplo, um future com tipo `Future<String>` produz um valor string.
-Se um future não produz um valor utilizável,
-então o tipo do future é `Future<void>`.
+A future of type `Future<T>` completes with a value of type `T`.
+For example, a future with type `Future<String>` produces a string value.
+If a future doesn't produce a usable value, 
+then the future's type is `Future<void>`.
 
-#### Completando com um erro {:#completing-with-an-error}
+#### Completing with an error
 
-Se a operação assíncrona executada pela função falhar por qualquer motivo,
-o future completa com um erro.
+If the asynchronous operation performed by the function fails for any reason,
+the future completes with an error.
 
-### Exemplo: introdução aos futures {:#example-introducing-futures}
+### Example: Introducing futures
 
-No exemplo a seguir, `fetchUserOrder()` retorna um future
-que completa após imprimir no console.
-Como não retorna um valor utilizável,
-`fetchUserOrder()` tem o tipo `Future<void>`.
-Antes de executar o exemplo,
-tente prever qual será impresso primeiro:
-"Large Latte" ou "Fetching user order...".
+In the following example, `fetchUserOrder()` returns a future
+that completes after printing to the console. 
+Because it doesn't return a usable value,
+`fetchUserOrder()` has the type `Future<void>`. 
+Before you run the example,
+try to predict which will print first: 
+"Large Latte" or "Fetching user order...".
 
 <?code-excerpt "async_await/bin/futures_intro.dart (no-error)"?>
 ```dartpad
@@ -183,20 +183,22 @@ void main() {
 }
 ```
 
-No exemplo anterior,
-mesmo que `fetchUserOrder()` seja chamado antes da chamada `print()` na linha 8,
-o console mostra a saída da linha 8 ("Fetching user order...")
-antes da saída de `fetchUserOrder()` ("Large Latte").
-Isso acontece porque `Future.delayed()` agenda o seu callback para ser executado
-depois que `main()` termina.
-Mesmo com um atraso de zero, o console imprime "Fetching user order..." primeiro.
+In the preceding example, 
+even though `fetchUserOrder()` executes before the `print()` call on line 8, 
+the console shows the output from line 8 ("Fetching user order...") 
+before the output from `fetchUserOrder()` ("Large Latte").
+This is because `Future.delayed()` schedules its callback to run later,
+after `main()` finishes executing.
+Even with a delay of zero, the console prints "Fetching user order..." first.
 
-### Exemplo: completando com um erro {:#example-completing-with-an-error}
+### Example: Completing with an error
 
-Execute o exemplo a seguir para ver como um future completa com um erro.
-Um pouco mais tarde você vai aprender como lidar com o erro.
+Run the following example to see how a future completes with an error.
+The example uses `catchError()` to print the error so that you can see it.
+Later in this tutorial, you'll learn how to handle errors using `try-catch`
+with `async` and `await`.
 
-<?code-excerpt "async_await/bin/futures_intro.dart (error)" replace="/Error//g"?>
+<?code-excerpt "async_await/bin/futures_intro.dart (error)" replace="/fetchUserOrderError/fetchUserOrder/g; /mainError/main/g"?>
 ```dartpad
 Future<void> fetchUserOrder() {
   // Imagine that this function is fetching user info but encounters a bug.
@@ -207,80 +209,84 @@ Future<void> fetchUserOrder() {
 }
 
 void main() {
-  fetchUserOrder();
+  // Print the error so that you can see it in the output.
+  // You'll learn the recommended way to handle errors later.
+  fetchUserOrder().catchError((Object error) {
+    print('Error: $error');
+  });
   print('Fetching user order...');
 }
 ```
 
-Neste exemplo, `fetchUserOrder()` completa
-com um erro indicando que o ID do usuário é inválido.
+In this example, `fetchUserOrder()` completes
+with an error indicating that the user ID is invalid.
 
-Você aprendeu sobre futures e como eles completam,
-mas como você usa os resultados de funções assíncronas?
-Na próxima seção você vai aprender como obter resultados
-com as keywords `async` e `await`.
+You've learned about futures and how they complete, 
+but how do you use the results of asynchronous functions? 
+In the next section you'll learn how to get results
+with the `async` and `await` keywords.
 
-:::secondary Revisão rápida
-* Uma instância de [Future\<T\>][Future] produz um valor do tipo `T`.
-* Se um future não produz um valor utilizável,
-  então o tipo do future é `Future<void>`.
-* Um future pode estar em um de dois estados: incompleto ou completo.
-* Quando você chama uma função que retorna um future,
-  a função enfileira o trabalho a ser feito e retorna um future incompleto.
-* Quando a operação de um future termina,
-  o future completa com um valor ou com um erro.
+:::secondary Quick review
+* A [Future\<T\>][Future] instance produces a value of type `T`.
+* If a future doesn't produce a usable value, 
+  then the future's type is `Future<void>`.
+* A future can be in one of two states: uncompleted or completed.
+* When you call a function that returns a future, 
+  the function queues up work to be done and returns an uncompleted future.
+* When a future's operation finishes, 
+  the future completes with a value or with an error.
 
-**Termos-chave:**
+**Key terms:**
 
-* **Future**: a classe [Future][Future] do Dart.
-* **future**: uma instância da classe `Future` do Dart.
+* **Future**: the Dart [Future][] class.
+* **future**: an instance of the Dart `Future` class.
 :::
 
-## Trabalhando com futures: async e await {:#working-with-futures-async-and-await}
+## Working with futures: async and await
 
-As keywords `async` e `await` fornecem uma maneira declarativa
-de definir funções assíncronas e usar seus resultados.
-Lembre-se destas duas diretrizes básicas ao usar `async` e `await`:
+The `async` and `await` keywords provide a declarative way
+to define asynchronous functions and use their results. 
+Remember these two basic guidelines when using `async` and `await`:
 
-* __Para definir uma função async, adicione `async` antes do corpo da função:__
-* __A keyword `await` funciona apenas em funções `async`.__
+* __To define an async function, add `async` before the function body:__
+* __The `await` keyword works only in `async` functions.__
 
-Aqui está um exemplo que converte `main()`
-de uma função síncrona para assíncrona.
+Here's an example  that converts `main()` 
+from a synchronous to asynchronous function.
 
-Primeiro, adicione a keyword `async` antes do corpo da função:
+First, add the `async` keyword before the function body:
 
 <?code-excerpt "async_await/bin/get_order_sync_bad.dart (main-sig)" replace="/main\(\)/$& async/g; /async/[!$&!]/g; /$/ ··· }/g"?>
 ```dart
 void main() [!async!] { ··· }
 ```
 
-Se a função tem um tipo de retorno declarado,
-então atualize o tipo para ser `Future<T>`,
-onde `T` é o tipo do valor que a função retorna.
-Se a função não retorna explicitamente um valor,
-então o tipo de retorno é `Future<void>`:
+If the function has a declared return type, 
+then update the type to be `Future<T>`, 
+where `T` is the type of the value that the function returns.
+If the function doesn't explicitly return a value,
+then the return type is `Future<void>`:
 
 <?code-excerpt "async_await/bin/get_order.dart (main-sig)" replace="/Future<\w+\W/[!$&!]/g;  /$/ ··· }/g"?>
 ```dart
 [!Future<void>!] main() async { ··· }
 ```
 
-Agora que você tem uma função `async`,
-você pode usar a keyword `await` para aguardar a conclusão de um future:
+Now that you have an `async` function, 
+you can use the `await` keyword to wait for a future to complete:
 
 <?code-excerpt "async_await/bin/get_order.dart (print-order)" replace="/await/[!$&!]/g"?>
 ```dart
 print([!await!] createOrderMessage());
 ```
 
-Como mostram os dois exemplos a seguir, as keywords `async` e `await`
-resultam em código assíncrono que se parece muito com código síncrono.
-As únicas diferenças estão destacadas no exemplo assíncrono,
-que, se sua janela for larga o suficiente, fica
-à direita do exemplo síncrono.
+As the following two examples show, the `async` and `await` keywords 
+result in asynchronous code that looks a lot like synchronous code.
+The only differences are highlighted in the asynchronous example, 
+which—if your window is wide enough—is 
+to the right of the synchronous example.
 
-#### Exemplo: funções síncronas {:#example-synchronous-functions}
+#### Example: synchronous functions
 
 <?code-excerpt "async_await/bin/get_order_sync_bad.dart (no-warning)" replace="/(\s+\/\/ )(Imagine.*? is )(.*)/$1$2$1$3/g"?>
 ```dart
@@ -305,10 +311,10 @@ Fetching user order...
 Your order is: Instance of 'Future<String>'
 ```
 
-Como mostrado nos dois exemplos a seguir,
-ele opera como código síncrono.
+As shown in following two examples,
+it operates like synchronous code.
 
-#### Exemplo: funções assíncronas {:#example-asynchronous-functions}
+#### Example: asynchronous functions
 
 <?code-excerpt "async_await/bin/get_order.dart" replace="/(\s+\/\/ )(Imagine.*? is )(.*)/$1$2$1$3/g; /async|await/[!$&!]/g; /(Future<\w+\W)( [^f])/[!$1!]$2/g; /4/2/g"?>
 ```dart
@@ -333,34 +339,35 @@ Fetching user order...
 Your order is: Large Latte
 ```
 
-O exemplo assíncrono é diferente de três maneiras:
+The asynchronous example is different in three ways:
 
-* O tipo de retorno de `createOrderMessage()` muda
-  de `String` para `Future<String>`.
-* A keyword **`async`** aparece antes dos corpos das funções
-  `createOrderMessage()` e `main()`.
-* A keyword **`await`** aparece antes de chamar as funções assíncronas
-  `fetchUserOrder()` e `createOrderMessage()`.
+* The return type for `createOrderMessage()` changes 
+  from `String` to `Future<String>`.
+* The **`async`** keyword appears before the function bodies for
+  `createOrderMessage()` and `main()`.
+* The **`await`** keyword appears before calling the asynchronous functions
+  `fetchUserOrder()` and `createOrderMessage()`.
 
-:::secondary Termos-chave
-* **async**: Você pode usar a keyword `async` antes do corpo de uma função para marcá-la como
-  assíncrona.
-* **async function**:  Uma função `async` é uma função rotulada com a keyword `async`.
-* **await**: Você pode usar a keyword `await` para obter o resultado completo de uma
-  expressão assíncrona. A keyword `await` funciona apenas dentro de uma função `async`.
+:::secondary Key terms
+* **async**: You can use the `async` keyword before a function's body to mark it as
+  asynchronous.
+* **async function**:  An `async` function is a function labeled with the `async`
+  keyword.
+* **await**: You can use the `await` keyword to get the completed result of an
+  asynchronous expression. The `await` keyword only works within an `async` function.
 :::
 
-### Fluxo de execução com async e await {:#execution-flow-with-async-and-await}
+### Execution flow with async and await
 
-Uma função `async` executa sincronamente até a primeira keyword `await`.
-Isso significa que, dentro do corpo de uma função `async`,
-todo código síncrono antes da primeira keyword `await` executa imediatamente.
+An `async` function runs synchronously until the first `await` keyword. 
+This means that within an `async` function body, 
+all synchronous code before the first `await` keyword executes immediately.
 
-### Exemplo: execução dentro de funções async {:#example-execution-within-async-functions}
+### Example: Execution within async functions
 
-Execute o exemplo a seguir para ver como a execução procede
-dentro do corpo de uma função `async`.
-Qual você acha que será a saída?
+Run the following example to see how execution proceeds
+within an `async` function body. 
+What do you think the output will be?
 
 <?code-excerpt "async_await/bin/async_example.dart" remove="/\/\/ print/"?>
 ```dartpad
@@ -388,7 +395,7 @@ void countSeconds(int s) {
 }
 ```
 
-Após executar o código no exemplo anterior, tente inverter as linhas 2 e 3:
+After running the code in the preceding example, try reversing lines 2 and 3:
 
 <?code-excerpt "async_await/bin/async_example.dart (swap-stmts)" replace="/\/\/ (print)/$1/g"?>
 ```dart
@@ -396,46 +403,46 @@ var order = await fetchUserOrder();
 print('Awaiting user order...');
 ```
 
-Observe que o momento da saída muda, agora que `print('Awaiting user order')`
-aparece após a primeira keyword `await` em `printOrderMessage()`.
+Notice that timing of the output shifts, now that `print('Awaiting user order')`
+appears after the first `await` keyword in `printOrderMessage()`.
 
-### Exercício: pratique usando async e await {:#exercise-practice-using-async-and-await}
+### Exercise: Practice using async and await
 
-O exercício a seguir é um teste unitário falhando
-que contém trechos de código parcialmente completos.
-Sua tarefa é completar o exercício escrevendo código para fazer os testes passarem.
-Você não precisa implementar `main()`.
+The following exercise is a failing unit test
+that contains partially completed code snippets. 
+Your task is to complete the exercise by writing code to make the tests pass.
+You don't need to implement `main()`.
 
-Para simular operações assíncronas, chame as seguintes funções,
-que são fornecidas para você:
+To simulate asynchronous operations, call the following functions, 
+which are provided for you:
 
-| Função             | Assinatura de tipo               | Descrição                                          |
-|--------------------|----------------------------------|----------------------------------------------------|
-| fetchRole()        | `Future<String> fetchRole()`     | Obtém uma breve descrição do papel do usuário.     |
-| fetchLoginAmount() | `Future<int> fetchLoginAmount()` | Obtém o número de vezes que um usuário fez login.  |
+| Function           | Type signature                   | Description                                    |
+|--------------------|----------------------------------|------------------------------------------------|
+| fetchRole()        | `Future<String> fetchRole()`     | Gets a short description of the user's role.   |
+| fetchLoginAmount() | `Future<int> fetchLoginAmount()` | Gets the number of times a user has logged in. |
 
 {:.table .table-striped}
 
-#### Parte 1: `reportUserRole()` {:#part-1-reportuserrole}
+#### Part 1: `reportUserRole()`
 
-Adicione código à função `reportUserRole()` para que ela faça o seguinte:
+Add code to the `reportUserRole()` function so that it does the following:
 
-* Retorna um future que completa com a seguinte
+* Returns a future that completes with the following
   string: `"User role: <user role>"`
-  * Nota: Você deve usar o valor real retornado por `fetchRole()`;
-    copiar e colar o valor de retorno de exemplo não fará o teste passar.
-  * Valor de retorno de exemplo: `"User role: tester"`
-* Obtém o papel do usuário chamando a função fornecida `fetchRole()`.
+  * Note: You must use the actual value returned by `fetchRole()`; 
+    copying and pasting the example return value won't make the test pass.
+  * Example return value: `"User role: tester"`
+* Gets the user role by calling the provided function `fetchRole()`.
 
-#### Parte 2: `reportLogins()` {:#part-2-reportlogins}
+#### Part 2: `reportLogins()`
 
-Implemente uma função `async` `reportLogins()` para que ela faça o seguinte:
+Implement an `async` function `reportLogins()` so that it does the following:
 
-* Retorna a string `"Total number of logins: <# of logins>"`.
-  * Nota: Você deve usar o valor real retornado por `fetchLoginAmount()`;
-    copiar e colar o valor de retorno de exemplo não fará o teste passar.
-  * Valor de retorno de exemplo de `reportLogins()`: `"Total number of logins: 57"`
-* Obtém o número de logins chamando a função fornecida `fetchLoginAmount()`.
+* Returns the string `"Total number of logins: <# of logins>"`.
+  * Note: You must use the actual value returned by `fetchLoginAmount()`; 
+    copying and pasting the example return value won't make the test pass.
+  * Example return value from `reportLogins()`: `"Total number of logins: 57"`
+* Gets the number of logins by calling the provided function `fetchLoginAmount()`.
 
 ```dartpad theme="dark"
 // Part 1
@@ -568,18 +575,18 @@ Future<String> _asyncEquals({
 ```
 
 <details>
-  <summary title="Expand for a hint on the async-await exercise.">Dica</summary>
+  <summary title="Expand for a hint on the async-await exercise.">Hint</summary>
 
-  Você lembrou de adicionar a keyword `async` à função `reportUserRole`?
-
-  Você lembrou de usar a keyword `await` antes de chamar `fetchRole()`?
-
-  Lembre-se: `reportUserRole` precisa retornar um `Future`.
+  Did you remember to add the `async` keyword to the `reportUserRole` function?
+  
+  Did you remember to use the `await` keyword before invoking `fetchRole()`?
+  
+  Remember: `reportUserRole` needs to return a `Future`.
 
 </details>
 
 <details>
-  <summary title="Expand for the solution of the async-await exercise.">Solução</summary>
+  <summary title="Expand for the solution of the async-await exercise.">Solution</summary>
 
   ```dart
   Future<String> reportUserRole() async {
@@ -595,9 +602,9 @@ Future<String> _asyncEquals({
 
 </details>
 
-## Lidando com erros {:#handling-errors}
+## Handling errors
 
-Para lidar com erros em uma função `async`, use try-catch:
+To handle errors in an `async` function, use try-catch:
 
 <?code-excerpt "async_await/bin/try_catch.dart (try-catch)" remove="print(order)"?>
 ```dart
@@ -609,15 +616,15 @@ try {
 }
 ```
 
-Dentro de uma função `async`, você pode escrever
-[cláusulas try-catch](/language/error-handling#catch)
-da mesma maneira que faria em código síncrono.
+Within an `async` function, you can write 
+[try-catch clauses](/language/error-handling#catch)
+the same way you would in synchronous code.
 
-### Exemplo: async e await com try-catch {:#example-async-and-await-with-try-catch}
+### Example: async and await with try-catch
 
-Execute o exemplo a seguir para ver como lidar com um erro
-de uma função assíncrona.
-Qual você acha que será a saída?
+Run the following example to see how to handle an error
+from an asynchronous function. 
+What do you think the output will be?
 
 <?code-excerpt "async_await/bin/try_catch.dart"?>
 ```dartpad
@@ -645,30 +652,30 @@ void main() async {
 }
 ```
 
-### Exercício: pratique lidando com erros {:#exercise-practice-handling-errors}
+### Exercise: Practice handling errors
 
-O exercício a seguir oferece prática de tratamento de erros com código assíncrono,
-usando a abordagem descrita na seção anterior. Para simular operações assíncronas,
-seu código vai chamar a seguinte função, que é fornecida para você:
+The following exercise provides practice handling errors with asynchronous code,
+using the approach described in the previous section. To simulate asynchronous
+operations, your code will call the following function, which is provided for you:
 
-| Função             | Assinatura de tipo                  | Descrição                                                        |
+| Function           | Type signature                      | Description                                                      |
 |--------------------|-------------------------------------|------------------------------------------------------------------|
-| fetchNewUsername() | `Future<String> fetchNewUsername()` | Retorna o novo nome de usuário que você pode usar para substituir um antigo. |
+| fetchNewUsername() | `Future<String> fetchNewUsername()` | Returns the new username that you can use to replace an old one. |
 
 {:.table .table-striped}
 
-Use `async` e `await` para implementar uma função assíncrona `changeUsername()`
-que faça o seguinte:
+Use `async` and `await` to implement an asynchronous `changeUsername()` function
+that does the following:
 
-* Chama a função assíncrona fornecida `fetchNewUsername()`
-  e retorna seu resultado.
-  * Valor de retorno de exemplo de `changeUsername()`: `"jane_smith_92"`
-* Captura qualquer erro que ocorrer e retorna o valor string do erro.
-  * Você pode usar o método
+* Calls the provided asynchronous function `fetchNewUsername()` 
+  and returns its result.
+  * Example return value from `changeUsername()`: `"jane_smith_92"`
+* Catches any error that occurs and returns the string value of the error.
+  * You can use the
     [toString()]({{site.dart-api}}/dart-core/ArgumentError/toString.html)
-    para transformar em string tanto
-    [Exceptions]({{site.dart-api}}/dart-core/Exception-class.html)
-    quanto
+    method to stringify both
+    [Exceptions]({{site.dart-api}}/dart-core/Exception-class.html) 
+    and
     [Errors.]({{site.dart-api}}/dart-core/Error-class.html)
 
 ```dartpad theme="dark"
@@ -769,18 +776,18 @@ const _noCatch = 'NO_CATCH';
 ```
 
 <details>
-  <summary title="Expand for a hint on the error-handling exercise.">Dica</summary>
+  <summary title="Expand for a hint on the error-handling exercise.">Hint</summary>
 
-  Implemente `changeUsername` para retornar a string de `fetchNewUsername` ou,
-  se isso falhar, o valor string de qualquer erro que ocorrer.
-
-  Lembre-se: você pode usar uma [instrução try-catch](/language/error-handling#catch)
-  para capturar e tratar erros.
+  Implement `changeUsername` to return the string from `fetchNewUsername` or,
+  if that fails, the string value of any error that occurs.
+  
+  Remember: You can use a [try-catch statement](/language/error-handling#catch)
+  to catch and handle errors.
 
 </details>
 
 <details>
-  <summary title="Expand for the solution of the error-handling exercise.">Solução</summary>
+  <summary title="Expand for the solution of the error-handling exercise.">Solution</summary>
 
   ```dart
   Future<String> changeUsername() async {
@@ -794,47 +801,47 @@ const _noCatch = 'NO_CATCH';
 
 </details>
 
-## Exercício: juntando tudo {:#exercise-putting-it-all-together}
+## Exercise: Putting it all together
 
-É hora de praticar o que você aprendeu em um último exercício.
-Para simular operações assíncronas, este exercício fornece as funções assíncronas
-`fetchUsername()` e `logoutUser()`:
+It's time to practice what you've learned in one final exercise.
+To simulate asynchronous operations, this exercise provides the asynchronous
+functions `fetchUsername()` and `logoutUser()`:
 
-| Função          | Assinatura de tipo               | Descrição                                                                     |
+| Function        | Type signature                   | Description                                                                   |
 |-----------------|----------------------------------|-------------------------------------------------------------------------------|
-| fetchUsername() | `Future<String> fetchUsername()` | Retorna o nome associado ao usuário atual.                                    |
-| logoutUser()    | `Future<String> logoutUser()`    | Faz o logout do usuário atual e retorna o nome de usuário que foi desconectado. |
+| fetchUsername() | `Future<String> fetchUsername()` | Returns the name associated with the current user.                            |
+| logoutUser()    | `Future<String> logoutUser()`    | Performs logout of current user and returns the username that was logged out. |
 
 {:.table .table-striped}
 
-Escreva o seguinte:
+Write the following:
 
-#### Parte 1: `addHello()` {:#part-1-addhello}
+####  Part 1: `addHello()`
 
-* Escreva uma função `addHello()` que recebe um único argumento `String`.
-* `addHello()` retorna seu argumento `String` precedido por `'Hello '`.<br>
-  Exemplo: `addHello('Jon')` retorna `'Hello Jon'`.
+* Write a function `addHello()` that takes a single `String` argument.
+* `addHello()` returns its `String` argument preceded by `'Hello '`.<br>
+  Example: `addHello('Jon')` returns `'Hello Jon'`.
 
-#### Parte 2: `greetUser()` {:#part-2-greetuser}
+####  Part 2: `greetUser()`
 
-* Escreva uma função `greetUser()` que não recebe argumentos.
-* Para obter o nome de usuário, `greetUser()` chama a função assíncrona
-  fornecida `fetchUsername()`.
-* `greetUser()` cria uma saudação para o usuário chamando `addHello()`,
-  passando o nome de usuário, e retornando o resultado.<br>
-  Exemplo: Se `fetchUsername()` retorna `'Jenny'`, então
-  `greetUser()` retorna `'Hello Jenny'`.
+* Write a function `greetUser()` that takes no arguments.
+* To get the username, `greetUser()` calls the provided asynchronous
+  function `fetchUsername()`.
+* `greetUser()` creates a greeting for the user by calling `addHello()`,
+  passing it the username, and returning the result.<br>
+  Example: If `fetchUsername()` returns `'Jenny'`, then
+  `greetUser()` returns `'Hello Jenny'`.
 
-#### Parte 3: `sayGoodbye()` {:#part-3-saygoodbye}
+####  Part 3: `sayGoodbye()`
 
-* Escreva uma função `sayGoodbye()` que faça o seguinte:
-  * Não recebe argumentos.
-  * Captura quaisquer erros.
-  * Chama a função assíncrona fornecida `logoutUser()`.
-* Se `logoutUser()` falhar, `sayGoodbye()` retorna qualquer string que você quiser.
-* Se `logoutUser()` tiver sucesso, `sayGoodbye()` retorna a string
-  `'<result> Thanks, see you next time'`, onde `<result>` é
-  o valor da string retornado ao chamar `logoutUser()`.
+* Write a function `sayGoodbye()` that does the following:
+  * Takes no arguments.
+  * Catches any errors.
+  * Calls the provided asynchronous function `logoutUser()`.
+* If `logoutUser()` fails, `sayGoodbye()` returns any string you like.
+* If `logoutUser()` succeeds, `sayGoodbye()` returns the string
+  `'<result> Thanks, see you next time'`, where `<result>` is
+  the string value returned by calling `logoutUser()`.
 
 ```dartpad theme="dark"
 // Part 1
@@ -1018,18 +1025,18 @@ bool _logoutSucceeds = false;
 ```
 
 <details>
-  <summary title="Expand for a hint on the 'Putting it all together' exercise.">Dica</summary>
+  <summary title="Expand for a hint on the 'Putting it all together' exercise.">Hint</summary>
 
-  As funções `greetUser` e `sayGoodbye` devem ser assíncronas,
-  enquanto `addHello` deve ser uma função normal, síncrona.
+  The `greetUser` and `sayGoodbye` functions should be asynchronous,
+  while `addHello` should be a normal, synchronous function.
 
-  Lembre-se: você pode usar uma [instrução try-catch](/language/error-handling#catch)
-  para capturar e tratar erros.
+  Remember: You can use a [try-catch statement](/language/error-handling#catch)
+  to catch and handle errors.
 
 </details>
 
 <details>
-  <summary title="Expand for the solution of the 'Putting it all together' exercise.">Solução</summary>
+  <summary title="Expand for the solution of the 'Putting it all together' exercise.">Solution</summary>
 
   ```dart
   String addHello(String user) => 'Hello $user';
@@ -1051,10 +1058,10 @@ bool _logoutSucceeds = false;
 
 </details>
 
-## Quais lints funcionam para futures? {:#which-lints-work-for-futures}
+## Which lints work for futures?
 
-Para capturar erros comuns que surgem ao trabalhar com async e futures,
-[habilite](/tools/analysis#individual-rules) os seguintes lints:
+To catch common mistakes that arise while working with async and futures,
+[enable](/tools/analysis#individual-rules) the following lints:
 
 * [`discarded_futures`][]
 * [`unawaited_futures`][]
@@ -1062,22 +1069,22 @@ Para capturar erros comuns que surgem ao trabalhar com async e futures,
 [`discarded_futures`]: /tools/linter-rules/discarded_futures
 [`unawaited_futures`]: /tools/linter-rules/unawaited_futures
 
-## O que vem a seguir? {:#whats-next}
+## What's next?
 
-Parabéns, você terminou o tutorial! Se você quiser aprender mais, aqui
-estão algumas sugestões de para onde ir em seguida:
+Congratulations, you've finished the tutorial! If you'd like to learn more, here
+are some suggestions for where to go next:
 
-- Brinque com o [DartPad]({{site.dartpad}}).
-- Aprenda mais sobre futures e código assíncrono no Dart:
-  - [Tutorial de Streams](/libraries/async/using-streams):
-    Aprenda como trabalhar com uma sequência de eventos assíncronos.
-  - [Concorrência no Dart](/language/concurrency):
-    Entenda e aprenda como implementar concorrência no Dart.
-  - [Programação assíncrona](/language/async):
-    Mergulhe no suporte da linguagem e da biblioteca do Dart para programação assíncrona.
-  - [Vídeos Dart do Google][Dart videos]:
-    Assista a um ou mais dos vídeos sobre programação assíncrona.
-- Obtenha o [Dart SDK](/get-dart)!
+- Play with [DartPad]({{site.dartpad}}).
+- Learn more about futures and asynchronous code in Dart:
+  - [Streams tutorial](/libraries/async/using-streams):
+    Learn how to work with a sequence of asynchronous events.
+  - [Concurrency in Dart](/language/concurrency):
+    Understand and learn how to implement concurrency in Dart.
+  - [Asynchronous programming](/language/async):
+    Dive in to Dart's language and library support for asynchronous coding.
+  - [Dart videos from Google][Dart videos]:
+    Watch one or more of the videos about asynchronous coding.
+- Get the [Dart SDK](/get-dart)!
 
 [Dart videos]: {{site.yt.playlist}}PLjxrf2q8roU0Net_g1NT5_vOO3s_FR02J
 [Future]: {{site.dart-api}}/dart-async/Future-class.html

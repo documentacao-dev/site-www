@@ -8,6 +8,7 @@ import 'package:jaspr_content/jaspr_content.dart';
 
 import '../components/common/button.dart';
 import '../components/common/card.dart';
+import '../components/common/client/trigger.dart';
 import '../components/pages/glossary_search_section.dart';
 import '../markdown/markdown_parser.dart';
 import '../util.dart';
@@ -169,8 +170,8 @@ final class GlossaryIndex extends StatelessComponent {
       [
         const p([
           .text(
-            'A seguir estão as definições de termos usados '
-            'em toda a documentação do Dart.',
+            'The following are definitions of terms used '
+            'across the Dart documentation.',
           ),
         ]),
         const GlossarySearchSection(),
@@ -211,6 +212,7 @@ final class GlossaryCard extends StatelessComponent {
         'data-partial-matches': partialMatches,
         'data-full-matches': fullMatches,
       },
+      initiallyExpanded: false,
       header: [
         h2(classes: 'card-title', [.text(entry.term)]),
         div(classes: 'card-header-buttons', [
@@ -219,21 +221,22 @@ final class GlossaryCard extends StatelessComponent {
             icon: 'tag',
             style: ButtonStyle.text,
             classes: const ['share-button'],
-            title: 'Link para o card',
+            title: 'Link to card',
             attributes: {
-              'aria-label': 'Link para o card ${entry.term}',
+              'aria-label': 'Link to ${entry.term} card',
             },
           ),
-          Button(
-            icon: 'keyboard_arrow_up',
-            style: ButtonStyle.text,
-            classes: const ['expand-button'],
-            title: 'Expandir ou recolher o card',
-            attributes: {
-              'aria-expanded': 'true',
-              'aria-controls': contentId,
-              'aria-label': 'Expandir ou recolher o card ${entry.term}',
-            },
+          Trigger(
+            child: Button(
+              icon: 'keyboard_arrow_up',
+              style: ButtonStyle.text,
+              classes: const ['expand-button'],
+              title: 'Expand or collapse card',
+              attributes: {
+                'aria-controls': contentId,
+                'aria-label': 'Expand or collapse ${entry.term} card',
+              },
+            ),
           ),
         ]),
       ],
@@ -248,7 +251,7 @@ final class GlossaryCard extends StatelessComponent {
         if (entry.relatedLinks.isNotEmpty)
           div([
             const h3(classes: 'no_toc details-header', [
-              .text('Documentos e recursos relacionados'),
+              .text('Related docs and resources'),
             ]),
             ul(classes: 'resources-list', [
               for (final resource in entry.relatedLinks)
