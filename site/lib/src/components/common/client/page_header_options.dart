@@ -156,7 +156,7 @@ final class _PageHeaderOptionsState extends State<PageHeaderOptions> {
     id: _optionsId,
     children: [
       const DropdownToggle(
-        Button(icon: 'more_vert', title: 'View page options.'),
+        Button(icon: 'more_vert', title: 'Ver opções da página.'),
       ),
       DropdownContent(
         nav(
@@ -168,7 +168,7 @@ final class _PageHeaderOptionsState extends State<PageHeaderOptions> {
                 if (_isShareSupported)
                   Button(
                     icon: 'share',
-                    content: 'Share page',
+                    content: 'Compartilhar página',
                     onClick: () {
                       web.window.navigator.share(_shareData).toDart.ignore();
                     },
@@ -176,7 +176,7 @@ final class _PageHeaderOptionsState extends State<PageHeaderOptions> {
                 else
                   Button(
                     icon: _copied ? 'check' : 'link',
-                    content: _copied ? 'Link copied!' : 'Copy link',
+                    content: _copied ? 'Link copiado!' : 'Copiar link',
                     onClick: _copyLink,
                   ),
               ]),
@@ -184,8 +184,8 @@ final class _PageHeaderOptionsState extends State<PageHeaderOptions> {
                 li([
                   Button(
                     icon: _markdownCopyState.icon,
-                    content: 'Copy as Markdown',
-                    title: 'Copy this page as Markdown to your clipboard.',
+                    content: 'Copiar como Markdown',
+                    title: 'Copiar esta página como Markdown para a área de transferência.',
                     attributes: {
                       'aria-describedby': _copyStatusId,
                       // Native `disabled` drops focus and closes the
@@ -251,13 +251,13 @@ enum _MarkdownCopyState {
   idle('content_copy', ''),
 
   /// The Markdown is being loaded and copied.
-  copying('progress_activity', 'Copying Markdown.'),
+  copying('progress_activity', 'Copiando o Markdown.'),
 
   /// The Markdown was copied successfully.
-  copied('check', 'Markdown copied.'),
+  copied('check', 'Markdown copiado.'),
 
   /// Loading or copying the Markdown failed.
-  failed('error', "Couldn't copy Markdown.");
+  failed('error', "Não foi possível copiar o Markdown.");
 
   const _MarkdownCopyState(this.icon, this.announcement);
 

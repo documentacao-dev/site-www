@@ -27,7 +27,7 @@ final class DataProcessor implements DataLoader {
       page.apply(
         data: {
           'page': {
-            'readingTime': '$readingTime min read',
+            'readingTime': '$readingTime min de leitura',
             'date': ?lastModifiedDateForPath(inputPath),
             'inputPath': inputPath,
             if (page.data.page['sitemap'] == null)

@@ -38,32 +38,59 @@ class TrailingContent extends StatelessComponent {
         p(id: 'page-github-links', [
           span([
             .text(
-              'Unless stated otherwise, the documentation on '
-              'this site reflects Dart $documentedDartVersion. ',
+              'Salvo indicação em contrário, a documentação neste site '
+              'reflete Dart $documentedDartVersion. ',
             ),
             if (pageDate != null)
               .text(
-                'Page last updated on $pageDate. ',
+                'Página atualizada pela última vez em $pageDate. ',
               ),
           ]),
           if (pageSource != null) ...[
             a(
               href: pageSource,
               attributes: {'target': '_blank', 'rel': 'noopener'},
-              [const .text('View source')],
+              [const .text('Ver código-fonte')],
             ),
-            const span([.text(' or ')]),
+            const span([.text(' ou ')]),
           ],
           a(
             href: issueUrl,
             attributes: {
-              'title': 'Report an issue with this page',
+              'title': 'Relatar um problema com esta página',
               'target': '_blank',
               'rel': 'noopener',
             },
-            [.text(pageSource == null ? 'Report an issue' : 'report an issue')],
+            [
+              .text(
+                pageSource == null
+                    ? 'Relatar um problema'
+                    : 'relatar um problema',
+              ),
+            ],
           ),
           const .text('.'),
+        ]),
+
+        div(classes: 'trailing-translation-feedback', [
+          p([
+            const .text(
+              'Encontrou essa página sem tradução ou que precisa de correção? ',
+            ),
+            a(
+              href: sourceInfo.translationIssueUrl,
+              attributes: {
+                'title': 'Abrir issue no GitHub',
+                'target': '_blank',
+                'rel': 'noopener',
+              },
+              [const .text('Abra uma issue')],
+            ),
+            const .text(
+              ' e nos ajude a manter esse site em PT-BR para ajudar '
+              'pessoas como você.',
+            ),
+          ]),
         ]),
       ],
     );

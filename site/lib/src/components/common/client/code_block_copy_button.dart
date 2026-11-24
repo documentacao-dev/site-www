@@ -16,7 +16,9 @@ import '../button.dart';
 /// To copy other text, such as a name, use `StaticCopyButton` instead.
 @client
 final class CodeBlockCopyButton extends StatefulComponent {
-  const CodeBlockCopyButton({this.title = 'Copy code to clipboard'});
+  const CodeBlockCopyButton({
+    this.title = 'Copiar código para a área de transferência',
+  });
 
   /// The tooltip and accessible description of the button.
   final String title;

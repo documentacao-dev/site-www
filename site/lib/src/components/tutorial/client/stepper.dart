@@ -123,7 +123,7 @@ class _InteractiveStepperState extends State<InteractiveStepper> {
             summary([
               span(
                 classes: 'step-number',
-                attributes: {'aria-label': 'Step ${index + 1}'},
+                attributes: {'aria-label': 'Passo ${index + 1}'},
                 [.text('${index + 1}')],
               ),
               div(key: _titleKeys[index], classes: 'step-title', [
@@ -139,8 +139,8 @@ class _InteractiveStepperState extends State<InteractiveStepper> {
                   classes: const ['next-step-button'],
                   style: ButtonStyle.filled,
                   content: index == component.steps.length - 1
-                      ? 'Finish'
-                      : 'Continue',
+                      ? 'Concluir'
+                      : 'Continuar',
                   onClick: () {
                     _goToStep(index);
                   },

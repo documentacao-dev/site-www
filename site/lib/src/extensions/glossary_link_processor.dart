@@ -83,10 +83,10 @@ class GlossaryTooltipContent extends StatelessComponent {
           href: '/resources/glossary#${entry.id}',
           attributes: {
             'title':
-                'Learn more about \'${entry.term}\' and '
-                'find related resources.',
+                'Saiba mais sobre \'${entry.term}\' e '
+                'encontre recursos relacionados.',
           },
-          const [.text('Learn more')],
+          const [.text('Saiba mais')],
         ),
       ]),
     ]);
